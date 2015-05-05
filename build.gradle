@@ -27,6 +27,11 @@ dependencies {
     compile 'org.apache.httpcomponents:httpclient:4.4.1'
     compile 'org.apache.httpcomponents:httpasyncclient:4.1'
 
+    compile "javax.validation:validation-api:1.1.0.Final"
+    compile "org.hibernate:hibernate-validator:5.2.0.Beta1"
+
+    compile "com.fasterxml.jackson.core:jackson-databind:2.5.3"
+
     testCompile 'org.testng:testng:6.8.17'
     testCompile 'org.mockito:mockito-all:1.10.19'
 }
