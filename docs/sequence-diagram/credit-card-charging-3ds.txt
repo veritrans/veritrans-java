@@ -1,0 +1,52 @@
+@startuml
+title Credit Card Charging with 3D Secure Authentication
+
+activate Customer
+activate Browser
+
+Customer -> Browser: Checkout
+Browser -> Merchant: Checkout
+
+activate Merchant
+Merchant -> Merchant: Process Checkout
+
+Browser <- Merchant: Render Checkout Page
+deactivate Merchant
+
+Customer <- Browser: Checkout Page
+Customer -> Browser: Enter CC Details
+
+group Veritrans JavaScript Client
+Browser -> Veritrans: Get Token for CC
+activate Veritrans
+
+Browser <- Veritrans: Render 3D Secure Page
+Customer <- Browser: 3D Secure Page
+Customer -> Browser: Enter 3D Secure Info
+Browser -> Veritrans: Submit 3D Secure Info
+
+Browser <- Veritrans: Token
+deactivate Veritrans
+
+Browser -> Merchant: Charge CC with Token
+activate Merchant
+end
+
+group Veritrans Java Client
+Merchant -> Veritrans: Charge CC with Token
+activate Veritrans
+
+Merchant <- Veritrans: Charge Result
+deactivate Veritrans
+end
+
+Merchant -> Merchant: Record Payment
+
+Browser <- Merchant: Render Success / Fail Page
+deactivate Merchant
+
+Customer <- Browser: Show Success / Fail Page
+
+deactivate Browser
+deactivate Customer
+@enduml
