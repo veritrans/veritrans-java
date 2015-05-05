@@ -13,6 +13,11 @@ public enum EnvironmentType {
         this.baseUrl = baseUrl;
     }
 
+    /**
+     * Returns veritrans base URL API based on environment that used
+     *
+     * @return  veritrans base URL API
+     */
     public String getBaseUrl() {
         return baseUrl;
     }
