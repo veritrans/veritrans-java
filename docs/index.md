@@ -106,9 +106,6 @@ public void setVtDirectChargeParamValues(VtDirectChargeParam vtDirectChargeParam
     billingAddress.setAddress("Random Street 6A");
     billingAddress.setCity("Jakarta Pusat");
     billingAddress.setPostalCode("12210");
-
-    vtDirectChargeParam.getCreditCard().setTokenId("creditCardToken");
-    vtDirectChargeParam.getCreditCard().setAcquirerBank(Bank.BNI);
 }
 ```
 

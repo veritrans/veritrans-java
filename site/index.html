@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="./img/favicon.ico">
+
+	<title>Veritrans-Java Client Documentation</title>
+
+        <link href="./css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="./css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="./css/highlight.css">
+        <link href="./css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="index.html">Veritrans-Java Client Documentation</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li class="active">
+                    <a href="index.html">Home</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="javadoc/index.html">Javadoc</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                
+                <li class="disabled">
+                    <a rel="next" >
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="javadoc/index.html">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#veritrans-java-client-documentation">Veritrans-Java Client Documentation</a></li>
+        
+    
+        <li class="main "><a href="#installation">Installation</a></li>
+        
+            <li><a href="#maven">Maven</a></li>
+        
+            <li><a href="#gradle">Gradle</a></li>
+        
+    
+        <li class="main "><a href="#usage">Usage</a></li>
+        
+            <li><a href="#vtgatewayconfig">VtGatewayConfig</a></li>
+        
+            <li><a href="#vtdirect">VtDirect</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="veritrans-java-client-documentation">Veritrans-Java Client Documentation</h1>
+<p>This is the official Java Client for Veritrans Payment API.  </p>
+<p>Please visit <a href="https://www.veritrans.co.id">https://www.veritrans.co.id</a> for more information about the products and see the documentations at <a href="http://docs.veritrans.co.id">http://docs.veritrans.co.id</a> for more technical details.</p>
+<p><br/></p>
+<h1 id="installation">Installation</h1>
+<h2 id="maven">Maven</h2>
+<p>If you're using Maven as the build tools for your project, add the following dependency to your project's build definition (pom.xml):</p>
+<pre><code class="xml">&lt;dependency&gt;
+    &lt;groupId&gt;id.co.veritrans&lt;/groupId&gt;
+    &lt;artifactId&gt;veritrans-java&lt;/artifactId&gt;
+    &lt;version&gt;1.0.0&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<h2 id="gradle">Gradle</h2>
+<p>If you're using Gradle as the build tools for your project, add the following dependency to your project's build definition (build.gradle):</p>
+<pre><code class="groovy">compile 'id.co.veritrans:veritrans-java:1.0.0'
+</code></pre>
+
+<p><br/></p>
+<h1 id="usage">Usage</h1>
+<h2 id="vtgatewayconfig">VtGatewayConfig</h2>
+<p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Payment API.<br />
+See <a href="./javadoc/id/co/veritrans/mdk/VtGatewayConfig.html">VtGatewayConfig Javadoc</a>.</p>
+<h3 id="server-client-key">Server &amp; Client Key</h3>
+<p>You must set the <code>Server Key</code> and <code>Client Key</code> as defined in your Merchant Admministration Portal (MAP).</p>
+<pre><code class="java">VtGatewayConfig vtGatewayConfig = new VtGatewayConfig();
+vtGatewayConfig.setServerKey(&quot;Your Server Key&quot;);
+vtGatewayConfig.setServerKey(&quot;Your Client Key&quot;);
+</code></pre>
+
+<h3 id="environment">Environment</h3>
+<p>You can choose to use Sandbox or Production environment. During development &amp; testing, you might want to set it to Sandbox and use the Production environment when you're ready to go live.  </p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/config/EnvironmentType.html">EnvironmentType Javadoc</a>.</p>
+<pre><code class="java">vtGatewayConfig.setEnvironment(EnvironmentType.Production);
+</code></pre>
+
+<p><br/></p>
+<h2 id="vtdirect">VtDirect</h2>
+<p>VtDirect instance is used to communicate with Veritrans Payment API. VtDirect instance is safe to share with multiple threads and it is recommended to maintain and reuse the same VtDirect instance.
+However if you need to use a different configuration, you may obtain another VtDirect instance for that configuration.<br />
+See <a href="./javadoc/id/co/veritrans/mdk/gateway/VtDirect.html">VtDirect Javadoc</a>.</p>
+<h3 id="obtaining-vtdirect-instance">Obtaining VtDirect instance</h3>
+<p>VtDirect instance is obtained through the <a href="./javadoc/id/co/veritrans/mdk/VtGatewayFactory.html">VtGatewayFactory</a> by giving the proper VtGatewayConfig object.<br />
+There are multiple ways to obtain VtDirect instance through VtGatewayFactory described in the VtGatewayFactory Javadoc, however this is the recommended way:</p>
+<pre><code class="java">VtDirect vtDirect = VtGatewayFactory.vtDirect(vtGatewayConfig);
+</code></pre>
+
+<p><br/></p>
+<h3 id="charging-a-transaction">Charging a transaction</h3>
+<p>VtDirect has method named <code>charge</code> which takes an instance of VtDirectChargeParam subclass as the parameter.
+This method will make a charge request to Veritrans Payment API and return a VtDirectResponse as a result, which can be used to determine the status of the transaction.  </p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParam.html">VtDirectChargeParam</a><br />
+See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtDirectResponse.html">VtDirectResponse</a><br />
+Visit <a href="http://docs.veritrans.co.id/sandbox/charge.html">http://docs.veritrans.co.id/sandbox/charge.html</a> for more information.</p>
+<p><br/></p>
+<h4 id="vtdirectchargeparam">VtDirectChargeParam</h4>
+<p>VtDirectChargeParam has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named VtDirectChargeParamCreditCard. The list of currently supported payment methods:<br />
+- <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamBankTransfer.html">VtDirectChargeParamBankTransfer</a><br />
+- <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamCimbClicks.html">VtDirectChargeParamCimbClicks</a><br />
+- <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamCreditCard.html">VtDirectChargeParamCreditCard</a><br />
+- <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamMandiriClickpay.html">VtDirectChargeParamMandiriClickpay</a>  </p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/package-summary.html">id.co.veritrans.mdk.gateway.model Javadoc</a></p>
+<p>It is recommended to have a single method to configure the generic VtDirectChargeParam values. Example for Credit Card charge:</p>
+<pre><code class="java">...
+//somewhere in the code
+VtDirectChargeParamCreditCard vtDirectChargeParam = new VtDirectChargeParamCreditCard();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+//continue processing
+...
+
+/**
+ * This method is just for example.
+ * The actual values should be obtained from another sources.
+ */
+public void setVtDirectChargeParamValues(VtDirectChargeParam vtDirectChargeParam) {
+    vtDirectChargeParam.setTransactionDetails(new TransactionDetails());
+    vtDirectChargeParam.setCustomerDetails(new CustomerDetails());
+
+    vtDirectChargeParam.getTransactionDetails().setOrderId(&quot;your unique order ID&quot;);
+    vtDirectChargeParam.getTransactionDetails().setGrossAmount(10000l);
+
+    vtDirectChargeParam.getCustomerDetails().setEmail(&quot;user@domain.com&quot;);
+    vtDirectChargeParam.getCustomerDetails().setFirstName(&quot;firstName&quot;);
+    vtDirectChargeParam.getCustomerDetails().setPhone(&quot;0123456789&quot;);
+    vtDirectChargeParam.getCustomerDetails().setBillingAddress(new Address());
+
+    Address billingAddress = vtDirectChargeParam.getCustomerDetails().getBillingAddress();
+    billingAddress.setAddress(&quot;Random Street 6A&quot;);
+    billingAddress.setCity(&quot;Jakarta Pusat&quot;);
+    billingAddress.setPostalCode(&quot;12210&quot;);
+}
+</code></pre>
+
+<p><br/></p>
+<h4 id="bank-transfer">Bank Transfer</h4>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/paymentmethod/BankTransfer.html">BankTransfer Javadoc</a></p>
+<pre><code class="java">VtDirectChargeParamBankTransfer vtDirectChargeParam = new VtDirectChargeParamBankTransfer();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+vtDirectChargeParam.setBankTransfer(new BankTransfer());
+
+vtDirectChargeParam.getBankTransfer().setDescription(&quot;Payment for Merchant XYZ&quot;);
+vtDirectChargeParam.getBankTransfer().setBank(BankTransfer.Bank.PERMATA);
+
+VtDirectResponse vtDirectResponse = vtDirect.charge(vtDirectChargeParam);
+
+if (vtDirectResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+    //handle successful Bank Transfer charge request
+    //check the permataVaNumber in the vtDirectResponse
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<p><br/></p>
+<h4 id="cimb-clicks">Cimb Clicks</h4>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/paymentmethod/CimbClicks.html">CimbClicks Javadoc</a></p>
+<pre><code class="java">VtDirectChargeParamCimbClicks vtDirectChargeParam = new VtDirectChargeParamCimbClicks();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+vtDirectChargeParam.setCimbClicks(new CimbClicks());
+
+vtDirectChargeParam.getCimbClicks().setDescription(&quot;Payment for Merchant XYZ&quot;);
+
+VtDirectResponse vtDirectResponse = vtDirect.charge(vtDirectChargeParam);
+
+if (vtDirectResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+    //handle successful Cimb Clicks charge request
+    //check the redirectUrl value in the vtDirectResponse
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<p><br/></p>
+<h4 id="credit-card-sale">Credit Card Sale</h4>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/paymentmethod/CreditCard.html">CreditCard Javadoc</a></p>
+<pre><code>VtDirectChargeParamCreditCard vtDirectChargeParam = new VtDirectChargeParamCreditCard();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+vtDirectChargeParam.setCreditCard(new CreditCard());
+
+//token is obtained from HTTP POST variable.
+vtDirectChargeParam.getCreditCard().setTokenId(&quot;creditCardToken&quot;);
+//your acquirer bank for Credit Card
+vtDirectChargeParam.getCreditCard().setAcquirerBank(CreditCard.Bank.BNI);
+
+VtDirectResponse vtDirectResponse = vtDirect.charge(vtDirectChargeParam);
+
+if (vtDirectResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+    if (vtDirectResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+        //handle successful capture
+    } else if (vtDirectResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
+        //handle FDS challenge
+    } else {
+        //unexpected condition that should never happen
+    }
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<p><br/></p>
+<h4 id="credit-card-feature-pre-authorization-capture">Credit Card Feature: Pre-authorization &amp; Capture</h4>
+<h5 id="pre-authorization">Pre-authorization</h5>
+<pre><code class="java">VtDirectChargeParamCreditCard vtDirectChargeParam = new VtDirectChargeParamCreditCard();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+vtDirectChargeParam.setCreditCard(new CreditCard());
+
+//token is obtained from HTTP POST variable.
+vtDirectChargeParam.getCreditCard().setTokenId(&quot;creditCardToken&quot;);
+//your acquirer bank for Credit Card
+vtDirectChargeParam.getCreditCard().setAcquirerBank(CreditCard.Bank.BNI);
+vtDirectChargeParam.getCreditCard().setType(CreditCard.TransactionType.AUTHORIZE);
+
+VtDirectResponse vtDirectResponseAuthorize = vtDirect.charge(vtDirectChargeParam);
+
+if (vtDirectResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED) {
+    if (vtDirectResponseAuthorize.getFraudStatus() == FraudStatus.ACCEPTED) {
+        //handle successful authorize
+    } else if (vtDirectResponseAuthorize.getFraudStatus() == FraudStatus.CHALLENGE) {
+        //handle FDS challenge
+    } else {
+        //unexpected condition that should never happen
+    }
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<h5 id="capture">Capture</h5>
+<pre><code class="java">String transactionId = vtDirectResponseAuthorize.getTransactionId();
+Long captureAmount = vtDirectResponseAuthorize.getGrossAmount().longValue();
+VtDirectResponse vtDirectResponseCapture = vtDirect.capture(transactionId, captureAmount);
+
+if (vtDirectResponseCapture.getTransactionStatus() == TransactionStatus.CAPTURED) {
+    //handle successful capture
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<p><br/></p>
+<h4 id="credit-card-accept-an-fds-challenged-capture">Credit Card: Accept an FDS challenged capture</h4>
+<pre><code class="java">String orderId = &quot;your unique order ID&quot;;
+VtDirectResponse vtDirectResponse = vtDirect.approve(orderId);
+
+if (vtDirectResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+    //handle successful capture approval
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<p><br/></p>
+<h4 id="mandiri-clickpay">Mandiri Clickpay</h4>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/paymentmethod/MandiriClickpay.html">MandiriClickpay Javadoc</a></p>
+<pre><code class="java">VtDirectChargeParamMandiriClickpay vtDirectChargeParam = new VtDirectChargeParamMandiriClickpay();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+vtDirectChargeParam.setMandiriClickpay(new MandiriClickpay());
+
+vtDirectChargeParam.getMandiriClickpay().setCardNumber(&quot;4111111111111111&quot;);
+vtDirectChargeParam.getMandiriClickpay().setInput1(&quot;111111111&quot;);
+vtDirectChargeParam.getMandiriClickpay().setInput2(&quot;10000&quot;);
+vtDirectChargeParam.getMandiriClickpay().setInput3(&quot;54321&quot;);
+vtDirectChargeParam.getMandiriClickpay().setToken(&quot;000000&quot;);
+
+VtDirectResponse vtDirectResponse = vtDirect.charge(vtDirectChargeParam);
+
+if (vtDirectResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
+    //handle successful Mandiri Clickpay charge request
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<p><br/></p>
+<h3 id="check-transaction-status">Check Transaction Status</h3>
+<pre><code class="java">String orderId = &quot;your unique order ID&quot;;
+VtDirectResponse vtDirectResponse = vtDirect.status(orderId);
+//continue processing based on the vtDirectResponse
+</code></pre></div>
+        </div>
+
+        
+
+        <script src="./js/jquery-1.10.2.min.js"></script>
+        <script src="./js/bootstrap-3.0.3.min.js"></script>
+        <script src="./js/highlight.pack.js"></script>
+        <script src="./js/base.js"></script>
+    </body>
+</html>
