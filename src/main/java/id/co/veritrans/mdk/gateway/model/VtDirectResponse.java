@@ -19,6 +19,7 @@ public class VtDirectResponse {
     private String statusCode;
     private String statusMessage;
     private String approvalCode;
+    private String permataVaNumber;
 
     public VtDirectResponse() {
     }
@@ -123,6 +124,14 @@ public class VtDirectResponse {
 
     public void setApprovalCode(final String approvalCode) {
         this.approvalCode = approvalCode;
+    }
+
+    public String getPermataVaNumber() {
+        return permataVaNumber;
+    }
+
+    public void setPermataVaNumber(String permataVaNumber) {
+        this.permataVaNumber = permataVaNumber;
     }
 
     @Override

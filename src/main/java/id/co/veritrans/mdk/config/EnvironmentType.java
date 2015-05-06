@@ -1,7 +1,7 @@
 package id.co.veritrans.mdk.config;
 
 /**
- * Created by gde on 5/4/15.
+ * Enum of veritrans environment type API.
  */
 public enum EnvironmentType {
     SANDBOX("https://api.sandbox.veritrans.co.id/v2"),

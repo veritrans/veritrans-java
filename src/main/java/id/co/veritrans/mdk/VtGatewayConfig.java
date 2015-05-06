@@ -1,84 +1,110 @@
 package id.co.veritrans.mdk;
 
 import id.co.veritrans.mdk.config.EnvironmentType;
-import id.co.veritrans.mdk.config.MerchantCredential;
 
 /**
- * This class will be use to setup gateway config before trigger the transaction and need to setup to construct
- * {@link id.co.veritrans.mdk.VtGatewayFactory#setVtGatewayConfig(VtGatewayConfig) VtGatewayFactory} object.<br>
- *
- * <br><br>
- * Created by gde on 5/4/15.
+ * Veritrans gateway config. Used on {@link id.co.veritrans.mdk.VtGatewayFactory VtGatewayFactory} class.
  */
 public class VtGatewayConfig {
 
-    private MerchantCredential merchantCredential;
     private EnvironmentType environmentType;
+    private String serverKey;
+    private String clientKey;
+    private String proxyUsername;
+    private String proxyPassword;
+
+    public VtGatewayConfig() {};
 
     /**
-     * Construct new VtGatewayConfig object
-     * <br>
-     * <i>If using this constructor, is mandatory to setup {@link id.co.veritrans.mdk.config.MerchantCredential Merchant credential} and
-     * {@link id.co.veritrans.mdk.config.EnvironmentType Environment type} manually</i>
+     * @param serverKey         Merchant server key when connecting to Veritrans API. Can be obtain from veritrans <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal</a>
+     * @param clientKey         Merchant client key when connecting to Veritrans API. Can be obtain from veritrans <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal</a>
+     * @param environmentType   Veritrans {@link id.co.veritrans.mdk.config.EnvironmentType environment type} when connecting to Veritrans API.
      */
-    public VtGatewayConfig() {
-    }
-
-    /**
-     * Construct new VtGatewayConfig object
-     * using merchant credential (server_key and client_key) and
-     * environment type (sandbox or production)
-     *
-     * <br><br>
-     * <i>Merchant credential value can recieve from veritrans Merchant Administration Portal</i>
-     *
-     * @param merchantCredential    {@link id.co.veritrans.mdk.config.MerchantCredential#MerchantCredential(String, String) Merchant server_key and client_key}
-     * @param environmentType       {@link id.co.veritrans.mdk.config.EnvironmentType Production or sandbox environment}
-     */
-    public VtGatewayConfig(final MerchantCredential merchantCredential, final EnvironmentType environmentType) {
-        this.merchantCredential = merchantCredential;
+    public VtGatewayConfig(final String serverKey, final String clientKey, final EnvironmentType environmentType) {
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
         this.environmentType = environmentType;
     }
 
     /**
-     * Get detail of merchant credential
-     * (server_key and client_key)
-     *
-     * @return  merchant credential detail (server_key and client_key)
-     */
-    public MerchantCredential getMerchantCredential() {
-        return merchantCredential;
-    }
-
-    /**
-     * Set merchant credential detail (server_key and client_key)
-     * This parameter is mandatory to setup if VtGatewayConfig construct using empty parameter
-     * This value can recieve from veritrans Merchant Administration Portal
-     *
-     * @param merchantCredential    merchant credential detail (server_key and client_key)
-     */
-    public void setMerchantCredential(final MerchantCredential merchantCredential) {
-        this.merchantCredential = merchantCredential;
-    }
-
-    /**
-     * Get environment type that used for the transaction
-     * (production or sandbox environment)
-     *
-     * @return  environment type (production or sandbox)
+     * Get veritrans API environment type
+     * @return Veritrans {@link id.co.veritrans.mdk.config.EnvironmentType environment type} when connecting to Veritrans API
      */
     public EnvironmentType getEnvironmentType() {
         return environmentType;
     }
 
     /**
-     * Set environment type that will be use for the transaction
-     * (production or sandbox environment)
-     *
-     * @param environmentType   environment type (production or sandbox)
+     * Set veritrans API environment type
+     * @param environmentType   Veritrans {@link id.co.veritrans.mdk.config.EnvironmentType environment type} when connecting to Veritrans API.
      */
     public void setEnvironmentType(final EnvironmentType environmentType) {
         this.environmentType = environmentType;
+    }
+
+    /**
+     * Get the merchant server key
+     * @return Merchant server key when connecting to Veritrans API
+     */
+    public String getServerKey() {
+        return serverKey;
+    }
+
+    /**
+     * Set the merchant server key<br>
+     *
+     * @param serverKey Merchant server key when connecting to Veritrans API. Can be obtain from veritrans <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal</a>
+     */
+    public void setServerKey(String serverKey) {
+        this.serverKey = serverKey;
+    }
+
+    /**
+     * Get the merchant client key
+     * @return Merchant client key when connecting to Veritrans API
+     */
+    public String getClientKey() {
+        return clientKey;
+    }
+
+    /**
+     * Set the merchant client key
+     * @param clientKey Merchant client key when connecting to Veritrans API. Can be obtain from veritrans <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal</a>
+     */
+    public void setClientKey(String clientKey) {
+        this.clientKey = clientKey;
+    }
+
+    /**
+     * Get proxy username to connect to Veritrans API
+     * @return Merchant proxy username config
+     */
+    public String getProxyUsername() {
+        return proxyUsername;
+    }
+
+    /**
+     * Set proxy username to connect to Veritrans API
+     * @param proxyUsername Merchant proxy username config
+     */
+    public void setProxyUsername(String proxyUsername) {
+        this.proxyUsername = proxyUsername;
+    }
+
+    /**
+     * Get proxy password to connect to Veritrans API
+     * @return Merchant proxy password config
+     */
+    public String getProxyPassword() {
+        return proxyPassword;
+    }
+
+    /**
+     * Set proxy password to connect to Veritrans API
+     * @param proxyPassword Merchant proxy password config
+     */
+    public void setProxyPassword(String proxyPassword) {
+        this.proxyPassword = proxyPassword;
     }
 
     @Override
@@ -89,15 +115,16 @@ public class VtGatewayConfig {
         final VtGatewayConfig that = (VtGatewayConfig) o;
 
         if (environmentType != that.environmentType) return false;
-        if (merchantCredential != null ? !merchantCredential.equals(that.merchantCredential) : that.merchantCredential != null)
-            return false;
+        if (serverKey != that.serverKey) return false;
+        if (clientKey != that.clientKey) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = merchantCredential != null ? merchantCredential.hashCode() : 0;
+        int result = serverKey != null ? serverKey.hashCode() : 0;
+        result = 31 * result + (clientKey != null ? clientKey.hashCode() : 0);
         result = 31 * result + (environmentType != null ? environmentType.hashCode() : 0);
         return result;
     }

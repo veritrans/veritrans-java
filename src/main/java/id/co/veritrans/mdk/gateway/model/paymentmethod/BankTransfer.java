@@ -7,6 +7,16 @@ public class BankTransfer {
 
     private String description;
 
+    public static enum Bank {
+        PERMATA("permata");
+
+        private final String name;
+
+        Bank(final String name) {
+            this.name = name;
+        }
+    }
+
     public BankTransfer() {
     }
 
