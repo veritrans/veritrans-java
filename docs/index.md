@@ -1,4 +1,4 @@
-# Veritrans-Java Client Documentation
+# Veritrans - Java Client Documentation
 This is the official Java Client for Veritrans Payment API.  
 
 Please visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more information about the products and see the documentations at [http://docs.veritrans.co.id](http://docs.veritrans.co.id) for more technical details.
@@ -30,11 +30,11 @@ VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client 
 See [VtGatewayConfig Javadoc](javadoc/id/co/veritrans/mdk/VtGatewayConfig.html).
 
 ### Server & Client Key
-You must set the `Server Key` and `Client Key` as defined in your Merchant Admministration Portal (MAP).
+You must set the `Server Key` and `Client Key` as defined in your [Merchant Administration Portal (MAP)](https://my.sandbox.veritrans.co.id/login).
 ```java
 VtGatewayConfig vtGatewayConfig = new VtGatewayConfig();
 vtGatewayConfig.setServerKey("Your Server Key");
-vtGatewayConfig.setServerKey("Your Client Key");
+vtGatewayConfig.setClientKey("Your Client Key");
 ```
 
 ### Environment
@@ -42,11 +42,22 @@ You can choose to use Sandbox or Production environment. During development & te
 
 See [EnvironmentType Javadoc](javadoc/id/co/veritrans/mdk/config/EnvironmentType.html).
 ```java
-vtGatewayConfig.setEnvironment(EnvironmentType.Production);
+// config for sandbox environment
+vtGatewayConfig.setEnvironment(EnvironmentType.SANDBOX);
+
+// config for production environment
+vtGatewayConfig.setEnvironment(EnvironmentType.PRODUCTION);
+```
+
+### Proxy Configuration
+You can setup proxy configuration if you need connect to Veritrans Payment API through proxy server.
+```java
+vtGatewayConfig.setProxyUsername("Your proxy username");
+vtGatewayConfig.setProxyPassword("Your proxy password");
 ```
 
 <br/>
-## VtDirect
+## VT-Direct
 VtDirect instance is used to communicate with Veritrans Payment API. VtDirect instance is safe to share with multiple threads and it is recommended to maintain and reuse the same VtDirect instance.
 However if you need to use a different configuration, you may obtain another VtDirect instance for that configuration.  
 See [VtDirect Javadoc](javadoc/id/co/veritrans/mdk/gateway/VtDirect.html).
