@@ -127,16 +127,34 @@ public class VtGatewayFactory {
      * Build new VtDirect object to setup the transaction
      * @return Veritrans {@link id.co.veritrans.mdk.gateway.VtDirect VtDirect} object to setup the transaction using VT-Direct
      */
-    public VtDirect newVtDirect() {
-        return new DefaultVtGateway(vtGatewayConfig).vtDirect();
+    public VtDirect vtDirect() {
+        return vtDirect(vtGatewayConfig);
+    }
+
+    /**
+     * Build new VtDirect object to setup the transaction using static method
+     * @param config {@link id.co.veritrans.mdk.VtGatewayConfig Veritrans gateway config}
+     * @return Veritrans {@link id.co.veritrans.mdk.gateway.VtDirect VtDirect} object to setup the transaction using VT-Direct
+     */
+    public static VtDirect vtDirect(VtGatewayConfig config) {
+        return new DefaultVtGateway(config).vtDirect();
     }
 
     /**
      * Build new VtWeb object to setup the transaction
      * @return Veritrans {@link id.co.veritrans.mdk.gateway.VtWeb VtWeb} object to setup the transaction using VT-Web
      */
-    public VtWeb newVtWeb() {
-        return new DefaultVtGateway(vtGatewayConfig).vtWeb();
+    public VtWeb vtWeb() {
+        return vtWeb(vtGatewayConfig);
+    }
+
+    /**
+     * Build new VtWeb object to setup the transaction using static method
+     * @param config {@link id.co.veritrans.mdk.VtGatewayConfig Veritrans gateway config}
+     * @return Veritrans {@link id.co.veritrans.mdk.gateway.VtWeb VtWeb} object to setup the transaction using VT-Web
+     */
+    public static VtWeb vtWeb(VtGatewayConfig config) {
+        return new DefaultVtGateway(config).vtWeb();
     }
 
     @Override
@@ -156,4 +174,5 @@ public class VtGatewayFactory {
     public int hashCode() {
         return vtGatewayConfig != null ? vtGatewayConfig.hashCode() : 0;
     }
+
 }

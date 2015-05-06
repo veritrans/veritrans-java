@@ -49,10 +49,18 @@ public class VtGatewayTest {
         factory.setClientKey("b");
         factory.setEnvironmentType(EnvironmentType.SANDBOX);
 
-        VtDirect vtDirect = factory.newVtDirect();
+        VtDirect vtDirect = factory.vtDirect();
         assertNotNull(vtDirect);
 
-        VtWeb vtWeb = factory.newVtWeb();
+        VtWeb vtWeb = factory.vtWeb();
         assertNotNull(vtWeb);
+
+        /* Using static method from VtGatewayFactory */
+        VtGatewayConfig config = new VtGatewayConfig("a", "b", EnvironmentType.PRODUCTION);
+        VtDirect vtDirectStatic = VtGatewayFactory.vtDirect(config);
+        assertNotNull(vtDirectStatic);
+
+        VtWeb vtWebStatic = VtGatewayFactory.vtWeb(config);
+        assertNotNull(vtWebStatic);
     }
 }
