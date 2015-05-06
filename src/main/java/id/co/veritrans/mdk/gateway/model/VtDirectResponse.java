@@ -13,8 +13,8 @@ public class VtDirectResponse {
     private BigDecimal grossAmount;
     private PaymentMethod paymentMethod;
     private Date transactionTime;
-    private String transactionStatus;
-    private String fraudStatus;
+    private TransactionStatus transactionStatus;
+    private FraudStatus fraudStatus;
     private String maskedCardNumber;
     private String statusCode;
     private String statusMessage;
@@ -23,7 +23,7 @@ public class VtDirectResponse {
     public VtDirectResponse() {
     }
 
-    public VtDirectResponse(final String transactionId, final String orderId, final BigDecimal grossAmount, final PaymentMethod paymentMethod, final Date transactionTime, final String transactionStatus, final String fraudStatus, final String maskedCardNumber, final String statusCode, final String statusMessage, final String approvalCode) {
+    public VtDirectResponse(final String transactionId, final String orderId, final BigDecimal grossAmount, final PaymentMethod paymentMethod, final Date transactionTime, final TransactionStatus transactionStatus, final FraudStatus fraudStatus, final String maskedCardNumber, final String statusCode, final String statusMessage, final String approvalCode) {
         this.transactionId = transactionId;
         this.orderId = orderId;
         this.grossAmount = grossAmount;
@@ -77,19 +77,19 @@ public class VtDirectResponse {
         this.transactionTime = transactionTime;
     }
 
-    public String getTransactionStatus() {
+    public TransactionStatus getTransactionStatus() {
         return transactionStatus;
     }
 
-    public void setTransactionStatus(final String transactionStatus) {
+    public void setTransactionStatus(final TransactionStatus transactionStatus) {
         this.transactionStatus = transactionStatus;
     }
 
-    public String getFraudStatus() {
+    public FraudStatus getFraudStatus() {
         return fraudStatus;
     }
 
-    public void setFraudStatus(final String fraudStatus) {
+    public void setFraudStatus(final FraudStatus fraudStatus) {
         this.fraudStatus = fraudStatus;
     }
 
