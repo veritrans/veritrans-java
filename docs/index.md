@@ -3,7 +3,8 @@ This is the official Java Client for Veritrans Payment API.
 
 Please visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more information about the products and see the documentations at [http://docs.veritrans.co.id](http://docs.veritrans.co.id) for more technical details.
 
-<br/>
+***
+
 # Installation
 
 ## Maven
@@ -22,7 +23,8 @@ If you're using Gradle as the build tools for your project, add the following de
 compile 'id.co.veritrans:veritrans-java:1.0.0'
 ```
 
-<br/>
+***
+
 # Usage
 
 ## VtGatewayConfig
@@ -55,8 +57,8 @@ You can setup proxy configuration if you need connect to Veritrans Payment API t
 vtGatewayConfig.setProxyUsername("Your proxy username");
 vtGatewayConfig.setProxyPassword("Your proxy password");
 ```
-
 <br/>
+
 ## VT-Direct
 VtDirect instance is used to communicate with Veritrans Payment API. VtDirect instance is safe to share with multiple threads and it is recommended to maintain and reuse the same VtDirect instance.
 However if you need to use a different configuration, you may obtain another VtDirect instance for that configuration.  
@@ -68,8 +70,6 @@ There are multiple ways to obtain VtDirect instance through VtGatewayFactory des
 ```java
 VtDirect vtDirect = VtGatewayFactory.vtDirect(vtGatewayConfig);
 ```
-
-<br/>
 ### Charging a transaction
 VtDirect has method named `charge` which takes an instance of VtDirectChargeParam subclass as the parameter.
 This method will make a charge request to Veritrans Payment API and return a VtDirectResponse as a result, which can be used to determine the status of the transaction.  
@@ -78,7 +78,6 @@ See [VtDirectChargeParam](javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChar
 See [VtDirectResponse](javadoc/id/co/veritrans/mdk/gateway/model/VtDirectResponse.html)  
 Visit [http://docs.veritrans.co.id/sandbox/charge.html](http://docs.veritrans.co.id/sandbox/charge.html) for more information.
 
-<br/>
 #### VtDirectChargeParam
 VtDirectChargeParam has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named VtDirectChargeParamCreditCard. The list of currently supported payment methods:  
 - [VtDirectChargeParamBankTransfer](javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamBankTransfer.html)  

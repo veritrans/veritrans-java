@@ -116,7 +116,7 @@
 <h1 id="veritrans-java-client-documentation">Veritrans - Java Client Documentation</h1>
 <p>This is the official Java Client for Veritrans Payment API.  </p>
 <p>Please visit <a href="https://www.veritrans.co.id">https://www.veritrans.co.id</a> for more information about the products and see the documentations at <a href="http://docs.veritrans.co.id">http://docs.veritrans.co.id</a> for more technical details.</p>
-<p><br/></p>
+<hr />
 <h1 id="installation">Installation</h1>
 <h2 id="maven">Maven</h2>
 <p>If you're using Maven as the build tools for your project, add the following dependency to your project's build definition (pom.xml):</p>
@@ -132,7 +132,7 @@
 <pre><code class="groovy">compile 'id.co.veritrans:veritrans-java:1.0.0'
 </code></pre>
 
-<p><br/></p>
+<hr />
 <h1 id="usage">Usage</h1>
 <h2 id="vtgatewayconfig">VtGatewayConfig</h2>
 <p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Payment API.<br />
@@ -171,14 +171,12 @@ There are multiple ways to obtain VtDirect instance through VtGatewayFactory des
 <pre><code class="java">VtDirect vtDirect = VtGatewayFactory.vtDirect(vtGatewayConfig);
 </code></pre>
 
-<p><br/></p>
 <h3 id="charging-a-transaction">Charging a transaction</h3>
 <p>VtDirect has method named <code>charge</code> which takes an instance of VtDirectChargeParam subclass as the parameter.
 This method will make a charge request to Veritrans Payment API and return a VtDirectResponse as a result, which can be used to determine the status of the transaction.  </p>
 <p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParam.html">VtDirectChargeParam</a><br />
 See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtDirectResponse.html">VtDirectResponse</a><br />
 Visit <a href="http://docs.veritrans.co.id/sandbox/charge.html">http://docs.veritrans.co.id/sandbox/charge.html</a> for more information.</p>
-<p><br/></p>
 <h4 id="vtdirectchargeparam">VtDirectChargeParam</h4>
 <p>VtDirectChargeParam has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named VtDirectChargeParamCreditCard. The list of currently supported payment methods:<br />
 - <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamBankTransfer.html">VtDirectChargeParamBankTransfer</a><br />
