@@ -4,3 +4,4 @@ theme: flatly
 pages:
 - [index.md, Home]
 - [javadoc/index.html, Javadoc]
+- [sequence_diagram.md, Sequence Diagram]
