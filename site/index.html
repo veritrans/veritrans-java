@@ -110,6 +110,12 @@
         
             <li><a href="#vtdirect">VtDirect</a></li>
         
+            <li><a href="#vtweb">VtWeb</a></li>
+        
+            <li><a href="#other-features">Other Features</a></li>
+        
+            <li><a href="#notification-handler-notification-url">Notification Handler (Notification URL)</a></li>
+        
     
     </ul>
 </div></div>
@@ -355,18 +361,6 @@ if (vtResponseCapture.getTransactionStatus() == TransactionStatus.CAPTURED) {
 </code></pre>
 
 <p><br/></p>
-<h4 id="credit-card-accept-an-fds-challenged-capture">Credit Card: Accept an FDS challenged capture</h4>
-<pre><code class="java">String orderId = &quot;your unique order ID&quot;;
-VtResponse vtResponse = vtDirect.approve(orderId);
-
-if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
-    //handle successful capture approval
-} else {
-    //handle denied / unexpected response
-}
-</code></pre>
-
-<p><br/></p>
 <h4 id="mandiri-clickpay">Mandiri Clickpay</h4>
 <p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/MandiriClickpay.html">MandiriClickpay Javadoc</a><br />
 Visit <a href="http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-mandiri">Veritrans Mandiri Clickpay Documentation</a> for more information.</p>
@@ -390,10 +384,107 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
 </code></pre>
 
 <p><br/></p>
+<h2 id="vtweb">VtWeb</h2>
+<p>VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but <strong>VtWeb doesn't has VtDirect's <code>charge</code> functionality</strong>, instead it has a method to get a redirection URL which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  </p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/VtWeb.html">VtWeb Javadoc</a>.<br />
+Example code to obtain reference to VtWeb instance:</p>
+<pre><code class="java">VtWeb vtWeb = vtGatewayFactory.vtWeb();
+</code></pre>
+
+<p><br/></p>
+<h3 id="charging-a-transaction_1">Charging a transaction</h3>
+<p>WIP</p>
+<p><br/></p>
+<h4 id="vtwebchargeparam">VtWebChargeParam</h4>
+<p>WIP</p>
+<p><br/></p>
+<h2 id="other-features">Other Features</h2>
 <h3 id="check-transaction-status">Check Transaction Status</h3>
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtDirect.status(orderId);
 //continue processing based on the vtResponse
+</code></pre>
+
+<pre><code class="java">String orderId = &quot;your unique order ID&quot;;
+VtResponse vtResponse = vtWeb.status(orderId);
+//continue processing based on the vtResponse
+</code></pre>
+
+<p><br/></p>
+<h3 id="credit-card-accept-an-fds-challenge-capture">Credit Card: Accept an <code>FDS challenge</code> capture</h3>
+<pre><code class="java">String orderId = &quot;your unique order ID&quot;;
+VtResponse vtResponse = vtDirect.approve(orderId);
+
+if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+    //handle successful capture approval
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<pre><code class="java">String orderId = &quot;your unique order ID&quot;;
+VtResponse vtResponse = vtWeb.approve(orderId);
+
+if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+    //handle successful capture approval
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<p><br/></p>
+<h3 id="cancel-transaction">Cancel Transaction</h3>
+<pre><code class="java">String orderId = &quot;your unique order ID&quot;;
+VtResponse vtResponse = vtDirect.cancel(orderId);
+
+if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+    //handle successful transaction cancel
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<pre><code class="java">String orderId = &quot;your unique order ID&quot;;
+VtResponse vtResponse = vtWeb.approve(orderId);
+
+if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+    //handle successful transaction cancel
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<p><br/></p>
+<h2 id="notification-handler-notification-url">Notification Handler (Notification URL)</h2>
+<p>Notification URL is used by Veritrans Payment API to notify a merchant once a payment process has been completed or failed.
+It is invoked by Veritrans Payment API through HTTP POST by sending a JSON Message in the request body.
+The structure of the JSON Message is identical with the JSON Response when invoking the Veritrans Payment API.  </p>
+<p>There is a static method provided by VtResponse to help you deserializing the JSON Message into a VtResponse instance.
+This method accepts JSON String or a Raw Input Stream. <strong>Do remember that it is still the caller responsibility to close the InputStream</strong>.</p>
+<p>Below is an example code to handle Notification URL using Java Servlet API:</p>
+<pre><code class="java">...
+void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    try {
+        ServletInputStream inputStream = req.getInputStream();
+        VtResponse vtResponse = VtResponse.deserializeJson(inputStream);
+
+        //if necessary, we can utilize VtDirect's or VtWeb's Check Transaction Status Feature to make sure the notification is really coming from Veritrans
+        String orderId = vtResponse.getOrderId();
+        vtResponse = vtDirect.status(orderId); //we used VtDirect in this example, however we can use VtWeb too
+
+        if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
+            //handle successful Mandiri Clickpay charge request
+        } else {
+            //handle denied / unexpected response
+        }
+    } catch (JsonDeserializeException e) {
+        //handle JSON deserialization error
+        ...
+    } finally {
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+}
+...
 </code></pre></div>
         </div>
 

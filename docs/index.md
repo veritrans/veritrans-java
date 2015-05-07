@@ -79,6 +79,7 @@ Example code to obtain reference to VtDirect instance:
 ```java
 VtDirect vtDirect = vtGatewayFactory.vtDirect();
 ```
+
 ### Charging a transaction
 VtDirect has method named `charge` which takes an instance of VtDirectChargeParam subclass as the parameter.
 This method will make a charge request to Veritrans Payment API and return a VtResponse as a result, which can be used to determine the status of the transaction.  
@@ -268,19 +269,6 @@ if (vtResponseCapture.getTransactionStatus() == TransactionStatus.CAPTURED) {
 ```
 
 <br/>
-#### Credit Card: Accept an FDS challenged capture
-```java
-String orderId = "your unique order ID";
-VtResponse vtResponse = vtDirect.approve(orderId);
-
-if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
-    //handle successful capture approval
-} else {
-    //handle denied / unexpected response
-}
-```
-
-<br/>
 #### Mandiri Clickpay
 See [MandiriClickpay Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/MandiriClickpay.html)  
 Visit [Veritrans Mandiri Clickpay Documentation](http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-mandiri) for more information.
@@ -305,9 +293,116 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
 ```
 
 <br/>
+## VtWeb
+VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but **VtWeb doesn't has VtDirect's `charge` functionality**, instead it has a method to get a redirection URL which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  
+
+See [VtWeb Javadoc](javadoc/id/co/veritrans/mdk/gateway/VtWeb.html).  
+Example code to obtain reference to VtWeb instance:
+```java
+VtWeb vtWeb = vtGatewayFactory.vtWeb();
+```
+
+<br/>
+### Charging a transaction
+WIP
+
+<br/>
+#### VtWebChargeParam
+WIP
+
+<br/>
+## Other Features
+
 ### Check Transaction Status
 ```java
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtDirect.status(orderId);
 //continue processing based on the vtResponse
+```
+```java
+String orderId = "your unique order ID";
+VtResponse vtResponse = vtWeb.status(orderId);
+//continue processing based on the vtResponse
+```
+
+<br/>
+### Credit Card: Accept an `FDS challenge` capture
+```java
+String orderId = "your unique order ID";
+VtResponse vtResponse = vtDirect.approve(orderId);
+
+if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+    //handle successful capture approval
+} else {
+    //handle denied / unexpected response
+}
+```
+```java
+String orderId = "your unique order ID";
+VtResponse vtResponse = vtWeb.approve(orderId);
+
+if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+    //handle successful capture approval
+} else {
+    //handle denied / unexpected response
+}
+```
+
+<br/>
+### Cancel Transaction
+```java
+String orderId = "your unique order ID";
+VtResponse vtResponse = vtDirect.cancel(orderId);
+
+if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+    //handle successful transaction cancel
+} else {
+    //handle denied / unexpected response
+}
+```
+```java
+String orderId = "your unique order ID";
+VtResponse vtResponse = vtWeb.approve(orderId);
+
+if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+    //handle successful transaction cancel
+} else {
+    //handle denied / unexpected response
+}
+```
+
+<br/>
+## Notification Handler (Notification URL)
+Notification URL is used by Veritrans Payment API to notify a merchant once a payment process has been completed or failed.
+It is invoked by Veritrans Payment API through HTTP POST by sending a JSON Message in the request body.
+The structure of the JSON Message is identical with the JSON Response when invoking the Veritrans Payment API.  
+  
+There is a static method provided by VtResponse to help you deserializing the JSON Message into a VtResponse instance.
+This method accepts JSON String or a Raw Input Stream. **Do remember that it is still the caller responsibility to close the InputStream**.
+
+Below is an example code to handle Notification URL using Java Servlet API:
+```java
+...
+void doPost(HttpServletRequest req, HttpServletResponse resp) {
+    try {
+        ServletInputStream inputStream = req.getInputStream();
+        VtResponse vtResponse = VtResponse.deserializeJson(inputStream);
+
+        //if necessary, we can utilize VtDirect's or VtWeb's Check Transaction Status Feature to make sure the notification is really coming from Veritrans
+        String orderId = vtResponse.getOrderId();
+        vtResponse = vtDirect.status(orderId); //we used VtDirect in this example, however we can use VtWeb too
+
+        if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
+            //handle successful Mandiri Clickpay charge request
+        } else {
+            //handle denied / unexpected response
+        }
+    } catch (JsonDeserializeException e) {
+        //handle JSON deserialization error
+        ...
+    } finally {
+        resp.setStatus(HttpServletResponse.SC_OK);
+    }
+}
+...
 ```
