@@ -1,6 +1,7 @@
 package id.co.veritrans.mdk;
 
 import id.co.veritrans.mdk.config.EnvironmentType;
+import id.co.veritrans.mdk.config.ProxyConfig;
 
 import javax.validation.constraints.NotNull;
 
@@ -15,10 +16,13 @@ public class VtGatewayConfig {
     private String serverKey;
     @NotNull
     private String clientKey;
-    private String proxyUsername;
-    private String proxyPassword;
 
-    public VtGatewayConfig() {};
+    /* Proxy configuration */
+    private ProxyConfig proxyConfig;
+
+    public VtGatewayConfig() {
+        proxyConfig = new ProxyConfig();
+    };
 
     /**
      * @param serverKey         Merchant server key when connecting to Veritrans API. Can be obtain from veritrans <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal</a>
@@ -26,6 +30,8 @@ public class VtGatewayConfig {
      * @param environmentType   Veritrans {@link id.co.veritrans.mdk.config.EnvironmentType environment type} when connecting to Veritrans API.
      */
     public VtGatewayConfig(final String serverKey, final String clientKey, final EnvironmentType environmentType) {
+        proxyConfig = new ProxyConfig();
+
         this.serverKey = serverKey;
         this.clientKey = clientKey;
         this.environmentType = environmentType;
@@ -81,35 +87,19 @@ public class VtGatewayConfig {
     }
 
     /**
-     * Get proxy username to connect to Veritrans API
-     * @return Merchant proxy username config
+     * Get merchant proxy configuration
+     * @return {@link id.co.veritrans.mdk.config.ProxyConfig Merchant proxy config}
      */
-    public String getProxyUsername() {
-        return proxyUsername;
+    public ProxyConfig getProxyConfig() {
+        return proxyConfig;
     }
 
     /**
-     * Set proxy username to connect to Veritrans API
-     * @param proxyUsername Merchant proxy username config
+     * Set merchant proxy configuration
+     * @param proxyConfig {@link id.co.veritrans.mdk.config.ProxyConfig Merchant proxy config}
      */
-    public void setProxyUsername(String proxyUsername) {
-        this.proxyUsername = proxyUsername;
-    }
-
-    /**
-     * Get proxy password to connect to Veritrans API
-     * @return Merchant proxy password config
-     */
-    public String getProxyPassword() {
-        return proxyPassword;
-    }
-
-    /**
-     * Set proxy password to connect to Veritrans API
-     * @param proxyPassword Merchant proxy password config
-     */
-    public void setProxyPassword(String proxyPassword) {
-        this.proxyPassword = proxyPassword;
+    public void setProxyConfig(ProxyConfig proxyConfig) {
+        this.proxyConfig = proxyConfig;
     }
 
     @Override
