@@ -1,11 +1,14 @@
 package id.co.veritrans.mdk.util;
 
 import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 /**
  * Created by andes on 5/7/15.
  */
-public class ExceptionUtil {
+public class ValidationUtil {
 
     public static String buildExceptionMessage(Object[] arrayConstaraintViolation) {
         StringBuilder errorValidationMessage = new StringBuilder();
@@ -23,6 +26,13 @@ public class ExceptionUtil {
         }
 
         return errorValidationMessage.toString();
+    }
+
+    public static Validator getValidator() {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        Validator validator = validatorFactory.getValidator();
+
+        return validator;
     }
 
     private static String getConstraintViolationMessage(Object constraint) {

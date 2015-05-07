@@ -1,18 +1,16 @@
 package id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod;
 
+import id.co.veritrans.mdk.util.ValidationUtil;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertTrue;
+import static org.testng.Assert.*;
 
 /**
  * Created by andes on 5/7/15.
@@ -32,12 +30,11 @@ public class CreditCardTest {
 
     @BeforeClass
     public void prepare() {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        validator = validatorFactory.getValidator();
+        validator = ValidationUtil.getValidator();
     }
 
     @Test
-    public void testCreditCard() {
+    public void testCreditCardNormal() {
         List<String> bins = new LinkedList<String>();
         bins.add("1234");
         bins.add("5678");
@@ -57,5 +54,20 @@ public class CreditCardTest {
 
         constraintViolations = validator.validate(creditCard);
         assertTrue(constraintViolations.isEmpty());
+
+        constraintViolations = validator.validate(buildCreditCard());
+        assertTrue(constraintViolations.isEmpty());
+    }
+
+    @Test
+    public void testCreditCardError() {
+        CreditCard creditCard = new CreditCard();
+
+        constraintViolations = validator.validate(creditCard);
+        assertFalse(constraintViolations.isEmpty());
+
+        String errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray());
+        assertTrue(errorMessage.contains("tokenId"));
+        assertTrue(errorMessage.contains("acquirerBank"));
     }
 }
