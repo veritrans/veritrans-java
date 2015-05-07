@@ -81,26 +81,28 @@ VtDirect vtDirect = vtGatewayFactory.vtDirect();
 ```
 ### Charging a transaction
 VtDirect has method named `charge` which takes an instance of VtDirectChargeParam subclass as the parameter.
-This method will make a charge request to Veritrans Payment API and return a VtDirectResponse as a result, which can be used to determine the status of the transaction.  
+This method will make a charge request to Veritrans Payment API and return a VtResponse as a result, which can be used to determine the status of the transaction.  
 
-See [VtDirectChargeParam](javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParam.html)  
-See [VtDirectResponse](javadoc/id/co/veritrans/mdk/gateway/model/VtDirectResponse.html)  
+See [VtDirectChargeParam](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/VtDirectChargeParam.html)  
+See [VtResponse](javadoc/id/co/veritrans/mdk/gateway/model/VtResponse.html)  
 Visit [http://docs.veritrans.co.id/sandbox/charge.html](http://docs.veritrans.co.id/sandbox/charge.html) for more information.
 
 #### VtDirectChargeParam
-VtDirectChargeParam has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named VtDirectChargeParamCreditCard. The list of currently supported payment methods:  
-- [VtDirectChargeParamBankTransfer](javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamBankTransfer.html)  
-- [VtDirectChargeParamCimbClicks](javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamCimbClicks.html)  
-- [VtDirectChargeParamCreditCard](javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamCreditCard.html)  
-- [VtDirectChargeParamMandiriClickpay](javadoc/id/co/veritrans/mdk/gateway/model/VtDirectChargeParamMandiriClickpay.html)  
+VtDirectChargeParam has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:  
+- [BankTransferRequest](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/BankTransferRequest.html)  
+- [BriEpayRequest](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/BriEpayRequest.html)  
+- [CimbClicksRequest](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/CimbClicksRequest.html)  
+- [CreditCardRequest](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/CreditCardRequest.html)  
+- [MandiriClickpayRequest](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/MandiriClickpayRequest.html)  
   
-See [id.co.veritrans.mdk.gateway.model Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/package-summary.html)
+See [id.co.veritrans.mdk.gateway.model Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/package-summary.html)  
+See [id.co.veritrans.mdk.gateway.model.vtdirect Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/package-summary.html)
 
 It is recommended to have a single method to configure the generic VtDirectChargeParam values. Example for Credit Card charge:
 ```java
 ...
 //somewhere in the code
-VtDirectChargeParamCreditCard vtDirectChargeParam = new VtDirectChargeParamCreditCard();
+CreditCardRequest vtDirectChargeParam = new CreditCardRequest();
 setVtDirectChargeParamValues(vtDirectChargeParam);
 //continue processing
 ...
@@ -130,20 +132,37 @@ public void setVtDirectChargeParamValues(VtDirectChargeParam vtDirectChargeParam
 
 <br/>
 #### Bank Transfer
-See [BankTransfer Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/paymentmethod/BankTransfer.html)
+See [BankTransfer Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/BankTransfer.html)  
+See [Bank Transfer Process Flow](sequence_diagram/index.html#process-flow-for-charging-via-bank-transfer)
 ```java
-VtDirectChargeParamBankTransfer vtDirectChargeParam = new VtDirectChargeParamBankTransfer();
+BankTransferRequest vtDirectChargeParam = new BankTransferRequest();
 setVtDirectChargeParamValues(vtDirectChargeParam);
 vtDirectChargeParam.setBankTransfer(new BankTransfer());
 
 vtDirectChargeParam.getBankTransfer().setDescription("Payment for Merchant XYZ");
 vtDirectChargeParam.getBankTransfer().setBank(BankTransfer.Bank.PERMATA);
 
-VtDirectResponse vtDirectResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
-if (vtDirectResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+if (vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
     //handle successful Bank Transfer charge request
-    //check the permataVaNumber in the vtDirectResponse
+    //check the permataVaNumber in the vtResponse
+} else {
+    //handle denied / unexpected response
+}
+```
+
+<br/>
+#### Bri Epay
+```java
+BriEpayRequest vtDirectChargeParam = new BriEpayRequest();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+
+if (vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+    //handle successful Bank Transfer charge request
+    //check the redirectUrl value in the vtResponse
 } else {
     //handle denied / unexpected response
 }
@@ -151,19 +170,19 @@ if (vtDirectResponse.getTransactionStatus() == TransactionStatus.PENDING) {
 
 <br/>
 #### Cimb Clicks
-See [CimbClicks Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/paymentmethod/CimbClicks.html)
+See [CimbClicks Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/CimbClicks.html)
 ```java
-VtDirectChargeParamCimbClicks vtDirectChargeParam = new VtDirectChargeParamCimbClicks();
+CimbClicksRequest vtDirectChargeParam = new CimbClicksRequest();
 setVtDirectChargeParamValues(vtDirectChargeParam);
 vtDirectChargeParam.setCimbClicks(new CimbClicks());
 
 vtDirectChargeParam.getCimbClicks().setDescription("Payment for Merchant XYZ");
 
-VtDirectResponse vtDirectResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
-if (vtDirectResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+if (vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
     //handle successful Cimb Clicks charge request
-    //check the redirectUrl value in the vtDirectResponse
+    //check the redirectUrl value in the vtResponse
 } else {
     //handle denied / unexpected response
 }
@@ -171,11 +190,11 @@ if (vtDirectResponse.getTransactionStatus() == TransactionStatus.PENDING) {
 
 <br/>
 #### Credit Card Sale
-See [CreditCard Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/paymentmethod/CreditCard.html)  
+See [CreditCard Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/CreditCard.html)  
 
 **Every Credit Card transaction must use a `Token` generated by Veritrans Payment API instead of using plain card number.** Please visit [Acquiring Credit Card Token](http://docs.veritrans.co.id/vtdirect/integration_cc.html#step1) for further information.
 ```
-VtDirectChargeParamCreditCard vtDirectChargeParam = new VtDirectChargeParamCreditCard();
+CreditCardRequest vtDirectChargeParam = new CreditCardRequest();
 setVtDirectChargeParamValues(vtDirectChargeParam);
 vtDirectChargeParam.setCreditCard(new CreditCard());
 
@@ -184,12 +203,12 @@ vtDirectChargeParam.getCreditCard().setTokenId("creditCardToken");
 //your acquirer bank for Credit Card
 vtDirectChargeParam.getCreditCard().setAcquirerBank(CreditCard.Bank.BNI);
 
-VtDirectResponse vtDirectResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
-if (vtDirectResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
-    if (vtDirectResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+    if (vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
         //handle successful capture
-    } else if (vtDirectResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
+    } else if (vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
         //handle FDS challenge
     } else {
         //unexpected condition that should never happen
@@ -202,11 +221,11 @@ if (vtDirectResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 <br/>
 #### Credit Card Feature: Pre-authorization & Capture
 ##### Pre-authorization
-See [CreditCard Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/paymentmethod/CreditCard.html)  
+See [CreditCard Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/CreditCard.html)  
 
 **Every Credit Card transaction must use a `Token` generated by Veritrans Payment API instead of using plain card number.** Please visit [Acquiring Credit Card Token](http://docs.veritrans.co.id/vtdirect/integration_cc.html#step1) for further information.
 ```java
-VtDirectChargeParamCreditCard vtDirectChargeParam = new VtDirectChargeParamCreditCard();
+CreditCardRequest vtDirectChargeParam = new CreditCardRequest();
 setVtDirectChargeParamValues(vtDirectChargeParam);
 vtDirectChargeParam.setCreditCard(new CreditCard());
 
@@ -216,12 +235,12 @@ vtDirectChargeParam.getCreditCard().setTokenId("creditCardToken");
 vtDirectChargeParam.getCreditCard().setAcquirerBank(CreditCard.Bank.BNI);
 vtDirectChargeParam.getCreditCard().setType(CreditCard.TransactionType.AUTHORIZE);
 
-VtDirectResponse vtDirectResponseAuthorize = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponseAuthorize = vtDirect.charge(vtDirectChargeParam);
 
-if (vtDirectResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED) {
-    if (vtDirectResponseAuthorize.getFraudStatus() == FraudStatus.ACCEPTED) {
+if (vtResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED) {
+    if (vtResponseAuthorize.getFraudStatus() == FraudStatus.ACCEPTED) {
         //handle successful authorize
-    } else if (vtDirectResponseAuthorize.getFraudStatus() == FraudStatus.CHALLENGE) {
+    } else if (vtResponseAuthorize.getFraudStatus() == FraudStatus.CHALLENGE) {
         //handle FDS challenge
     } else {
         //unexpected condition that should never happen
@@ -233,11 +252,11 @@ if (vtDirectResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHOR
 
 ##### Capture
 ```java
-String transactionId = vtDirectResponseAuthorize.getTransactionId();
-Long captureAmount = vtDirectResponseAuthorize.getGrossAmount().longValue();
-VtDirectResponse vtDirectResponseCapture = vtDirect.capture(transactionId, captureAmount);
+String transactionId = vtResponseAuthorize.getTransactionId();
+Long captureAmount = vtResponseAuthorize.getGrossAmount().longValue();
+VtResponse vtResponseCapture = vtDirect.capture(transactionId, captureAmount);
 
-if (vtDirectResponseCapture.getTransactionStatus() == TransactionStatus.CAPTURED) {
+if (vtResponseCapture.getTransactionStatus() == TransactionStatus.CAPTURED) {
     //handle successful capture
 } else {
     //handle denied / unexpected response
@@ -248,9 +267,9 @@ if (vtDirectResponseCapture.getTransactionStatus() == TransactionStatus.CAPTURED
 #### Credit Card: Accept an FDS challenged capture
 ```java
 String orderId = "your unique order ID";
-VtDirectResponse vtDirectResponse = vtDirect.approve(orderId);
+VtResponse vtResponse = vtDirect.approve(orderId);
 
-if (vtDirectResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
     //handle successful capture approval
 } else {
     //handle denied / unexpected response
@@ -259,10 +278,10 @@ if (vtDirectResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 
 <br/>
 #### Mandiri Clickpay
-See [MandiriClickpay Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/paymentmethod/MandiriClickpay.html)  
+See [MandiriClickpay Javadoc](javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/MandiriClickpay.html)  
 Visit [Veritrans Mandiri Clickpay Documentation](http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-mandiri) for more information.
 ```java
-VtDirectChargeParamMandiriClickpay vtDirectChargeParam = new VtDirectChargeParamMandiriClickpay();
+MandiriClickpayRequest vtDirectChargeParam = new MandiriClickpayRequest();
 setVtDirectChargeParamValues(vtDirectChargeParam);
 vtDirectChargeParam.setMandiriClickpay(new MandiriClickpay());
 
@@ -272,9 +291,9 @@ vtDirectChargeParam.getMandiriClickpay().setInput2("10000");
 vtDirectChargeParam.getMandiriClickpay().setInput3("54321");
 vtDirectChargeParam.getMandiriClickpay().setToken("000000");
 
-VtDirectResponse vtDirectResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
-if (vtDirectResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
+if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
     //handle successful Mandiri Clickpay charge request
 } else {
     //handle denied / unexpected response
@@ -285,6 +304,6 @@ if (vtDirectResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
 ### Check Transaction Status
 ```java
 String orderId = "your unique order ID";
-VtDirectResponse vtDirectResponse = vtDirect.status(orderId);
-//continue processing based on the vtDirectResponse
+VtResponse vtResponse = vtDirect.status(orderId);
+//continue processing based on the vtResponse
 ```

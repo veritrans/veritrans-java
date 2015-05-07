@@ -1,5 +1,5 @@
 @startuml
-title Credit Card Charging with 3D Secure Authentication
+title Credit Card Charging With 3D Secure Authentication
 
 activate Customer
 activate Browser
