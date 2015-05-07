@@ -5,7 +5,7 @@ package id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod;
  */
 public class BankTransfer {
 
-    private String description;
+    private Bank bank;
 
     public static enum Bank {
         PERMATA("permata");
@@ -20,16 +20,16 @@ public class BankTransfer {
     public BankTransfer() {
     }
 
-    public BankTransfer(final String description) {
-        this.description = description;
+    public BankTransfer(final Bank bank) {
+        this.bank = bank;
     }
 
-    public String getDescription() {
-        return description;
+    public Bank getBank() {
+        return bank;
     }
 
-    public void setDescription(final String description) {
-        this.description = description;
+    public void setBank(final Bank bank) {
+        this.bank = bank;
     }
 
     @Override
@@ -39,13 +39,13 @@ public class BankTransfer {
 
         final BankTransfer that = (BankTransfer) o;
 
-        if (description != null ? !description.equals(that.description) : that.description != null) return false;
+        if (bank != that.bank) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        return description != null ? description.hashCode() : 0;
+        return bank != null ? bank.hashCode() : 0;
     }
 }
