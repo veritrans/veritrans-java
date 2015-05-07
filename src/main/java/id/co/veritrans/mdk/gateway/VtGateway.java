@@ -15,14 +15,6 @@ public interface VtGateway {
     VtResponse approve(String orderId);
 
     /**
-     * Capture a previously authorized credit card charge request.
-     * @param transactionId
-     * @param amount
-     * @return
-     */
-    VtResponse capture(String transactionId, Long amount);
-
-    /**
      * Get the status of a transaction using the orderId from the charge request.
      * @param orderId
      * @return
