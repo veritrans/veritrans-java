@@ -106,7 +106,9 @@
         
             <li><a href="#vtgatewayconfig">VtGatewayConfig</a></li>
         
-            <li><a href="#vt-direct">VT-Direct</a></li>
+            <li><a href="#vtgatewayfactory">VtGatewayFactory</a></li>
+        
+            <li><a href="#vtdirect">VtDirect</a></li>
         
     
     </ul>
@@ -161,14 +163,20 @@ vtGatewayConfig.setProxyPassword(&quot;Your proxy password&quot;);
 </code></pre>
 
 <p><br/></p>
-<h2 id="vt-direct">VT-Direct</h2>
-<p>VtDirect instance is used to communicate with Veritrans Payment API. VtDirect instance is safe to share with multiple threads and it is recommended to maintain and reuse the same VtDirect instance.
-However if you need to use a different configuration, you may obtain another VtDirect instance for that configuration.<br />
-See <a href="./javadoc/id/co/veritrans/mdk/gateway/VtDirect.html">VtDirect Javadoc</a>.</p>
-<h3 id="obtaining-vtdirect-instance">Obtaining VtDirect instance</h3>
-<p>VtDirect instance is obtained through the <a href="./javadoc/id/co/veritrans/mdk/VtGatewayFactory.html">VtGatewayFactory</a> by giving the proper VtGatewayConfig object.<br />
-There are multiple ways to obtain VtDirect instance through VtGatewayFactory described in the VtGatewayFactory Javadoc, however this is the recommended way:</p>
-<pre><code class="java">VtDirect vtDirect = VtGatewayFactory.vtDirect(vtGatewayConfig);
+<h2 id="vtgatewayfactory">VtGatewayFactory</h2>
+<p>VtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a single instance of VtGatewayFactory class and maintain the reference to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect.  </p>
+<p>If you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a VtGatewayFactory instance for each configuration profile and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances.  </p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/VtGatewayFactory.html">VtGatewayFactory Javadoc</a><br />
+Example code to build a VtGatewayFactory:</p>
+<pre><code class="java">VtGatewayFactory vtGatewayFactory = new VtGatewayFactory(vtGatewayConfig);
+</code></pre>
+
+<p><br/></p>
+<h2 id="vtdirect">VtDirect</h2>
+<p>VtDirect is an interface class, where it's instance can be used to communicate with Veritrans Payment API. VtDirect instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  </p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/VtDirect.html">VtDirect Javadoc</a>.<br />
+Example code to obtain reference to VtDirect instance:</p>
+<pre><code class="java">VtDirect vtDirect = vtGatewayFactory.vtDirect();
 </code></pre>
 
 <p><br/></p>
