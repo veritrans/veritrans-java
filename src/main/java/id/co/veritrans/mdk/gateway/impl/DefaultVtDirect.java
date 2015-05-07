@@ -23,7 +23,6 @@ public class DefaultVtDirect implements VtDirect {
         this.vtGateway = vtGateway;
     }
 
-    @Override
     public VtGateway getVtGateway() {
         return vtGateway;
     }

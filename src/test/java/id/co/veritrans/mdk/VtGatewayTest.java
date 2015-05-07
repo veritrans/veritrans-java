@@ -1,6 +1,7 @@
 package id.co.veritrans.mdk;
 
 import id.co.veritrans.mdk.config.EnvironmentType;
+import id.co.veritrans.mdk.exception.InvalidVtConfigException;
 import id.co.veritrans.mdk.gateway.VtDirect;
 import id.co.veritrans.mdk.gateway.VtWeb;
 import org.testng.annotations.Test;
@@ -43,7 +44,7 @@ public class VtGatewayTest {
     }
 
     @Test
-    public void testNewVtDirectAndVtWeb() {
+    public void testNewVtDirectAndVtWeb() throws InvalidVtConfigException {
         VtGatewayFactory factory = new VtGatewayFactory();
         factory.setServerKey("a");
         factory.setClientKey("b");
@@ -54,13 +55,23 @@ public class VtGatewayTest {
 
         VtWeb vtWeb = factory.vtWeb();
         assertNotNull(vtWeb);
+    }
 
-        /* Using static method from VtGatewayFactory */
-        VtGatewayConfig config = new VtGatewayConfig("a", "b", EnvironmentType.PRODUCTION);
-        VtDirect vtDirectStatic = VtGatewayFactory.vtDirect(config);
-        assertNotNull(vtDirectStatic);
+    @Test(expectedExceptions = InvalidVtConfigException.class, expectedExceptionsMessageRegExp = ".*serverKey.*")
+    public void testInvalidConfigVtDirect() throws InvalidVtConfigException {
+        VtGatewayFactory factory = new VtGatewayFactory();
+        factory.setClientKey("a");
+        factory.setEnvironmentType(EnvironmentType.SANDBOX);
 
-        VtWeb vtWebStatic = VtGatewayFactory.vtWeb(config);
-        assertNotNull(vtWebStatic);
+        VtDirect vtDirect = factory.vtDirect();
+    }
+
+    @Test(expectedExceptions = InvalidVtConfigException.class, expectedExceptionsMessageRegExp = ".*clientKey.*")
+    public void testInvalidConfigVtWeb() throws InvalidVtConfigException {
+        VtGatewayFactory factory = new VtGatewayFactory();
+        factory.setServerKey("a");
+        factory.setEnvironmentType(EnvironmentType.PRODUCTION);
+
+        VtWeb vtWeb = factory.vtWeb();
     }
 }

@@ -2,13 +2,18 @@ package id.co.veritrans.mdk;
 
 import id.co.veritrans.mdk.config.EnvironmentType;
 
+import javax.validation.constraints.NotNull;
+
 /**
  * Veritrans gateway config. Used on {@link id.co.veritrans.mdk.VtGatewayFactory VtGatewayFactory} class.
  */
 public class VtGatewayConfig {
 
+    @NotNull
     private EnvironmentType environmentType;
+    @NotNull
     private String serverKey;
+    @NotNull
     private String clientKey;
     private String proxyUsername;
     private String proxyPassword;

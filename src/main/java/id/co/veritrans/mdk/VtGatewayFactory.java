@@ -1,26 +1,39 @@
 package id.co.veritrans.mdk;
 
 import id.co.veritrans.mdk.config.EnvironmentType;
+import id.co.veritrans.mdk.exception.InvalidVtConfigException;
 import id.co.veritrans.mdk.gateway.VtDirect;
 import id.co.veritrans.mdk.gateway.VtWeb;
 import id.co.veritrans.mdk.impl.DefaultVtGateway;
+import id.co.veritrans.mdk.util.ExceptionUtil;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
+import java.util.Set;
 
 /**
  * Convenience "factory" class to facilitate setup a gateway for connection to Veritrans API using VT-Direct or VT-Web.
  */
 public class VtGatewayFactory {
 
+    private Validator validator;
+    private Set<ConstraintViolation<VtGatewayConfig>> constraintViolations;
     private VtGatewayConfig vtGatewayConfig;
 
     /**
      * VtGatewayFactory constructor
      */
     public VtGatewayFactory() {
+        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
         vtGatewayConfig = new VtGatewayConfig();
     }
 
     /**
      * VtGatewayFactory constructor
+     *
      * @param vtGatewayConfig Veritrans {@link id.co.veritrans.mdk.VtGatewayConfig gateway configuration}
      */
     public VtGatewayFactory(VtGatewayConfig vtGatewayConfig) {
@@ -29,6 +42,7 @@ public class VtGatewayFactory {
 
     /**
      * Get veritrans gateway config
+     *
      * @return {@link id.co.veritrans.mdk.VtGatewayConfig Veritrans gateway config} when connectng to Veritrans API
      */
     public VtGatewayConfig getVtGatewayConfig() {
@@ -37,6 +51,7 @@ public class VtGatewayFactory {
 
     /**
      * Set veritrans gateway config
+     *
      * @param vtGatewayConfig {@link id.co.veritrans.mdk.VtGatewayConfig Veritrans gateway config} when connecting to Veritrans API
      */
     public void setVtGatewayConfig(final VtGatewayConfig vtGatewayConfig) {
@@ -45,6 +60,7 @@ public class VtGatewayFactory {
 
     /**
      * Get veritrans API environment type
+     *
      * @return Veritrans {@link id.co.veritrans.mdk.config.EnvironmentType environment type} when connecting to Veritrans API
      */
     public EnvironmentType getEnvironmentType() {
@@ -53,7 +69,8 @@ public class VtGatewayFactory {
 
     /**
      * Set veritrans API environment type
-     * @param environmentType   Veritrans {@link id.co.veritrans.mdk.config.EnvironmentType environment type} when connecting to Veritrans API.
+     *
+     * @param environmentType Veritrans {@link id.co.veritrans.mdk.config.EnvironmentType environment type} when connecting to Veritrans API.
      */
     public void setEnvironmentType(final EnvironmentType environmentType) {
         this.vtGatewayConfig.setEnvironmentType(environmentType);
@@ -61,6 +78,7 @@ public class VtGatewayFactory {
 
     /**
      * Get the merchant server key
+     *
      * @return Merchant server key when connecting to Veritrans API
      */
     public String getServerKey() {
@@ -69,6 +87,7 @@ public class VtGatewayFactory {
 
     /**
      * Set the merchant server key<br>
+     *
      * @param serverKey Merchant server key when connecting to Veritrans API. Can be obtain from veritrans <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal</a>
      */
     public void setServerKey(final String serverKey) {
@@ -77,6 +96,7 @@ public class VtGatewayFactory {
 
     /**
      * Get the merchant client key
+     *
      * @return Merchant client key when connecting to Veritrans API
      */
     public String getClientKey() {
@@ -85,6 +105,7 @@ public class VtGatewayFactory {
 
     /**
      * Set the merchant client key
+     *
      * @param clientKey Merchant client key when connecting to Veritrans API. Can be obtain from veritrans <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal</a>
      */
     public void setClientKey(final String clientKey) {
@@ -93,6 +114,7 @@ public class VtGatewayFactory {
 
     /**
      * Get proxy username to connect to Veritrans API
+     *
      * @return Merchant proxy username config
      */
     public String getProxyUsername() {
@@ -101,6 +123,7 @@ public class VtGatewayFactory {
 
     /**
      * Set proxy username to connect to Veritrans API
+     *
      * @param proxyUsername Merchant proxy username config
      */
     public void setProxyUsername(String proxyUsername) {
@@ -109,6 +132,7 @@ public class VtGatewayFactory {
 
     /**
      * Get proxy password to connect to Veritrans API
+     *
      * @return Merchant proxy password config
      */
     public String getProxyPassword() {
@@ -117,6 +141,7 @@ public class VtGatewayFactory {
 
     /**
      * Set proxy password to connect to Veritrans API
+     *
      * @param proxyPassword Merchant proxy password config
      */
     public void setProxyPassword(String proxyPassword) {
@@ -125,36 +150,29 @@ public class VtGatewayFactory {
 
     /**
      * Build new VtDirect object to setup the transaction
+     *
      * @return Veritrans {@link id.co.veritrans.mdk.gateway.VtDirect VtDirect} object to setup the transaction using VT-Direct
      */
-    public VtDirect vtDirect() {
-        return vtDirect(vtGatewayConfig);
-    }
-
-    /**
-     * Build new VtDirect object to setup the transaction using static method
-     * @param config {@link id.co.veritrans.mdk.VtGatewayConfig Veritrans gateway config}
-     * @return Veritrans {@link id.co.veritrans.mdk.gateway.VtDirect VtDirect} object to setup the transaction using VT-Direct
-     */
-    public static VtDirect vtDirect(VtGatewayConfig config) {
-        return new DefaultVtGateway(config).vtDirect();
+    public VtDirect vtDirect() throws InvalidVtConfigException {
+        validate(vtGatewayConfig);
+        return new DefaultVtGateway(vtGatewayConfig).vtDirect();
     }
 
     /**
      * Build new VtWeb object to setup the transaction
+     *
      * @return Veritrans {@link id.co.veritrans.mdk.gateway.VtWeb VtWeb} object to setup the transaction using VT-Web
      */
-    public VtWeb vtWeb() {
-        return vtWeb(vtGatewayConfig);
+    public VtWeb vtWeb() throws InvalidVtConfigException {
+        validate(vtGatewayConfig);
+        return new DefaultVtGateway(vtGatewayConfig).vtWeb();
     }
 
-    /**
-     * Build new VtWeb object to setup the transaction using static method
-     * @param config {@link id.co.veritrans.mdk.VtGatewayConfig Veritrans gateway config}
-     * @return Veritrans {@link id.co.veritrans.mdk.gateway.VtWeb VtWeb} object to setup the transaction using VT-Web
-     */
-    public static VtWeb vtWeb(VtGatewayConfig config) {
-        return new DefaultVtGateway(config).vtWeb();
+    private void validate(VtGatewayConfig vtGatewayConfig) throws InvalidVtConfigException {
+        constraintViolations = validator.validate(vtGatewayConfig);
+        if (!constraintViolations.isEmpty()) {
+            throw new InvalidVtConfigException(ExceptionUtil.buildExceptionMessage(constraintViolations.toArray()));
+        }
     }
 
     @Override

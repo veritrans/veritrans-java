@@ -1,6 +1,5 @@
 package id.co.veritrans.mdk.gateway;
 
-import id.co.veritrans.mdk.VtGateway;
 import id.co.veritrans.mdk.gateway.model.VtDirectChargeParam;
 import id.co.veritrans.mdk.gateway.model.VtDirectResponse;
 
@@ -8,12 +7,6 @@ import id.co.veritrans.mdk.gateway.model.VtDirectResponse;
  * Created by gde on 4/30/15.
  */
 public interface VtDirect {
-
-    /**
-     * Get the owner of this VtDirect instance.
-     * @return
-     */
-    VtGateway getVtGateway();
 
     /**
      * Send a payment charge requests to Veritrans.
