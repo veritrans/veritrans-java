@@ -20,7 +20,7 @@ group Veritrans JavaScript Client
 Browser -> Veritrans: Get Token for CC
 activate Veritrans
 
-Browser <- Veritrans: Token + Redirect to Bank 3D Secure Page
+Browser <- Veritrans: Token + Redirect URL to Bank 3D Secure Page
 Browser -> Bank: Request 3D Secure Page
 
 activate Bank
@@ -33,7 +33,7 @@ deactivate Bank
 
 Browser -> Veritrans: 3D Secure Success
 Browser <- Veritrans: Render 3D Secure Sucess (Post Event)
-Browser -> Merchant: Continue Payment with Token
+Browser -> Merchant: Charge CC with Token
 activate Merchant
 end
 
