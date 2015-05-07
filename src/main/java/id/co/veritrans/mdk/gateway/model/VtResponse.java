@@ -47,6 +47,7 @@ public class VtResponse {
      *
      * @param json source JSON String.
      * @return VtResponse instance constructed from JSON.
+     * @throws id.co.veritrans.mdk.exception.JsonDeserializeException when a failure is occured during deserializing the JSON.
      */
     public static VtResponse deserializeJson(String json) throws JsonDeserializeException {
         return null;
@@ -57,6 +58,7 @@ public class VtResponse {
      *
      * @param inputStream source JSON Raw Input Stream bytes.
      * @return VtResponse instance constructed from JSON Raw Input Stream bytes.
+     * @throws id.co.veritrans.mdk.exception.JsonDeserializeException when a failure is occured during deserializing the JSON.
      */
     public static VtResponse deserializeJson(InputStream inputStream) throws JsonDeserializeException {
         return null;
