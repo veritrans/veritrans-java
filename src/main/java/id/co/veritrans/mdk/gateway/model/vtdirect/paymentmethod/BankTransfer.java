@@ -1,4 +1,4 @@
-package id.co.veritrans.mdk.gateway.model.paymentmethod;
+package id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod;
 
 /**
  * Created by gde on 5/4/15.

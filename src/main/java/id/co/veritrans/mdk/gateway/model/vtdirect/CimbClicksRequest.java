@@ -1,6 +1,7 @@
-package id.co.veritrans.mdk.gateway.model;
+package id.co.veritrans.mdk.gateway.model.vtdirect;
 
-import id.co.veritrans.mdk.gateway.model.paymentmethod.CimbClicks;
+import id.co.veritrans.mdk.gateway.model.*;
+import id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CimbClicks;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -9,16 +10,16 @@ import java.util.List;
 /**
  * Created by gde on 5/5/15.
  */
-public class VtDirectChargeParamCimbClicks extends VtDirectChargeParam {
+public class CimbClicksRequest extends VtDirectChargeParam {
 
     @Valid
     @NotNull
     private CimbClicks cimbClicks;
 
-    public VtDirectChargeParamCimbClicks() {
+    public CimbClicksRequest() {
     }
 
-    public VtDirectChargeParamCimbClicks(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final CimbClicks cimbClicks) {
+    public CimbClicksRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final CimbClicks cimbClicks) {
         super(transactionDetails, transactionItems, customerDetails);
         this.cimbClicks = cimbClicks;
     }
@@ -42,7 +43,7 @@ public class VtDirectChargeParamCimbClicks extends VtDirectChargeParam {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        final VtDirectChargeParamCimbClicks that = (VtDirectChargeParamCimbClicks) o;
+        final CimbClicksRequest that = (CimbClicksRequest) o;
 
         if (cimbClicks != null ? !cimbClicks.equals(that.cimbClicks) : that.cimbClicks != null) return false;
 

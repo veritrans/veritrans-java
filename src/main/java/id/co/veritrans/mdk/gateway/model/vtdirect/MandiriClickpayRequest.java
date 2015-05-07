@@ -1,6 +1,7 @@
-package id.co.veritrans.mdk.gateway.model;
+package id.co.veritrans.mdk.gateway.model.vtdirect;
 
-import id.co.veritrans.mdk.gateway.model.paymentmethod.MandiriClickpay;
+import id.co.veritrans.mdk.gateway.model.*;
+import id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.MandiriClickpay;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -9,16 +10,16 @@ import java.util.List;
 /**
  * Created by gde on 5/5/15.
  */
-public class VtDirectChargeParamMandiriClickpay extends VtDirectChargeParam {
+public class MandiriClickpayRequest extends VtDirectChargeParam {
 
     @Valid
     @NotNull
     private MandiriClickpay mandiriClickpay;
 
-    public VtDirectChargeParamMandiriClickpay() {
+    public MandiriClickpayRequest() {
     }
 
-    public VtDirectChargeParamMandiriClickpay(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final MandiriClickpay mandiriClickpay) {
+    public MandiriClickpayRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final MandiriClickpay mandiriClickpay) {
         super(transactionDetails, transactionItems, customerDetails);
         this.mandiriClickpay = mandiriClickpay;
     }
@@ -42,7 +43,7 @@ public class VtDirectChargeParamMandiriClickpay extends VtDirectChargeParam {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        final VtDirectChargeParamMandiriClickpay that = (VtDirectChargeParamMandiriClickpay) o;
+        final MandiriClickpayRequest that = (MandiriClickpayRequest) o;
 
         if (mandiriClickpay != null ? !mandiriClickpay.equals(that.mandiriClickpay) : that.mandiriClickpay != null)
             return false;

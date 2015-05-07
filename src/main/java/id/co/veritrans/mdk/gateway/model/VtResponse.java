@@ -6,7 +6,7 @@ import java.util.Date;
 /**
  * Created by gde on 5/5/15.
  */
-public class VtDirectResponse {
+public class VtResponse {
 
     private String transactionId;
     private String orderId;
@@ -20,11 +20,12 @@ public class VtDirectResponse {
     private String statusMessage;
     private String approvalCode;
     private String permataVaNumber;
+    private String signature_key;
 
-    public VtDirectResponse() {
+    public VtResponse() {
     }
 
-    public VtDirectResponse(final String transactionId, final String orderId, final BigDecimal grossAmount, final PaymentMethod paymentMethod, final Date transactionTime, final TransactionStatus transactionStatus, final FraudStatus fraudStatus, final String maskedCardNumber, final String statusCode, final String statusMessage, final String approvalCode) {
+    public VtResponse(final String transactionId, final String orderId, final BigDecimal grossAmount, final PaymentMethod paymentMethod, final Date transactionTime, final TransactionStatus transactionStatus, final FraudStatus fraudStatus, final String maskedCardNumber, final String statusCode, final String statusMessage, final String approvalCode) {
         this.transactionId = transactionId;
         this.orderId = orderId;
         this.grossAmount = grossAmount;
@@ -134,12 +135,20 @@ public class VtDirectResponse {
         this.permataVaNumber = permataVaNumber;
     }
 
+    public String getSignature_key() {
+        return signature_key;
+    }
+
+    public void setSignature_key(String signature_key) {
+        this.signature_key = signature_key;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final VtDirectResponse that = (VtDirectResponse) o;
+        final VtResponse that = (VtResponse) o;
 
         if (approvalCode != null ? !approvalCode.equals(that.approvalCode) : that.approvalCode != null) return false;
         if (fraudStatus != null ? !fraudStatus.equals(that.fraudStatus) : that.fraudStatus != null) return false;

@@ -1,6 +1,7 @@
-package id.co.veritrans.mdk.gateway.model;
+package id.co.veritrans.mdk.gateway.model.vtdirect;
 
-import id.co.veritrans.mdk.gateway.model.paymentmethod.BankTransfer;
+import id.co.veritrans.mdk.gateway.model.*;
+import id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.BankTransfer;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -9,16 +10,16 @@ import java.util.List;
 /**
  * Created by gde on 5/5/15.
  */
-public class VtDirectChargeParamBankTransfer extends VtDirectChargeParam {
+public class BankTransferRequest extends VtDirectChargeParam {
 
     @Valid
     @NotNull
     private BankTransfer bankTransfer;
 
-    public VtDirectChargeParamBankTransfer() {
+    public BankTransferRequest() {
     }
 
-    public VtDirectChargeParamBankTransfer(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final BankTransfer bankTransfer) {
+    public BankTransferRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final BankTransfer bankTransfer) {
         super(transactionDetails, transactionItems, customerDetails);
         this.bankTransfer = bankTransfer;
     }
@@ -42,7 +43,7 @@ public class VtDirectChargeParamBankTransfer extends VtDirectChargeParam {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        final VtDirectChargeParamBankTransfer that = (VtDirectChargeParamBankTransfer) o;
+        final BankTransferRequest that = (BankTransferRequest) o;
 
         if (bankTransfer != null ? !bankTransfer.equals(that.bankTransfer) : that.bankTransfer != null) return false;
 

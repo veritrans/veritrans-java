@@ -1,6 +1,10 @@
-package id.co.veritrans.mdk.gateway.model;
+package id.co.veritrans.mdk.gateway.model.vtdirect;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import id.co.veritrans.mdk.gateway.model.CustomerDetails;
+import id.co.veritrans.mdk.gateway.model.PaymentMethod;
+import id.co.veritrans.mdk.gateway.model.TransactionDetails;
+import id.co.veritrans.mdk.gateway.model.TransactionItem;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;

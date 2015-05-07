@@ -1,19 +1,25 @@
-package id.co.veritrans.mdk.gateway.model.paymentmethod;
+package id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Created by gde on 5/4/15.
+ * VT-Direct credit card data model
  */
 public class CreditCard {
 
+    @NotNull
     private String tokenId;
+    @NotNull
     private Bank acquirerBank;
     private Integer installmentTerm;
     private List<String> bins;
     private TransactionType transactionType;
     private Boolean saveTokenId;
 
+    /**
+     * Credit card bank enum
+     */
     public static enum Bank {
         BNI("bni"),
         MANDIRI("mandiri"),
@@ -26,6 +32,9 @@ public class CreditCard {
         }
     }
 
+    /**
+     * Credit card transaction type
+     */
     public static enum TransactionType {
         AUTHORIZE("authorize");
 
@@ -36,9 +45,22 @@ public class CreditCard {
         }
     }
 
+    /**
+     * Credit card constructor
+     */
     public CreditCard() {
     }
 
+    /**
+     * Credit card constructor
+     *
+     * @param tokenId         Veritrans card token identifier
+     * @param acquirerBank    Veritrans credit card {@link id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard.Bank acquiring bank}
+     * @param installmentTerm Transaction installment term (month)
+     * @param bins            Merchant bin promo
+     * @param transactionType {@link id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard.TransactionType Transaction type} for current transaction
+     * @param saveTokenId     Save token id for one/two click feature
+     */
     public CreditCard(final String tokenId, final Bank acquirerBank, final Integer installmentTerm, final List<String> bins, final TransactionType transactionType, final Boolean saveTokenId) {
         this.tokenId = tokenId;
         this.acquirerBank = acquirerBank;
@@ -48,50 +70,110 @@ public class CreditCard {
         this.saveTokenId = saveTokenId;
     }
 
+    /**
+     * Get credit card token ID
+     *
+     * @return Credit card token identifier
+     */
     public String getTokenId() {
         return tokenId;
     }
 
+    /**
+     * Set credit card token ID
+     *
+     * @param tokenId Credit card token identifier
+     */
     public void setTokenId(final String tokenId) {
         this.tokenId = tokenId;
     }
 
+    /**
+     * Get veritrans credit card acquirer bank
+     *
+     * @return Veritrans credit card {@link id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard.Bank acquiring bank}
+     */
     public Bank getAcquirerBank() {
         return acquirerBank;
     }
 
+    /**
+     * Set veritrans credit card acquirer bank
+     *
+     * @param acquirerBank Veritrans credit card {@link id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard.Bank acquiring bank}
+     */
     public void setAcquirerBank(final Bank acquirerBank) {
         this.acquirerBank = acquirerBank;
     }
 
+    /**
+     * Get transaction installment term
+     *
+     * @return Transaction installment term (month)
+     */
     public Integer getInstallmentTerm() {
         return installmentTerm;
     }
 
+    /**
+     * Set transaction installment term
+     *
+     * @param installmentTerm Transaction installment term (month)
+     */
     public void setInstallmentTerm(final Integer installmentTerm) {
         this.installmentTerm = installmentTerm;
     }
 
+    /**
+     * Get list of merchant bin promo
+     *
+     * @return List of merchant bin promo
+     */
     public List<String> getBins() {
         return bins;
     }
 
+    /**
+     * Set list of merchant bin promo
+     *
+     * @param bins List of merchant bin promo
+     */
     public void setBins(final List<String> bins) {
         this.bins = bins;
     }
 
+    /**
+     * Get transaction type for current transaction
+     *
+     * @return {@link id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard.TransactionType Transaction type} for current transaction
+     */
     public TransactionType getTransactionType() {
         return transactionType;
     }
 
+    /**
+     * Set transaction type for current transaction
+     *
+     * @param transactionType {@link id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard.TransactionType Transaction type} for current transaction
+     */
     public void setTransactionType(final TransactionType transactionType) {
         this.transactionType = transactionType;
     }
 
+    /**
+     * Get save token id for one/two click feature config
+     *
+     * @return Save token id config
+     */
     public Boolean getSaveTokenId() {
         return saveTokenId;
     }
 
+    /**
+     * Set save token id for one/two click feature config
+     *
+     * @param saveTokenId Save token id config
+     */
     public void setSaveTokenId(final Boolean saveTokenId) {
         this.saveTokenId = saveTokenId;
     }

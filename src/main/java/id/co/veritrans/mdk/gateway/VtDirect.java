@@ -1,7 +1,7 @@
 package id.co.veritrans.mdk.gateway;
 
-import id.co.veritrans.mdk.gateway.model.VtDirectChargeParam;
-import id.co.veritrans.mdk.gateway.model.VtDirectResponse;
+import id.co.veritrans.mdk.gateway.model.vtdirect.VtDirectChargeParam;
+import id.co.veritrans.mdk.gateway.model.VtResponse;
 
 /**
  * Created by gde on 4/30/15.
@@ -13,7 +13,7 @@ public interface VtDirect {
      * @param vtDirectChargeParam
      * @return
      */
-    VtDirectResponse charge(VtDirectChargeParam vtDirectChargeParam);
+    VtResponse charge(VtDirectChargeParam vtDirectChargeParam);
 
     /**
      * Capture a previously authorized credit card charge request.
@@ -21,19 +21,19 @@ public interface VtDirect {
      * @param amount
      * @return
      */
-    VtDirectResponse capture(String transactionId, Long amount);
+    VtResponse capture(String transactionId, Long amount);
 
     /**
      * Get the status of a transaction using the orderId from the charge request.
      * @param orderId
      * @return
      */
-    VtDirectResponse status(String orderId);
+    VtResponse status(String orderId);
 
     /**
      * Approve a charge transaction which has <b>challenge</b> ChargeResult.
      * @param orderId
      * @return
      */
-    VtDirectResponse approve(String orderId);
+    VtResponse approve(String orderId);
 }
