@@ -212,7 +212,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
     if (vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
         //handle successful capture
     } else if (vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
-        //handle FDS challenge
+        //handle FDS challenge, you can do this later
     } else {
         //unexpected condition that should never happen
     }
@@ -246,7 +246,7 @@ if (vtResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED) 
     if (vtResponseAuthorize.getFraudStatus() == FraudStatus.ACCEPTED) {
         //handle successful authorize
     } else if (vtResponseAuthorize.getFraudStatus() == FraudStatus.CHALLENGE) {
-        //handle FDS challenge
+        //handle FDS challenge, you can do this later
     } else {
         //unexpected condition that should never happen
     }
@@ -256,6 +256,7 @@ if (vtResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED) 
 ```
 
 ##### Capture
+Authorized Credit Card charge request can be captured eventhough the FDS status is `CHALLENGE`, however the transaction won't be settled unless the transaction is approved using the [Credit Card: Accept an FDS challenge capture](#credit-card-accept-an-fds-challenge-capture) feature.
 ```java
 String transactionId = vtResponseAuthorize.getTransactionId();
 Long captureAmount = vtResponseAuthorize.getGrossAmount().longValue();
