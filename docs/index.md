@@ -1,7 +1,7 @@
 # Veritrans - Java Client Documentation
 This is the official Java Client for Veritrans Payment API.  
 
-Please visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more information about the products and see the documentations at [http://docs.veritrans.co.id](http://docs.veritrans.co.id) for more technical details. We also have a few [sequence diagrams](sequence_diagram/index.html) which can help to understands the big picture of the various payment methods process flow.
+Please visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more information about the products and see the documentations at [http://docs.veritrans.co.id](http://docs.veritrans.co.id) for more technical details. We also have a few [sequence diagrams](sequence_diagram/index.html) which can help you to understands the big picture of our various payment methods process flow.
 
 ***
 
