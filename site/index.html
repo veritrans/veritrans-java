@@ -400,11 +400,13 @@ Example code to obtain reference to VtWeb instance:</p>
 <p><br/></p>
 <h2 id="other-features">Other Features</h2>
 <h3 id="check-transaction-status">Check Transaction Status</h3>
+<h4 id="vtdirect_1">VtDirect</h4>
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtDirect.status(orderId);
 //continue processing based on the vtResponse
 </code></pre>
 
+<h4 id="vtweb_1">VtWeb</h4>
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtWeb.status(orderId);
 //continue processing based on the vtResponse
@@ -412,6 +414,7 @@ VtResponse vtResponse = vtWeb.status(orderId);
 
 <p><br/></p>
 <h3 id="credit-card-accept-an-fds-challenge-capture">Credit Card: Accept an <code>FDS challenge</code> capture</h3>
+<h4 id="vtdirect_2">VtDirect</h4>
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtDirect.approve(orderId);
 
@@ -422,6 +425,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 }
 </code></pre>
 
+<h4 id="vtweb_2">VtWeb</h4>
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtWeb.approve(orderId);
 
@@ -434,6 +438,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 
 <p><br/></p>
 <h3 id="cancel-transaction">Cancel Transaction</h3>
+<h4 id="vtdirect_3">VtDirect</h4>
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtDirect.cancel(orderId);
 
@@ -444,6 +449,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
 }
 </code></pre>
 
+<h4 id="vtweb_3">VtWeb</h4>
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtWeb.approve(orderId);
 
@@ -460,7 +466,8 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
 It is invoked by Veritrans Payment API through HTTP POST by sending a JSON Message in the request body.
 The structure of the JSON Message is identical with the JSON Response when invoking the Veritrans Payment API.  </p>
 <p>There is a static method provided by VtResponse to help you deserializing the JSON Message into a VtResponse instance.
-This method accepts JSON String or a Raw Input Stream. <strong>Do remember that it is still the caller responsibility to close the InputStream</strong>.</p>
+This method accepts <a href="file:///Users/gde/Documents/dev/maverick/veritrans-java/site/javadoc/id/co/veritrans/mdk/gateway/model/VtResponse.html#deserializeJson-java.lang.String-">JSON String</a> or a <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtResponse.html#deserializeJson-java.io.InputStream-">Raw Input Stream</a>.
+<strong>Do remember that it is still the caller responsibility to close the InputStream</strong>.</p>
 <p>Below is an example code to handle Notification URL using Java Servlet API:</p>
 <pre><code class="java">...
 void doPost(HttpServletRequest req, HttpServletResponse resp) {

@@ -314,11 +314,13 @@ WIP
 ## Other Features
 
 ### Check Transaction Status
+#### VtDirect
 ```java
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtDirect.status(orderId);
 //continue processing based on the vtResponse
 ```
+#### VtWeb
 ```java
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtWeb.status(orderId);
@@ -327,6 +329,7 @@ VtResponse vtResponse = vtWeb.status(orderId);
 
 <br/>
 ### Credit Card: Accept an `FDS challenge` capture
+#### VtDirect
 ```java
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtDirect.approve(orderId);
@@ -337,6 +340,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
     //handle denied / unexpected response
 }
 ```
+#### VtWeb
 ```java
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtWeb.approve(orderId);
@@ -350,6 +354,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 
 <br/>
 ### Cancel Transaction
+#### VtDirect
 ```java
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtDirect.cancel(orderId);
@@ -360,6 +365,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
     //handle denied / unexpected response
 }
 ```
+#### VtWeb
 ```java
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtWeb.approve(orderId);
@@ -378,7 +384,8 @@ It is invoked by Veritrans Payment API through HTTP POST by sending a JSON Messa
 The structure of the JSON Message is identical with the JSON Response when invoking the Veritrans Payment API.  
   
 There is a static method provided by VtResponse to help you deserializing the JSON Message into a VtResponse instance.
-This method accepts JSON String or a Raw Input Stream. **Do remember that it is still the caller responsibility to close the InputStream**.
+This method accepts [JSON String](file:///Users/gde/Documents/dev/maverick/veritrans-java/site/javadoc/id/co/veritrans/mdk/gateway/model/VtResponse.html#deserializeJson-java.lang.String-) or a [Raw Input Stream](javadoc/id/co/veritrans/mdk/gateway/model/VtResponse.html#deserializeJson-java.io.InputStream-).
+**Do remember that it is still the caller responsibility to close the InputStream**.
 
 Below is an example code to handle Notification URL using Java Servlet API:
 ```java
