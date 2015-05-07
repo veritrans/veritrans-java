@@ -1,7 +1,7 @@
 package id.co.veritrans.mdk.gateway.model;
 
 /**
- * Created by gde on 5/4/15.
+ * Customer address
  */
 public class Address {
 
@@ -13,9 +13,23 @@ public class Address {
     private String phone;
     private String countryCode;
 
+    /**
+     * Customer address constructor
+     */
     public Address() {
     }
 
+    /**
+     * Customer address constructor
+     *
+     * @param firstName   Customer address first name
+     * @param lastName    Customer address last name
+     * @param address     Customer address details
+     * @param city        Customer address city
+     * @param postalCode  Customer address postal code
+     * @param phone       Customer address phone number
+     * @param countryCode Customer address country code
+     */
     public Address(final String firstName, final String lastName, final String address, final String city, final String postalCode, final String phone, final String countryCode) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -26,58 +40,128 @@ public class Address {
         this.countryCode = countryCode;
     }
 
+    /**
+     * Get customer address first name
+     *
+     * @return Customer address first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Set customer address first name
+     *
+     * @param firstName Customer address first name
+     */
     public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Set customer address last name
+     *
+     * @return Customer address last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Set customer address last name
+     *
+     * @param lastName Customer address last name
+     */
     public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Get customer address details
+     *
+     * @return Customer address details
+     */
     public String getAddress() {
         return address;
     }
 
+    /**
+     * Set customer address details
+     *
+     * @param address Customer address details
+     */
     public void setAddress(final String address) {
         this.address = address;
     }
 
+    /**
+     * Get customer address city
+     *
+     * @return Customer address city
+     */
     public String getCity() {
         return city;
     }
 
+    /**
+     * Set customer address city
+     *
+     * @param city Customer address city
+     */
     public void setCity(final String city) {
         this.city = city;
     }
 
+    /**
+     * Get customer address postal code
+     *
+     * @return Customer address postal code
+     */
     public String getPostalCode() {
         return postalCode;
     }
 
+    /**
+     * Set customer address postal code
+     *
+     * @param postalCode Customer address postal code
+     */
     public void setPostalCode(final String postalCode) {
         this.postalCode = postalCode;
     }
 
+    /**
+     * Get customer address phone
+     *
+     * @return Customer address phone
+     */
     public String getPhone() {
         return phone;
     }
 
+    /**
+     * Set customer address phone
+     *
+     * @param phone Customer address phone
+     */
     public void setPhone(final String phone) {
         this.phone = phone;
     }
 
+    /**
+     * Get customer address country code
+     *
+     * @return Customer address country code
+     */
     public String getCountryCode() {
         return countryCode;
     }
 
+    /**
+     * Set customer address country code
+     *
+     * @param countryCode Customer address country code
+     */
     public void setCountryCode(final String countryCode) {
         this.countryCode = countryCode;
     }

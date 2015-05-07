@@ -3,7 +3,7 @@ package id.co.veritrans.mdk.gateway.model;
 import java.math.BigDecimal;
 
 /**
- * Created by gde on 5/4/15.
+ * Transaction item details
  */
 public class TransactionItem {
 
@@ -12,9 +12,20 @@ public class TransactionItem {
     private BigDecimal price;
     private BigDecimal quantity;
 
+    /**
+     * Transaction item constructor
+     */
     public TransactionItem() {
     }
 
+    /**
+     * Transaction item constructor
+     *
+     * @param id       Item id
+     * @param name     Item name
+     * @param price    Item price
+     * @param quantity Item quantity
+     */
     public TransactionItem(final String id, final String name, final BigDecimal price, final BigDecimal quantity) {
         this.id = id;
         this.name = name;
@@ -22,34 +33,74 @@ public class TransactionItem {
         this.quantity = quantity;
     }
 
+    /**
+     * Get item id
+     *
+     * @return Item id
+     */
     public String getId() {
         return id;
     }
 
+    /**
+     * Set item id
+     *
+     * @param id Item id
+     */
     public void setId(final String id) {
         this.id = id;
     }
 
+    /**
+     * Get item name
+     *
+     * @return Item name
+     */
     public String getName() {
         return name;
     }
 
+    /**
+     * Set item name
+     *
+     * @param name Item name
+     */
     public void setName(final String name) {
         this.name = name;
     }
 
+    /**
+     * Get item price
+     *
+     * @return Item price
+     */
     public BigDecimal getPrice() {
         return price;
     }
 
+    /**
+     * Set item price
+     *
+     * @param price Item price
+     */
     public void setPrice(final BigDecimal price) {
         this.price = price;
     }
 
+    /**
+     * Get item quantity
+     *
+     * @return Item quantity
+     */
     public BigDecimal getQuantity() {
         return quantity;
     }
 
+    /**
+     * Set item quantity
+     *
+     * @param quantity Item quantity
+     */
     public void setQuantity(final BigDecimal quantity) {
         this.quantity = quantity;
     }

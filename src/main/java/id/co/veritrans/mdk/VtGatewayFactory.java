@@ -5,12 +5,10 @@ import id.co.veritrans.mdk.exception.InvalidVtConfigException;
 import id.co.veritrans.mdk.gateway.VtDirect;
 import id.co.veritrans.mdk.gateway.VtWeb;
 import id.co.veritrans.mdk.impl.DefaultVtGateway;
-import id.co.veritrans.mdk.util.ExceptionUtil;
+import id.co.veritrans.mdk.util.ValidationUtil;
 
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
 import java.util.Set;
 
 /**
@@ -26,8 +24,7 @@ public class VtGatewayFactory {
      * VtGatewayFactory constructor
      */
     public VtGatewayFactory() {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        validator = validatorFactory.getValidator();
+        validator = ValidationUtil.getValidator();
         vtGatewayConfig = new VtGatewayConfig();
     }
 
@@ -203,7 +200,7 @@ public class VtGatewayFactory {
     private void validate(VtGatewayConfig vtGatewayConfig) throws InvalidVtConfigException {
         constraintViolations = validator.validate(vtGatewayConfig);
         if (!constraintViolations.isEmpty()) {
-            throw new InvalidVtConfigException(ExceptionUtil.buildExceptionMessage(constraintViolations.toArray()));
+            throw new InvalidVtConfigException(ValidationUtil.buildExceptionMessage(constraintViolations.toArray()));
         }
     }
 

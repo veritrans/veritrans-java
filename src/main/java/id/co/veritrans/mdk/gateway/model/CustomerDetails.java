@@ -1,20 +1,40 @@
 package id.co.veritrans.mdk.gateway.model;
 
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+
 /**
- * Created by gde on 5/4/15.
+ * Transaction customer detail
  */
 public class CustomerDetails {
 
+    @NotNull
     private String firstName;
     private String lastName;
+    @NotNull
     private String email;
+    @NotNull
+    @Pattern(regexp = "^\\+?[0-9\\-]{5,}$")
     private String phone;
     private Address billingAddress;
     private Address shippingAddress;
 
+    /**
+     * Customer detail constructor
+     */
     public CustomerDetails() {
     }
 
+    /**
+     * Customer detail constructor
+     *
+     * @param firstName       Customer first name
+     * @param lastName        Customer last name
+     * @param email           Customer email
+     * @param phone           Customer phone number
+     * @param billingAddress  Customer {@link id.co.veritrans.mdk.gateway.model.Address billing address}
+     * @param shippingAddress Customer {@link id.co.veritrans.mdk.gateway.model.Address shipping address}
+     */
     public CustomerDetails(final String firstName, final String lastName, final String email, final String phone, final Address billingAddress, final Address shippingAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
@@ -24,50 +44,110 @@ public class CustomerDetails {
         this.shippingAddress = shippingAddress;
     }
 
+    /**
+     * Get customer first name
+     *
+     * @return Customer first name
+     */
     public String getFirstName() {
         return firstName;
     }
 
+    /**
+     * Set customer first name
+     *
+     * @param firstName Customer first name
+     */
     public void setFirstName(final String firstName) {
         this.firstName = firstName;
     }
 
+    /**
+     * Get customer last name
+     *
+     * @return Customer last name
+     */
     public String getLastName() {
         return lastName;
     }
 
+    /**
+     * Set customer last name
+     *
+     * @param lastName Customer last name
+     */
     public void setLastName(final String lastName) {
         this.lastName = lastName;
     }
 
+    /**
+     * Get customer email
+     *
+     * @return Customer email
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     * Set customer email
+     *
+     * @param email Customer email
+     */
     public void setEmail(final String email) {
         this.email = email;
     }
 
+    /**
+     * Get customer phone number
+     *
+     * @return Customer phone number
+     */
     public String getPhone() {
         return phone;
     }
 
+    /**
+     * Set customer phone number
+     *
+     * @param phone Customer phone number
+     */
     public void setPhone(final String phone) {
         this.phone = phone;
     }
 
+    /**
+     * Get customer billing address
+     *
+     * @return Customer {@link id.co.veritrans.mdk.gateway.model.Address billing address}
+     */
     public Address getBillingAddress() {
         return billingAddress;
     }
 
+    /**
+     * Set customer billing address
+     *
+     * @param billingAddress Customer {@link id.co.veritrans.mdk.gateway.model.Address billing address}
+     */
     public void setBillingAddress(final Address billingAddress) {
         this.billingAddress = billingAddress;
     }
 
+    /**
+     * Get customer shipping address
+     *
+     * @return Customer {@link id.co.veritrans.mdk.gateway.model.Address shipping address}
+     */
     public Address getShippingAddress() {
         return shippingAddress;
     }
 
+    /**
+     * Set customer shipping address
+     *
+     * @param shippingAddress Customer {@link id.co.veritrans.mdk.gateway.model.Address shipping address}
+     */
     public void setShippingAddress(final Address shippingAddress) {
         this.shippingAddress = shippingAddress;
     }
