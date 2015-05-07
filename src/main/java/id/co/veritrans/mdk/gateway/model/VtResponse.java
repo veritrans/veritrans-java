@@ -1,5 +1,8 @@
 package id.co.veritrans.mdk.gateway.model;
 
+import id.co.veritrans.mdk.exception.JsonDeserializeException;
+
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.Date;
 
@@ -37,6 +40,28 @@ public class VtResponse {
         this.statusCode = statusCode;
         this.statusMessage = statusMessage;
         this.approvalCode = approvalCode;
+    }
+
+    /**
+     * Construct VtResponse instance from a JSON String.
+     *
+     * @param json source JSON String.
+     * @return VtResponse instance constructed from JSON.
+     * @throws id.co.veritrans.mdk.exception.JsonDeserializeException when a failure is occured during deserializing the JSON.
+     */
+    public static VtResponse deserializeJson(String json) throws JsonDeserializeException {
+        return null;
+    }
+
+    /**
+     * Construct VtResponse instance from a JSON Raw Input Stream bytes.
+     *
+     * @param inputStream source JSON Raw Input Stream bytes.
+     * @return VtResponse instance constructed from JSON Raw Input Stream bytes.
+     * @throws id.co.veritrans.mdk.exception.JsonDeserializeException when a failure is occured during deserializing the JSON.
+     */
+    public static VtResponse deserializeJson(InputStream inputStream) throws JsonDeserializeException {
+        return null;
     }
 
     public String getTransactionId() {

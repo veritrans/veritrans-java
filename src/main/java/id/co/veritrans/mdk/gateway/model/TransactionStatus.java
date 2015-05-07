@@ -8,6 +8,6 @@ public enum TransactionStatus {
     CAPTURED,
     SETTLED,
     PENDING,
-    CANCELED,
+    CANCELLED,
     DENIED,
 }

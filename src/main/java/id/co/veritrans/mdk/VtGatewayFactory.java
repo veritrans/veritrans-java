@@ -4,8 +4,9 @@ import id.co.veritrans.mdk.config.EnvironmentType;
 import id.co.veritrans.mdk.exception.InvalidVtConfigException;
 import id.co.veritrans.mdk.gateway.VtDirect;
 import id.co.veritrans.mdk.gateway.VtWeb;
-import id.co.veritrans.mdk.impl.DefaultVtGateway;
 import id.co.veritrans.mdk.util.ValidationUtil;
+import id.co.veritrans.mdk.gateway.impl.DefaultVtDirect;
+import id.co.veritrans.mdk.gateway.impl.DefaultVtWeb;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -184,7 +185,7 @@ public class VtGatewayFactory {
      */
     public VtDirect vtDirect() throws InvalidVtConfigException {
         validate(vtGatewayConfig);
-        return new DefaultVtGateway(vtGatewayConfig).vtDirect();
+        return new DefaultVtDirect(vtGatewayConfig);
     }
 
     /**
@@ -194,7 +195,7 @@ public class VtGatewayFactory {
      */
     public VtWeb vtWeb() throws InvalidVtConfigException {
         validate(vtGatewayConfig);
-        return new DefaultVtGateway(vtGatewayConfig).vtWeb();
+        return new DefaultVtWeb(vtGatewayConfig);
     }
 
     private void validate(VtGatewayConfig vtGatewayConfig) throws InvalidVtConfigException {
