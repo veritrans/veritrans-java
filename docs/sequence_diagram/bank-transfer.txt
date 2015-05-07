@@ -1,0 +1,48 @@
+@startuml
+title Internet Banking via Permata VA Charging
+
+activate Customer
+activate Browser
+
+Customer -> Browser: Checkout
+Browser -> Merchant: Checkout
+
+activate Merchant
+Merchant -> Merchant: Process Checkout
+
+Browser <- Merchant: Render Checkout Page
+deactivate Merchant
+
+Customer <- Browser: Checkout Page
+Customer -> Browser: Choose Internet Banking
+
+Browser -> Merchant: Submit Internet Banking Request
+activate Merchant
+
+Merchant -> Veritrans: Request Internet Banking Payment + OrderId
+activate Veritrans
+
+Merchant <- Veritrans: TransactionId + Permata VA Number
+deactivate Veritrans
+note right of Merchant: Current TransactionStatus: Pending
+
+Browser <- Merchant: Render Bank Transfer Instruction
+deactivate Merchant
+
+Customer <- Browser: Bank Transfer Instruction
+deactivate Browser
+
+Customer -> Bank: Transfer Money to Permata VA Number
+activate Bank
+
+Customer <- Bank: Money Transferred
+deactivate Customer
+
+Bank --> Veritrans: Notify Money Received
+deactivate Bank
+activate Veritrans
+
+Veritrans -> Merchant: Notify Payment Succeed via NotificationUrl
+deactivate Veritrans
+note right of Merchant: Current TransactionStatus: Settled
+@enduml
