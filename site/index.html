@@ -143,46 +143,48 @@
 <hr />
 <h1 id="usage">Usage</h1>
 <h2 id="vtgatewayconfig">VtGatewayConfig</h2>
-<p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.<br />
-See <a href="./javadoc/id/co/veritrans/mdk/VtGatewayConfig.html">VtGatewayConfig Javadoc</a>.</p>
+<p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.
+Please note that every classes related with VtGatewayConfig is <code>immutable</code> by design. However a builder class is provided to aid the object creation.  </p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/VtGatewayConfig.html">VtGatewayConfig Javadoc</a>.
+See <a href="./javadoc/id/co/veritrans/mdk/v1/VtGatewayConfigBuilder.html">VtGatewayConfigBuilder Javadoc</a>.</p>
 <h3 id="server-client-key">Server &amp; Client Key</h3>
 <p>You must set the <code>Server Key</code> and <code>Client Key</code> as defined in your <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal (MAP)</a>.</p>
-<pre><code class="java">VtGatewayConfig vtGatewayConfig = new VtGatewayConfig();
-vtGatewayConfig.setServerKey(&quot;Your Server Key&quot;);
-vtGatewayConfig.setClientKey(&quot;Your Client Key&quot;);
+<pre><code class="java">VtGatewayConfigBuilder vtGatewayConfigBuilder = new VtGatewayConfigBuilder();
+vtGatewayConfigBuilder.setServerKey(&quot;Your Server Key&quot;);
+vtGatewayConfigBuilder.setClientKey(&quot;Your Client Key&quot;);
 </code></pre>
 
 <h3 id="environment">Environment</h3>
 <p>You can choose to use Sandbox or Production environment. During development &amp; testing, you might want to set it to Sandbox and use the Production environment when you're ready to go live.  </p>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/config/EnvironmentType.html">EnvironmentType Javadoc</a>.</p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/config/EnvironmentType.html">EnvironmentType Javadoc</a>.</p>
 <pre><code class="java">// config for sandbox environment
-vtGatewayConfig.setEnvironment(EnvironmentType.SANDBOX);
+vtGatewayConfigBuilder.setEnvironment(EnvironmentType.SANDBOX);
 
 // config for production environment
-vtGatewayConfig.setEnvironment(EnvironmentType.PRODUCTION);
+vtGatewayConfigBuilder.setEnvironment(EnvironmentType.PRODUCTION);
 </code></pre>
 
 <h3 id="proxy-configuration">Proxy Configuration</h3>
 <p>You can setup proxy configuration if you need connect to Veritrans Payment API through proxy server.</p>
-<pre><code class="java">vtGatewayConfig.getProxyConfig().setHost(&quot;proxy host address&quot;);
-vtGatewayConfig.getProxyConfig().setPort(12345);
-vtGatewayConfig.getProxyConfig().setUsername(&quot;proxy username or null&quot;);
-vtGatewayConfig.getProxyConfig().setPassword(&quot;proxy password or null&quot;);
+<pre><code class="java">vtGatewayConfigBuilder.getHttpConfig().getProxyConfig().setHost(&quot;proxy host address&quot;);
+vtGatewayConfigBuilder.getHttpConfig().getProxyConfig().setPort(12345);
+vtGatewayConfigBuilder.getHttpConfig().getProxyConfig().setUsername(&quot;proxy username or null&quot;);
+vtGatewayConfigBuilder.getHttpConfig().getProxyConfig().setPassword(&quot;proxy password or null&quot;);
 </code></pre>
 
 <p><br/></p>
 <h2 id="vtgatewayfactory">VtGatewayFactory</h2>
 <p>VtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a single instance of VtGatewayFactory class and maintain the reference to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect and VtWeb.  </p>
 <p>If you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a VtGatewayFactory instance for each configuration profile and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances. VtGatewayFactory also has few a convenient methods to directly configure the underlying VtGatewayConfig instance.</p>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/VtGatewayFactory.html">VtGatewayFactory Javadoc</a><br />
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/VtGatewayFactory.html">VtGatewayFactory Javadoc</a><br />
 Example code to build a VtGatewayFactory:</p>
-<pre><code class="java">VtGatewayFactory vtGatewayFactory = new VtGatewayFactory(vtGatewayConfig);
+<pre><code class="java">VtGatewayFactory vtGatewayFactory = new VtGatewayFactory(vtGatewayConfigBuilder.createVtGatewayConfig());
 </code></pre>
 
 <p><br/></p>
 <h2 id="vtdirect">VtDirect</h2>
 <p>VtDirect is an interface class, where it's instance can be used to communicate with Veritrans Payment API. VtDirect instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  </p>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/VtDirect.html">VtDirect Javadoc</a>.<br />
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/VtDirect.html">VtDirect Javadoc</a>.<br />
 Example code to obtain reference to VtDirect instance:</p>
 <pre><code class="java">VtDirect vtDirect = vtGatewayFactory.vtDirect();
 </code></pre>
@@ -190,18 +192,18 @@ Example code to obtain reference to VtDirect instance:</p>
 <h3 id="charging-a-transaction">Charging a transaction</h3>
 <p>VtDirect has method named <code>charge</code> which takes an instance of VtDirectChargeParam subclass as the parameter.
 This method will make a charge request to Veritrans Payment API and return a VtResponse as a result, which can be used to determine the status of the transaction.  </p>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/VtDirectChargeParam.html">VtDirectChargeParam</a><br />
-See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtResponse.html">VtResponse</a><br />
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/VtDirectChargeParam.html">VtDirectChargeParam</a><br />
+See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html">VtResponse</a><br />
 Visit <a href="http://docs.veritrans.co.id/sandbox/charge.html">http://docs.veritrans.co.id/sandbox/charge.html</a> for more information.</p>
 <h4 id="vtdirectchargeparam">VtDirectChargeParam</h4>
 <p>VtDirectChargeParam has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:<br />
-- <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/BankTransferRequest.html">BankTransferRequest</a><br />
-- <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/BriEpayRequest.html">BriEpayRequest</a><br />
-- <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/CimbClicksRequest.html">CimbClicksRequest</a><br />
-- <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/CreditCardRequest.html">CreditCardRequest</a><br />
-- <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/MandiriClickpayRequest.html">MandiriClickpayRequest</a>  </p>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/package-summary.html">id.co.veritrans.mdk.gateway.model Javadoc</a><br />
-See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/package-summary.html">id.co.veritrans.mdk.gateway.model.vtdirect Javadoc</a></p>
+- <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BankTransferRequest.html">BankTransferRequest</a><br />
+- <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BriEpayRequest.html">BriEpayRequest</a><br />
+- <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/CimbClicksRequest.html">CimbClicksRequest</a><br />
+- <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/CreditCardRequest.html">CreditCardRequest</a><br />
+- <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/MandiriClickpayRequest.html">MandiriClickpayRequest</a>  </p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/package-summary.html">id.co.veritrans.mdk.gateway.model Javadoc</a><br />
+See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/package-summary.html">id.co.veritrans.mdk.gateway.model.vtdirect Javadoc</a></p>
 <p>It is recommended to have a single method to configure the generic VtDirectChargeParam values. Example for Credit Card charge:</p>
 <pre><code class="java">...
 //somewhere in the code
@@ -235,7 +237,7 @@ public void setVtDirectChargeParamValues(VtDirectChargeParam vtDirectChargeParam
 
 <p><br/></p>
 <h4 id="bank-transfer">Bank Transfer</h4>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/BankTransfer.html">BankTransfer Javadoc</a><br />
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/BankTransfer.html">BankTransfer Javadoc</a><br />
 See <a href="./sequence_diagram/index.html#process-flow-for-charging-via-bank-transfer">Bank Transfer Process Flow</a></p>
 <pre><code class="java">BankTransferRequest vtDirectChargeParam = new BankTransferRequest();
 setVtDirectChargeParamValues(vtDirectChargeParam);
@@ -271,7 +273,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
 
 <p><br/></p>
 <h4 id="cimb-clicks">Cimb Clicks</h4>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/CimbClicks.html">CimbClicks Javadoc</a></p>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/CimbClicks.html">CimbClicks Javadoc</a></p>
 <pre><code class="java">CimbClicksRequest vtDirectChargeParam = new CimbClicksRequest();
 setVtDirectChargeParamValues(vtDirectChargeParam);
 vtDirectChargeParam.setCimbClicks(new CimbClicks());
@@ -290,7 +292,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
 
 <p><br/></p>
 <h4 id="credit-card-sale">Credit Card Sale</h4>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/CreditCard.html">CreditCard Javadoc</a><br />
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/CreditCard.html">CreditCard Javadoc</a><br />
 See <a href="./sequence_diagram/index.html#credit-card-charging-without-3d-secure-authentication">CreditCard Process Flow Without 3D Secure Authentication</a><br />
 See <a href="./sequence_diagram/index.html#credit-card-charging-with-3d-secure-authentication">CreditCard Process Flow With 3D Secure Authentication</a>  </p>
 <p><strong>Every Credit Card transaction must use a <code>Token</code> generated by Veritrans Payment API instead of using plain card number.</strong> Please visit <a href="http://docs.veritrans.co.id/vtdirect/integration_cc.html#step1">Acquiring Credit Card Token</a> for further information.</p>
@@ -321,7 +323,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 <p><br/></p>
 <h4 id="credit-card-feature-pre-authorization-capture">Credit Card Feature: Pre-authorization &amp; Capture</h4>
 <h5 id="pre-authorization">Pre-authorization</h5>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/CreditCard.html">CreditCard Javadoc</a><br />
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/CreditCard.html">CreditCard Javadoc</a><br />
 See <a href="./sequence_diagram/index.html#credit-card-charging-without-3d-secure-authentication">CreditCard Process Flow Without 3D Secure Authentication</a><br />
 See <a href="./sequence_diagram/index.html#credit-card-charging-with-3d-secure-authentication">CreditCard Process Flow With 3D Secure Authentication</a>  </p>
 <p><strong>Every Credit Card transaction must use a <code>Token</code> generated by Veritrans Payment API instead of using plain card number.</strong> Please visit <a href="http://docs.veritrans.co.id/vtdirect/integration_cc.html#step1">Acquiring Credit Card Token</a> for further information.</p>
@@ -365,7 +367,7 @@ if (vtResponseCapture.getTransactionStatus() == TransactionStatus.CAPTURED) {
 
 <p><br/></p>
 <h4 id="mandiri-clickpay">Mandiri Clickpay</h4>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/model/vtdirect/paymentmethod/MandiriClickpay.html">MandiriClickpay Javadoc</a><br />
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/MandiriClickpay.html">MandiriClickpay Javadoc</a><br />
 Visit <a href="http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-mandiri">Veritrans Mandiri Clickpay Documentation</a> for more information.</p>
 <pre><code class="java">MandiriClickpayRequest vtDirectChargeParam = new MandiriClickpayRequest();
 setVtDirectChargeParamValues(vtDirectChargeParam);
@@ -389,7 +391,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
 <p><br/></p>
 <h2 id="vtweb">VtWeb</h2>
 <p>VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but <strong>VtWeb doesn't has VtDirect's <code>charge</code> functionality</strong>, instead it has a method to get a redirection URL which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  </p>
-<p>See <a href="./javadoc/id/co/veritrans/mdk/gateway/VtWeb.html">VtWeb Javadoc</a>.<br />
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/VtWeb.html">VtWeb Javadoc</a>.<br />
 Example code to obtain reference to VtWeb instance:</p>
 <pre><code class="java">VtWeb vtWeb = vtGatewayFactory.vtWeb();
 </code></pre>
@@ -469,7 +471,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
 It is invoked by Veritrans Payment API through HTTP POST by sending a JSON Message in the request body.
 The structure of the JSON Message is identical with the JSON Response when invoking the Veritrans Payment API.  </p>
 <p>There is a static method provided by VtResponse to help you deserializing the JSON Message into a VtResponse instance.
-This method accepts <a href="file:///Users/gde/Documents/dev/maverick/veritrans-java/site/javadoc/id/co/veritrans/mdk/gateway/model/VtResponse.html#deserializeJson-java.lang.String-">JSON String</a> or a <a href="./javadoc/id/co/veritrans/mdk/gateway/model/VtResponse.html#deserializeJson-java.io.InputStream-">Raw Input Stream</a>.
+This method accepts <a href="file:///Users/gde/Documents/dev/maverick/veritrans-java/site/javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html#deserializeJson-java.lang.String-">JSON String</a> or a <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html#deserializeJson-java.io.InputStream-">Raw Input Stream</a>.
 <strong>Do remember that it is still the caller responsibility to close the InputStream</strong>.</p>
 <p>Below is an example code to handle Notification URL using Java Servlet API:</p>
 <pre><code class="java">...
