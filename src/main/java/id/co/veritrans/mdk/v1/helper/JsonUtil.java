@@ -16,11 +16,11 @@ import java.io.IOException;
  */
 public class JsonUtil {
 
-    private static final ObjectMapper jsonMapper = new ToStringObjectMapper();
+    private static final ObjectMapper jsonMapper = new VtJsonObjectMapper();
 
-    public static <T> T fromJson(HttpResponse httpResponse, Class<T> vtResponseClass) throws JsonDeserializeException {
+    public static <T> T fromJson(HttpResponse httpResponse, Class<T> clazz) throws JsonDeserializeException {
         try {
-            return jsonMapper.readValue(httpResponse.getEntity().getContent(), vtResponseClass);
+            return jsonMapper.readValue(httpResponse.getEntity().getContent(), clazz);
         } catch (IOException e) {
             throw new JsonDeserializeException(e);
         }
@@ -34,13 +34,16 @@ public class JsonUtil {
         }
     }
 
-    private static final class ToStringObjectMapper extends ObjectMapper {
-        public ToStringObjectMapper() {
+    private static final class VtJsonObjectMapper extends ObjectMapper {
+        public VtJsonObjectMapper() {
             _serializationConfig = getSerializationConfig()
                     .withSerializationInclusion(JsonInclude.Include.NON_NULL)
                     .with(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
                     .with(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
                     .with(JsonGenerator.Feature.WRITE_BIGDECIMAL_AS_PLAIN);
+
+            _deserializationConfig = getDeserializationConfig()
+                    .with(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
         }
     }
 }

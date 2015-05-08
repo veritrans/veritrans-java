@@ -19,7 +19,7 @@ public class ProxyConfigTest {
                 .setPort(1234)
                 .setUsername("username")
                 .setPassword("password")
-                .build();
+                .createProxyConfig();
 
         Set<ConstraintViolation<ProxyConfig>> error = ValidationUtil.getValidator().validate(proxyConfig);
         Assert.assertTrue(error.isEmpty());
@@ -32,7 +32,7 @@ public class ProxyConfigTest {
 
     @Test
     public void testProxyConfigError() {
-        ProxyConfig proxyConfig = new ProxyConfigBuilder().build();
+        ProxyConfig proxyConfig = new ProxyConfigBuilder().createProxyConfig();
 
         Set<ConstraintViolation<ProxyConfig>> error = ValidationUtil.getValidator().validate(proxyConfig);
         Assert.assertFalse(error.isEmpty());

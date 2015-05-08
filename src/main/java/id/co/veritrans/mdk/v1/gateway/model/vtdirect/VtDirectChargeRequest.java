@@ -10,21 +10,25 @@ import java.util.List;
 /**
  * Created by gde on 5/4/15.
  */
-public abstract class VtDirectChargeParam extends VtRequest {
+public abstract class VtDirectChargeRequest extends AbstractVtRequest {
 
     @Valid
     @NotNull
     private CustomerDetails customerDetails;
 
-    public VtDirectChargeParam() {
+    public VtDirectChargeRequest() {
     }
 
-    public VtDirectChargeParam(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails) {
+    public VtDirectChargeRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails) {
         super(transactionDetails, transactionItems);
         this.customerDetails = customerDetails;
     }
 
-    @JsonProperty
+    @JsonProperty("payment_method")
+    private String _getPaymentMethod() {
+        return getPaymentMethod().getName();
+    }
+
     public abstract PaymentMethod getPaymentMethod();
 
     public CustomerDetails getCustomerDetails() {
@@ -41,7 +45,7 @@ public abstract class VtDirectChargeParam extends VtRequest {
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
 
-        final VtDirectChargeParam that = (VtDirectChargeParam) o;
+        final VtDirectChargeRequest that = (VtDirectChargeRequest) o;
 
         if (customerDetails != null ? !customerDetails.equals(that.customerDetails) : that.customerDetails != null)
             return false;

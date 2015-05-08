@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by gde on 5/5/15.
  */
-public class CimbClicksRequest extends VtDirectChargeParam {
+public class CimbClicksRequest extends VtDirectChargeRequest {
 
     @Valid
     @NotNull

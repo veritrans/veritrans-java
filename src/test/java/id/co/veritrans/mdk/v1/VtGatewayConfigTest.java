@@ -22,7 +22,7 @@ public class VtGatewayConfigTest {
                 .setEnvironmentType(EnvironmentType.SANDBOX)
                 .setMaxConnectionPoolSize(1)
                 .setProxyConfig(TestUtil.buildProxyConfig())
-                .build();
+                .createVtGatewayConfig();
 
         Set<ConstraintViolation<VtGatewayConfig>> err = ValidationUtil.getValidator().validate(config);
         Assert.assertTrue(err.isEmpty());
@@ -38,7 +38,7 @@ public class VtGatewayConfigTest {
     public void testVtGatewayConfigError() {
         VtGatewayConfig config = new VtGatewayConfigBuilder()
                 .setEnvironmentType(EnvironmentType.PRODUCTION)
-                .build();
+                .createVtGatewayConfig();
 
         Set<ConstraintViolation<VtGatewayConfig>> err = ValidationUtil.getValidator().validate(config);
         Assert.assertFalse(err.isEmpty());

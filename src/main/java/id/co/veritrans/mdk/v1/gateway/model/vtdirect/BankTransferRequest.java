@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by gde on 5/5/15.
  */
-public class BankTransferRequest extends VtDirectChargeParam {
+public class BankTransferRequest extends VtDirectChargeRequest {
 
     @Valid
     @NotNull

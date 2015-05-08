@@ -13,7 +13,7 @@ import java.util.List;
 /**
  * Created by gde on 5/5/15.
  */
-public class MandiriClickpayRequest extends VtDirectChargeParam {
+public class MandiriClickpayRequest extends VtDirectChargeRequest {
 
     @Valid
     @NotNull

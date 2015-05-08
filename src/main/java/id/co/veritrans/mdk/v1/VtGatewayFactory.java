@@ -1,18 +1,16 @@
 package id.co.veritrans.mdk.v1;
 
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
-import id.co.veritrans.mdk.v1.exception.InvalidVtConfigException;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.VtWeb;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtDirect;
+import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtWeb;
 import id.co.veritrans.mdk.v1.helper.ValidationUtil;
-import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtGatewaySession;
 
-import javax.validation.ConstraintViolation;
+import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.io.IOException;
-import java.util.Set;
 
 /**
  * Convenience "factory" class to facilitate setup a gateway for connection to Veritrans API using VT-Direct or VT-Web.
@@ -28,7 +26,7 @@ public class VtGatewayFactory {
      *
      * @param vtGatewayConfig Veritrans {@link id.co.veritrans.mdk.v1.VtGatewayConfig gateway configuration} (not null)
      */
-    public VtGatewayFactory(VtGatewayConfig vtGatewayConfig) throws InvalidVtConfigException {
+    public VtGatewayFactory(VtGatewayConfig vtGatewayConfig) throws ConstraintViolationException {
         if (vtGatewayConfig == null) {
             throw new NullPointerException("vtGatewayConfig");
         }
@@ -127,7 +125,7 @@ public class VtGatewayFactory {
      *
      * @return Veritrans {@link id.co.veritrans.mdk.v1.gateway.VtDirect VtDirect} object to setup the transaction using VT-Direct
      */
-    public VtDirect vtDirect() throws InvalidVtConfigException {
+    public VtDirect vtDirect() {
         return new DefaultVtDirect(vtGatewaySession);
     }
 
@@ -136,7 +134,7 @@ public class VtGatewayFactory {
      *
      * @return Veritrans {@link id.co.veritrans.mdk.v1.gateway.VtWeb VtWeb} object to setup the transaction using VT-Web
      */
-    public VtWeb vtWeb() throws InvalidVtConfigException {
+    public VtWeb vtWeb() {
         return new DefaultVtWeb(vtGatewaySession);
     }
 
@@ -144,11 +142,8 @@ public class VtGatewayFactory {
         vtGatewaySession.destroy();
     }
 
-    private void validate(VtGatewayConfig vtGatewayConfig) throws InvalidVtConfigException {
-        final Set<ConstraintViolation<VtGatewayConfig>> constraintViolations = validator.validate(vtGatewayConfig);
-        if (!constraintViolations.isEmpty()) {
-            throw new InvalidVtConfigException(ValidationUtil.buildExceptionMessage(constraintViolations.toArray()));
-        }
+    private void validate(VtGatewayConfig vtGatewayConfig) throws ConstraintViolationException {
+        ValidationUtil.validateThrowException(validator, vtGatewayConfig);
     }
 
     @Override

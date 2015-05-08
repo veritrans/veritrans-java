@@ -1,31 +1,27 @@
 package id.co.veritrans.mdk.v1.helper;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
-import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
+import javax.validation.*;
+import java.util.Set;
 
 /**
  * Created by andes on 5/7/15.
  */
 public class ValidationUtil {
 
-    public static String buildExceptionMessage(Object[] arrayConstaraintViolation) {
-        StringBuilder errorValidationMessage = new StringBuilder();
-        String tmpErrorString = getConstraintViolationMessage(arrayConstaraintViolation[0]);
-        errorValidationMessage.append(tmpErrorString);
-
-        for (Object constraint : arrayConstaraintViolation){
-            /* Avoid duplicate error message */
-            if (!tmpErrorString.equals(getConstraintViolationMessage(constraint))) {
-                tmpErrorString = getConstraintViolationMessage(constraint);
-                errorValidationMessage
-                        .append(", ")
-                        .append(getConstraintViolationMessage(tmpErrorString));
-            }
+    public static void validateThrowException(final Validator validator, Object target) {
+        final Set<ConstraintViolation<Object>> constraintViolations = validator.validate(target);
+        if (!constraintViolations.isEmpty()) {
+            throw new ConstraintViolationException(buildExceptionMessage(constraintViolations.toArray(new ConstraintViolation[constraintViolations.size()])), constraintViolations);
         }
+    }
 
-        return errorValidationMessage.toString();
+    public static String buildExceptionMessage(final ConstraintViolation[] violations) {
+        final StringBuilder sb = new StringBuilder();
+
+        for (final ConstraintViolation violation : violations) {
+            sb.append(getConstraintViolationMessage(violation)).append("\n");
+        }
+        return sb.toString();
     }
 
     public static Validator getValidator() {
@@ -35,11 +31,7 @@ public class ValidationUtil {
         return validator;
     }
 
-    private static String getConstraintViolationMessage(Object constraint) {
-        if (constraint instanceof ConstraintViolation) {
-            ConstraintViolation violation = ((ConstraintViolation) constraint);
-            return violation.getPropertyPath().toString() + " " + violation.getMessage();
-        }
-        return (String) constraint;
+    private static String getConstraintViolationMessage(final ConstraintViolation violation) {
+        return violation.getPropertyPath().toString() + ": " + violation.getMessage();
     }
 }

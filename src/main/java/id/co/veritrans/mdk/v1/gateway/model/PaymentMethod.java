@@ -15,4 +15,8 @@ public enum PaymentMethod {
     PaymentMethod(final String paymentMethod) {
         this.name = paymentMethod;
     }
+
+    public String getName() {
+        return name;
+    }
 }

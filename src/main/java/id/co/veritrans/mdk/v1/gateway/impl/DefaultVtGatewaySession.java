@@ -1,11 +1,11 @@
 package id.co.veritrans.mdk.v1.gateway.impl;
 
-import id.co.veritrans.mdk.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.VtGatewayConfig;
 import id.co.veritrans.mdk.v1.config.ProxyConfig;
-import id.co.veritrans.mdk.v1.exception.VtConnectionException;
+import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.VtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.model.VtRequest;
+import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import id.co.veritrans.mdk.v1.net.VtRestClient;
@@ -25,13 +25,10 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 import javax.validation.Validator;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Set;
 
 /**
  * Created by gde on 5/8/15.
@@ -75,7 +72,6 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     private CloseableHttpClient buildHttpClient() {
         final List<Header> defaultHeaders = Arrays.asList(
                 (Header) new BasicHeader("Accept", "application/json"),
-                (Header) new BasicHeader("Content-Type", "application/json"),
                 (Header) new BasicHeader("Authorization", "Basic " + Base64.encodeBase64String(vtGatewayConfig.getServerKey().getBytes()))
         );
 
@@ -109,43 +105,41 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse get(final String url) throws VtConnectionException {
+    public VtResponse get(final String url) throws RestClientException {
         try {
             final HttpResponse httpResponse = getHttpClient().execute(new HttpGet(url));
-            return null;
-        } catch (IOException e) {
-            throw new VtConnectionException(e);
+            return JsonUtil.fromJson(httpResponse, VtResponse.class);
+        } catch (Exception e) {
+            throw new RestClientException(e);
         }
     }
 
     @Override
-    public VtResponse post(final String url) throws VtConnectionException {
+    public VtResponse post(final String url) throws RestClientException {
         try {
             final HttpResponse httpResponse = getHttpClient().execute(new HttpPost(url));
-            return null;
-        } catch (IOException e) {
-            throw new VtConnectionException(e);
+            return JsonUtil.fromJson(httpResponse, VtResponse.class);
+        } catch (Exception e) {
+            throw new RestClientException(e);
         }
     }
 
     @Override
-    public VtResponse post(final String url, final VtRequest vtRequest) throws VtConnectionException {
+    public VtResponse post(final String url, final VtRequest vtRequest) throws RestClientException {
         validate(vtRequest);
         try {
             final HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(new StringEntity(JsonUtil.toJson(vtRequest)));
+            httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
 
             final HttpResponse httpResponse = getHttpClient().execute(httpPost);
-            return null;
-        } catch (IOException e) {
-            throw new VtConnectionException(e);
+            return JsonUtil.fromJson(httpResponse, VtResponse.class);
+        } catch (Exception e) {
+            throw new RestClientException(e);
         }
     }
 
     private void validate(final VtRequest vtRequest) {
-        final Set<ConstraintViolation<VtRequest>> err = ValidationUtil.getValidator().validate(vtRequest);
-        if (!err.isEmpty()) {
-            throw new ConstraintViolationException(err);
-        }
+        ValidationUtil.validateThrowException(validator, vtRequest);
     }
 }

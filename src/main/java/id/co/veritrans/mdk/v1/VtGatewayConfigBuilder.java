@@ -35,7 +35,7 @@ public class VtGatewayConfigBuilder {
         return this;
     }
 
-    public VtGatewayConfig build() {
+    public VtGatewayConfig createVtGatewayConfig() {
         return new VtGatewayConfig(environmentType, serverKey, clientKey, maxConnectionPoolSize, proxyConfig);
     }
 }

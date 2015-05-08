@@ -5,7 +5,7 @@ import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 /**
  * Created by andes on 5/7/15.
  */
-public class BriEpayRequest extends VtDirectChargeParam {
+public class BriEpayRequest extends VtDirectChargeRequest {
 
     @Override
     public PaymentMethod getPaymentMethod() {

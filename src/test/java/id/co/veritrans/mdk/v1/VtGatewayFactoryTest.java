@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1;
 
 import id.co.veritrans.mdk.TestUtil;
-import id.co.veritrans.mdk.v1.exception.InvalidVtConfigException;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -12,7 +11,7 @@ import org.testng.annotations.Test;
 public class VtGatewayFactoryTest {
 
     @Test
-    public void testVtGatewayFactory() throws InvalidVtConfigException {
+    public void testVtGatewayFactory() {
         VtGatewayFactory factory = new VtGatewayFactory(TestUtil.buildVtGatewayConfig());
         VtDirect vtDirect = factory.vtDirect();
 

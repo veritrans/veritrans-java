@@ -58,7 +58,7 @@ public class TestUtil {
     public static ProxyConfig buildProxyConfig() {
         return new ProxyConfigBuilder()
                 .setHost("localhost")
-                .build();
+                .createProxyConfig();
     }
 
     public static id.co.veritrans.mdk.v1.VtGatewayConfig buildVtGatewayConfig() {
@@ -67,7 +67,7 @@ public class TestUtil {
                 .setEnvironmentType(EnvironmentType.SANDBOX)
                 .setServerKey("a")
                 .setClientKey("b")
-                .build();
+                .createVtGatewayConfig();
     }
 
 }
