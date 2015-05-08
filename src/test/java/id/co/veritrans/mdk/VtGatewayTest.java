@@ -29,8 +29,8 @@ public class VtGatewayTest {
         assertEquals(factory.getEnvironmentType(), EnvironmentType.SANDBOX);
         assertEquals(factory.getVtGatewayConfig().getServerKey(), "a");
         assertEquals(factory.getVtGatewayConfig().getClientKey(), "b");
-        assertEquals(factory.getVtGatewayConfig().getProxyConfig().getProxyUsername(), "user");
-        assertEquals(factory.getVtGatewayConfig().getProxyConfig().getProxyPassword(), "pass");
+        assertEquals(factory.getVtGatewayConfig().getProxyConfig().getUsername(), "user");
+        assertEquals(factory.getVtGatewayConfig().getProxyConfig().getPassword(), "pass");
         assertEquals(factory.getVtGatewayConfig().getEnvironmentType(), EnvironmentType.SANDBOX);
 
         /* Using parameterized constructor*/

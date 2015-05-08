@@ -115,7 +115,7 @@ public class VtGatewayFactory {
      * @return Merchant proxy host config
      */
     public String getProxyHost() {
-        return vtGatewayConfig.getProxyConfig().getProxyHost();
+        return vtGatewayConfig.getProxyConfig().getHost();
     }
 
     /**
@@ -123,7 +123,7 @@ public class VtGatewayFactory {
      * @param proxyHost Merchant proxy host config
      */
     public void setProxyHost(String proxyHost) {
-        vtGatewayConfig.getProxyConfig().setProxyHost(proxyHost);
+        vtGatewayConfig.getProxyConfig().setHost(proxyHost);
     }
 
     /**
@@ -131,7 +131,7 @@ public class VtGatewayFactory {
      * @return Merchant proxy port config
      */
     public int getProxyPort() {
-        return vtGatewayConfig.getProxyConfig().getProxyPort();
+        return vtGatewayConfig.getProxyConfig().getPort();
     }
 
     /**
@@ -139,7 +139,7 @@ public class VtGatewayFactory {
      * @param proxyPort Merchant proxy port config
      */
     public void setProxyPort(int proxyPort) {
-        vtGatewayConfig.getProxyConfig().setProxyPort(proxyPort);
+        vtGatewayConfig.getProxyConfig().setPort(proxyPort);
     }
 
     /**
@@ -148,7 +148,7 @@ public class VtGatewayFactory {
      * @return Merchant proxy username config
      */
     public String getProxyUsername() {
-        return this.vtGatewayConfig.getProxyConfig().getProxyUsername();
+        return this.vtGatewayConfig.getProxyConfig().getUsername();
     }
 
     /**
@@ -157,7 +157,7 @@ public class VtGatewayFactory {
      * @param proxyUsername Merchant proxy username config
      */
     public void setProxyUsername(String proxyUsername) {
-        this.vtGatewayConfig.getProxyConfig().setProxyUsername(proxyUsername);
+        this.vtGatewayConfig.getProxyConfig().setUsername(proxyUsername);
     }
 
     /**
@@ -166,7 +166,7 @@ public class VtGatewayFactory {
      * @return Merchant proxy password config
      */
     public String getProxyPassword() {
-        return this.vtGatewayConfig.getProxyConfig().getProxyPassword();
+        return this.vtGatewayConfig.getProxyConfig().getPassword();
     }
 
     /**
@@ -175,7 +175,7 @@ public class VtGatewayFactory {
      * @param proxyPassword Merchant proxy password config
      */
     public void setProxyPassword(String proxyPassword) {
-        this.vtGatewayConfig.getProxyConfig().setProxyPassword(proxyPassword);
+        this.vtGatewayConfig.getProxyConfig().setPassword(proxyPassword);
     }
 
     /**

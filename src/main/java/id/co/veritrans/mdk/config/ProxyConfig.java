@@ -4,72 +4,72 @@ package id.co.veritrans.mdk.config;
  * Merchant proxy configuration
  */
 public class ProxyConfig {
-    private String proxyHost;
-    private int proxyPort;
-    private String proxyUsername;
-    private String proxyPassword;
+    private String host;
+    private int port;
+    private String username;
+    private String password;
 
     /**
      * Get merchant proxy host configuration
      * @return Merchant proxy host config
      */
-    public String getProxyHost() {
-        return proxyHost;
+    public String getHost() {
+        return host;
     }
 
     /**
      * Set merchant proxy host configuration
-     * @param proxyHost Merchant proxy host config
+     * @param host Merchant proxy host config
      */
-    public void setProxyHost(String proxyHost) {
-        this.proxyHost = proxyHost;
+    public void setHost(String host) {
+        this.host = host;
     }
 
     /**
      * Get merchant proxy port configuration
      * @return Merchant proxy port config
      */
-    public int getProxyPort() {
-        return proxyPort;
+    public int getPort() {
+        return port;
     }
 
     /**
      * Set merchant proxy port configuration
-     * @param proxyPort Merchant proxy port config
+     * @param port Merchant proxy port config
      */
-    public void setProxyPort(int proxyPort) {
-        this.proxyPort = proxyPort;
+    public void setPort(int port) {
+        this.port = port;
     }
 
     /**
      * Get proxy username to connect to Veritrans API
      * @return Merchant proxy username config
      */
-    public String getProxyUsername() {
-        return proxyUsername;
+    public String getUsername() {
+        return username;
     }
 
     /**
      * Set proxy username to connect to Veritrans API
-     * @param proxyUsername Merchant proxy username config
+     * @param username Merchant proxy username config
      */
-    public void setProxyUsername(String proxyUsername) {
-        this.proxyUsername = proxyUsername;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     /**
      * Get proxy password to connect to Veritrans API
      * @return Merchant proxy password config
      */
-    public String getProxyPassword() {
-        return proxyPassword;
+    public String getPassword() {
+        return password;
     }
 
     /**
      * Set proxy password to connect to Veritrans API
-     * @param proxyPassword Merchant proxy password config
+     * @param password Merchant proxy password config
      */
-    public void setProxyPassword(String proxyPassword) {
-        this.proxyPassword = proxyPassword;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
