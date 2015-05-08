@@ -18,4 +18,9 @@ public class DefaultVtDirect extends DefaultVtGateway implements VtDirect {
     public VtResponse charge(VtDirectChargeParam vtDirectChargeParam) {
         return null;
     }
+
+    @Override
+    public VtResponse capture(final String transactionId, final Long amount) {
+        return null;
+    }
 }

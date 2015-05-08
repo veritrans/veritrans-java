@@ -14,4 +14,12 @@ public interface VtDirect extends VtGateway {
      * @return
      */
     VtResponse charge(VtDirectChargeParam vtDirectChargeParam);
+
+    /**
+     * Capture a previously authorized credit card charge request.
+     * @param transactionId
+     * @param amount
+     * @return
+     */
+    VtResponse capture(String transactionId, Long amount);
 }

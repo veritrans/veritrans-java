@@ -29,11 +29,6 @@ public abstract class DefaultVtGateway implements VtGateway {
     }
 
     @Override
-    public VtResponse capture(final String transactionId, final Long amount) {
-        return null;
-    }
-
-    @Override
     public VtResponse status(final String orderId) {
         return null;
     }
