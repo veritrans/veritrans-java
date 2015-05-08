@@ -1,31 +1,17 @@
 package id.co.veritrans.mdk.v1;
 
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
-import id.co.veritrans.mdk.v1.config.ProxyConfig;
 import id.co.veritrans.mdk.v1.exception.InvalidVtConfigException;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
-import id.co.veritrans.mdk.v1.gateway.VtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.VtWeb;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtDirect;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtWeb;
 import id.co.veritrans.mdk.v1.helper.ValidationUtil;
-import org.apache.commons.codec.binary.Base64;
-import org.apache.http.Header;
-import org.apache.http.HttpHost;
-import org.apache.http.auth.AuthScope;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.impl.client.BasicCredentialsProvider;
-import org.apache.http.impl.client.CloseableHttpClient;
-import org.apache.http.impl.client.HttpClientBuilder;
-import org.apache.http.impl.client.HttpClients;
-import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
-import org.apache.http.message.BasicHeader;
+import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtGatewaySession;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Set;
 
 /**
@@ -35,7 +21,7 @@ public class VtGatewayFactory {
 
     private final Validator validator = ValidationUtil.getValidator();
     private final VtGatewayConfig vtGatewayConfig;
-    private final VtGatewaySessionImpl vtGatewaySession;
+    private final DefaultVtGatewaySession vtGatewaySession;
 
     /**
      * VtGatewayFactory constructor
@@ -49,7 +35,7 @@ public class VtGatewayFactory {
 
         validate(vtGatewayConfig);
         this.vtGatewayConfig = vtGatewayConfig;
-        this.vtGatewaySession = new VtGatewaySessionImpl();
+        this.vtGatewaySession = new DefaultVtGatewaySession(vtGatewayConfig, validator);
     }
 
     /**
@@ -162,69 +148,6 @@ public class VtGatewayFactory {
         final Set<ConstraintViolation<VtGatewayConfig>> constraintViolations = validator.validate(vtGatewayConfig);
         if (!constraintViolations.isEmpty()) {
             throw new InvalidVtConfigException(ValidationUtil.buildExceptionMessage(constraintViolations.toArray()));
-        }
-    }
-
-    public class VtGatewaySessionImpl implements VtGatewaySession {
-
-        private final PoolingHttpClientConnectionManager connectionManager;
-        private final CloseableHttpClient httpClient;
-
-        public VtGatewaySessionImpl() {
-            connectionManager = new PoolingHttpClientConnectionManager();
-            if (connectionManager.getMaxTotal() < vtGatewayConfig.getMaxConnectionPoolSize()) {
-                connectionManager.setMaxTotal(vtGatewayConfig.getMaxConnectionPoolSize());
-            }
-            connectionManager.setDefaultMaxPerRoute(vtGatewayConfig.getMaxConnectionPoolSize());
-
-            httpClient = buildHttpClient();
-        }
-
-        @Override
-        public VtGatewayConfig getVtGatewayConfig() {
-            return vtGatewayConfig;
-        }
-
-        @Override
-        public void destroy() throws IOException {
-            connectionManager.close();
-            httpClient.close();
-        }
-
-        @Override
-        public CloseableHttpClient getHttpClient() {
-            return httpClient;
-        }
-
-        private CloseableHttpClient buildHttpClient() {
-            final List<Header> defaultHeaders = Arrays.asList(
-                    (Header) new BasicHeader("Accept", "application/json"),
-                    (Header) new BasicHeader("Content-Type", "application/json"),
-                    (Header) new BasicHeader("Authorization", "Basic " + Base64.encodeBase64String(vtGatewayConfig.getServerKey().getBytes()))
-            );
-
-            return configureProxy(HttpClients.custom()
-                    .setConnectionManager(connectionManager)
-                    .setDefaultHeaders(defaultHeaders)).build();
-        }
-
-        private HttpClientBuilder configureProxy(HttpClientBuilder httpClientBuilder) {
-            if (vtGatewayConfig.getProxyConfig() == null) {
-                return httpClientBuilder;
-            }
-
-            final ProxyConfig proxyConfig = vtGatewayConfig.getProxyConfig();
-            final HttpHost proxyHost = new HttpHost(proxyConfig.getHost(), proxyConfig.getPort());
-            final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
-
-            if (proxyConfig.getUsername() != null) {
-                credentialsProvider.setCredentials(new AuthScope(proxyHost), new UsernamePasswordCredentials(
-                        proxyConfig.getUsername(),
-                        proxyConfig.getPassword()));
-            }
-            return httpClientBuilder
-                    .setProxy(proxyHost)
-                    .setDefaultCredentialsProvider(credentialsProvider);
         }
     }
 

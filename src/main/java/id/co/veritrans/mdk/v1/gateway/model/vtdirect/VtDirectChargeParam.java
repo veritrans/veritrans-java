@@ -1,10 +1,7 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
+import id.co.veritrans.mdk.v1.gateway.model.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -13,12 +10,8 @@ import java.util.List;
 /**
  * Created by gde on 5/4/15.
  */
-public abstract class VtDirectChargeParam {
+public abstract class VtDirectChargeParam extends VtRequest {
 
-    @Valid
-    @NotNull
-    private TransactionDetails transactionDetails;
-    private List<TransactionItem> transactionItems;
     @Valid
     @NotNull
     private CustomerDetails customerDetails;
@@ -27,29 +20,12 @@ public abstract class VtDirectChargeParam {
     }
 
     public VtDirectChargeParam(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails) {
-        this.transactionDetails = transactionDetails;
-        this.transactionItems = transactionItems;
+        super(transactionDetails, transactionItems);
         this.customerDetails = customerDetails;
     }
 
     @JsonProperty
     public abstract PaymentMethod getPaymentMethod();
-
-    public TransactionDetails getTransactionDetails() {
-        return transactionDetails;
-    }
-
-    public void setTransactionDetails(final TransactionDetails transactionDetails) {
-        this.transactionDetails = transactionDetails;
-    }
-
-    public List<TransactionItem> getTransactionItems() {
-        return transactionItems;
-    }
-
-    public void setTransactionItems(final List<TransactionItem> transactionItems) {
-        this.transactionItems = transactionItems;
-    }
 
     public CustomerDetails getCustomerDetails() {
         return customerDetails;
@@ -63,14 +39,11 @@ public abstract class VtDirectChargeParam {
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
 
         final VtDirectChargeParam that = (VtDirectChargeParam) o;
 
         if (customerDetails != null ? !customerDetails.equals(that.customerDetails) : that.customerDetails != null)
-            return false;
-        if (transactionDetails != null ? !transactionDetails.equals(that.transactionDetails) : that.transactionDetails != null)
-            return false;
-        if (transactionItems != null ? !transactionItems.equals(that.transactionItems) : that.transactionItems != null)
             return false;
 
         return true;
@@ -78,8 +51,7 @@ public abstract class VtDirectChargeParam {
 
     @Override
     public int hashCode() {
-        int result = transactionDetails != null ? transactionDetails.hashCode() : 0;
-        result = 31 * result + (transactionItems != null ? transactionItems.hashCode() : 0);
+        int result = super.hashCode();
         result = 31 * result + (customerDetails != null ? customerDetails.hashCode() : 0);
         return result;
     }
