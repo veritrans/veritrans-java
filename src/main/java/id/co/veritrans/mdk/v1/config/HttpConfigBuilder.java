@@ -2,7 +2,7 @@ package id.co.veritrans.mdk.v1.config;
 
 public class HttpConfigBuilder {
 
-    private int maxConnectionPoolSize;
+    private int maxConnectionPoolSize = 16;
     private ProxyConfig proxyConfig;
 
     public HttpConfigBuilder setMaxConnectionPoolSize(final int maxConnectionPoolSize) {

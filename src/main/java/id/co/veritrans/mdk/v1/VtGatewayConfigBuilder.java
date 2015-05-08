@@ -2,13 +2,14 @@ package id.co.veritrans.mdk.v1;
 
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
 import id.co.veritrans.mdk.v1.config.HttpConfig;
+import id.co.veritrans.mdk.v1.config.HttpConfigBuilder;
 
 public class VtGatewayConfigBuilder {
 
     private EnvironmentType environmentType;
     private String serverKey;
     private String clientKey;
-    private HttpConfig httpConfig;
+    private HttpConfig httpConfig = new HttpConfigBuilder().createHttpConfig();
 
     public VtGatewayConfigBuilder setEnvironmentType(final EnvironmentType environmentType) {
         this.environmentType = environmentType;
