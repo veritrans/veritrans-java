@@ -1,9 +1,0 @@
-id.co.veritrans.mdk
-id.co.veritrans.mdk.config
-id.co.veritrans.mdk.exception
-id.co.veritrans.mdk.gateway
-id.co.veritrans.mdk.gateway.impl
-id.co.veritrans.mdk.gateway.model
-id.co.veritrans.mdk.gateway.model.vtdirect
-id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod
-id.co.veritrans.mdk.util

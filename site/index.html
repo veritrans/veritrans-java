@@ -143,7 +143,7 @@
 <hr />
 <h1 id="usage">Usage</h1>
 <h2 id="vtgatewayconfig">VtGatewayConfig</h2>
-<p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Payment API.<br />
+<p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.<br />
 See <a href="./javadoc/id/co/veritrans/mdk/VtGatewayConfig.html">VtGatewayConfig Javadoc</a>.</p>
 <h3 id="server-client-key">Server &amp; Client Key</h3>
 <p>You must set the <code>Server Key</code> and <code>Client Key</code> as defined in your <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal (MAP)</a>.</p>
@@ -164,14 +164,16 @@ vtGatewayConfig.setEnvironment(EnvironmentType.PRODUCTION);
 
 <h3 id="proxy-configuration">Proxy Configuration</h3>
 <p>You can setup proxy configuration if you need connect to Veritrans Payment API through proxy server.</p>
-<pre><code class="java">vtGatewayConfig.setProxyUsername(&quot;Your proxy username&quot;);
-vtGatewayConfig.setProxyPassword(&quot;Your proxy password&quot;);
+<pre><code class="java">vtGatewayConfig.getProxyConfig().setHost(&quot;proxy host address&quot;);
+vtGatewayConfig.getProxyConfig().setPort(12345);
+vtGatewayConfig.getProxyConfig().setUsername(&quot;proxy username or null&quot;);
+vtGatewayConfig.getProxyConfig().setPassword(&quot;proxy password or null&quot;);
 </code></pre>
 
 <p><br/></p>
 <h2 id="vtgatewayfactory">VtGatewayFactory</h2>
-<p>VtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a single instance of VtGatewayFactory class and maintain the reference to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect.  </p>
-<p>If you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a VtGatewayFactory instance for each configuration profile and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances.  </p>
+<p>VtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a single instance of VtGatewayFactory class and maintain the reference to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect and VtWeb.  </p>
+<p>If you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a VtGatewayFactory instance for each configuration profile and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances. VtGatewayFactory also has few a convenient methods to directly configure the underlying VtGatewayConfig instance.</p>
 <p>See <a href="./javadoc/id/co/veritrans/mdk/VtGatewayFactory.html">VtGatewayFactory Javadoc</a><br />
 Example code to build a VtGatewayFactory:</p>
 <pre><code class="java">VtGatewayFactory vtGatewayFactory = new VtGatewayFactory(vtGatewayConfig);
@@ -481,7 +483,7 @@ void doPost(HttpServletRequest req, HttpServletResponse resp) {
         vtResponse = vtDirect.status(orderId); //we used VtDirect in this example, however we can use VtWeb too
 
         if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
-            //handle successful Mandiri Clickpay charge request
+            //handle settled / successful charge request
         } else {
             //handle denied / unexpected response
         }

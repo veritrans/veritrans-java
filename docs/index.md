@@ -28,7 +28,7 @@ compile 'id.co.veritrans:veritrans-java:1.0.0'
 # Usage
 
 ## VtGatewayConfig
-VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Payment API.  
+VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.  
 See [VtGatewayConfig Javadoc](javadoc/id/co/veritrans/mdk/VtGatewayConfig.html).
 
 ### Server & Client Key
@@ -54,15 +54,17 @@ vtGatewayConfig.setEnvironment(EnvironmentType.PRODUCTION);
 ### Proxy Configuration
 You can setup proxy configuration if you need connect to Veritrans Payment API through proxy server.
 ```java
-vtGatewayConfig.setProxyUsername("Your proxy username");
-vtGatewayConfig.setProxyPassword("Your proxy password");
+vtGatewayConfig.getProxyConfig().setHost("proxy host address");
+vtGatewayConfig.getProxyConfig().setPort(12345);
+vtGatewayConfig.getProxyConfig().setUsername("proxy username or null");
+vtGatewayConfig.getProxyConfig().setPassword("proxy password or null");
 ```
 
 <br/>
 ## VtGatewayFactory
-VtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a single instance of VtGatewayFactory class and maintain the reference to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect.  
+VtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a single instance of VtGatewayFactory class and maintain the reference to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect and VtWeb.  
   
-If you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a VtGatewayFactory instance for each configuration profile and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances.  
+If you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a VtGatewayFactory instance for each configuration profile and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances. VtGatewayFactory also has few a convenient methods to directly configure the underlying VtGatewayConfig instance.
 
 See [VtGatewayFactory Javadoc](javadoc/id/co/veritrans/mdk/VtGatewayFactory.html)  
 Example code to build a VtGatewayFactory:
@@ -401,7 +403,7 @@ void doPost(HttpServletRequest req, HttpServletResponse resp) {
         vtResponse = vtDirect.status(orderId); //we used VtDirect in this example, however we can use VtWeb too
 
         if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
-            //handle successful Mandiri Clickpay charge request
+            //handle settled / successful charge request
         } else {
             //handle denied / unexpected response
         }
