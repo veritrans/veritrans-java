@@ -1,7 +1,8 @@
 package id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod;
 
 import id.co.veritrans.mdk.TestUtil;
-import id.co.veritrans.mdk.util.ValidationUtil;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -59,7 +60,7 @@ public class CreditCardTest {
         constraintViolations = validator.validate(creditCard);
         assertFalse(constraintViolations.isEmpty());
 
-        String errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray());
+        String errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray(new ConstraintViolation[0]));
         assertTrue(errorMessage.contains("tokenId"));
         assertTrue(errorMessage.contains("acquirerBank"));
     }
