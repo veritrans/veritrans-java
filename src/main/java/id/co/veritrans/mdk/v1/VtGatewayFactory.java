@@ -42,10 +42,12 @@ public class VtGatewayFactory {
      *
      * @param vtGatewayConfig Veritrans {@link id.co.veritrans.mdk.v1.VtGatewayConfig gateway configuration} (not null)
      */
-    public VtGatewayFactory(VtGatewayConfig vtGatewayConfig) {
+    public VtGatewayFactory(VtGatewayConfig vtGatewayConfig) throws InvalidVtConfigException {
         if (vtGatewayConfig == null) {
             throw new NullPointerException("vtGatewayConfig");
         }
+
+        validate(vtGatewayConfig);
         this.vtGatewayConfig = vtGatewayConfig;
         this.vtGatewaySession = new VtGatewaySessionImpl();
     }
@@ -92,10 +94,10 @@ public class VtGatewayFactory {
      * @return Merchant proxy host config
      */
     public String getProxyHost() {
-        if (vtGatewayConfig.getHttpConfig().getProxyConfig() == null) {
+        if (vtGatewayConfig.getProxyConfig() == null) {
             return null;
         }
-        return vtGatewayConfig.getHttpConfig().getProxyConfig().getHost();
+        return vtGatewayConfig.getProxyConfig().getHost();
     }
 
     /**
@@ -104,10 +106,10 @@ public class VtGatewayFactory {
      * @return Merchant proxy port config
      */
     public int getProxyPort() {
-        if (vtGatewayConfig.getHttpConfig().getProxyConfig() == null) {
+        if (vtGatewayConfig.getProxyConfig() == null) {
             return 0;
         }
-        return vtGatewayConfig.getHttpConfig().getProxyConfig().getPort();
+        return vtGatewayConfig.getProxyConfig().getPort();
     }
 
     /**
@@ -116,10 +118,10 @@ public class VtGatewayFactory {
      * @return Merchant proxy username config
      */
     public String getProxyUsername() {
-        if (vtGatewayConfig.getHttpConfig().getProxyConfig() == null) {
+        if (vtGatewayConfig.getProxyConfig() == null) {
             return null;
         }
-        return this.vtGatewayConfig.getHttpConfig().getProxyConfig().getUsername();
+        return this.vtGatewayConfig.getProxyConfig().getUsername();
     }
 
     /**
@@ -128,10 +130,10 @@ public class VtGatewayFactory {
      * @return Merchant proxy password config
      */
     public String getProxyPassword() {
-        if (vtGatewayConfig.getHttpConfig().getProxyConfig() == null) {
+        if (vtGatewayConfig.getProxyConfig() == null) {
             return null;
         }
-        return this.vtGatewayConfig.getHttpConfig().getProxyConfig().getPassword();
+        return this.vtGatewayConfig.getProxyConfig().getPassword();
     }
 
     /**
@@ -140,7 +142,6 @@ public class VtGatewayFactory {
      * @return Veritrans {@link id.co.veritrans.mdk.v1.gateway.VtDirect VtDirect} object to setup the transaction using VT-Direct
      */
     public VtDirect vtDirect() throws InvalidVtConfigException {
-        validate(vtGatewayConfig);
         return new DefaultVtDirect(vtGatewaySession);
     }
 
@@ -150,7 +151,6 @@ public class VtGatewayFactory {
      * @return Veritrans {@link id.co.veritrans.mdk.v1.gateway.VtWeb VtWeb} object to setup the transaction using VT-Web
      */
     public VtWeb vtWeb() throws InvalidVtConfigException {
-        validate(vtGatewayConfig);
         return new DefaultVtWeb(vtGatewaySession);
     }
 
@@ -190,10 +190,10 @@ public class VtGatewayFactory {
 
         public VtGatewaySessionImpl() {
             connectionManager = new PoolingHttpClientConnectionManager();
-            if (connectionManager.getMaxTotal() < vtGatewayConfig.getHttpConfig().getMaxConnectionPoolSize()) {
-                connectionManager.setMaxTotal(vtGatewayConfig.getHttpConfig().getMaxConnectionPoolSize());
+            if (connectionManager.getMaxTotal() < vtGatewayConfig.getMaxConnectionPoolSize()) {
+                connectionManager.setMaxTotal(vtGatewayConfig.getMaxConnectionPoolSize());
             }
-            connectionManager.setDefaultMaxPerRoute(vtGatewayConfig.getHttpConfig().getMaxConnectionPoolSize());
+            connectionManager.setDefaultMaxPerRoute(vtGatewayConfig.getMaxConnectionPoolSize());
 
             httpClient = buildHttpClient();
         }
@@ -227,11 +227,11 @@ public class VtGatewayFactory {
         }
 
         private HttpClientBuilder configureProxy(HttpClientBuilder httpClientBuilder) {
-            if (vtGatewayConfig.getHttpConfig().getProxyConfig() == null) {
+            if (vtGatewayConfig.getProxyConfig() == null) {
                 return httpClientBuilder;
             }
 
-            final ProxyConfig proxyConfig = vtGatewayConfig.getHttpConfig().getProxyConfig();
+            final ProxyConfig proxyConfig = vtGatewayConfig.getProxyConfig();
             final HttpHost proxyHost = new HttpHost(proxyConfig.getHost(), proxyConfig.getPort());
             final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
 

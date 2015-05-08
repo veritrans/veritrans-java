@@ -4,6 +4,8 @@ import id.co.veritrans.mdk.gateway.model.CustomerDetails;
 import id.co.veritrans.mdk.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.config.ProxyConfig;
+import id.co.veritrans.mdk.v1.config.ProxyConfigBuilder;
 
 import java.util.Date;
 import java.util.LinkedList;
@@ -49,4 +51,12 @@ public class TestUtil {
 
         return transactionItems;
     }
+
+    /* Build proxy config */
+    public static ProxyConfig buildProxyConfig() {
+        return new ProxyConfigBuilder()
+                .setHost("localhost")
+                .build();
+    }
+
 }

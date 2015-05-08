@@ -27,7 +27,7 @@ public class ProxyConfigBuilder {
         return this;
     }
 
-    public ProxyConfig createProxyConfig() {
+    public ProxyConfig build() {
         return new ProxyConfig(host, port, username, password);
     }
 }

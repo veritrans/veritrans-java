@@ -1,37 +1,41 @@
 package id.co.veritrans.mdk.v1;
 
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
-import id.co.veritrans.mdk.v1.config.HttpConfig;
-import id.co.veritrans.mdk.v1.config.HttpConfigBuilder;
+import id.co.veritrans.mdk.v1.config.ProxyConfig;
 
 public class VtGatewayConfigBuilder {
-
     private EnvironmentType environmentType;
     private String serverKey;
     private String clientKey;
-    private HttpConfig httpConfig = new HttpConfigBuilder().createHttpConfig();
+    private int maxConnectionPoolSize;
+    private ProxyConfig proxyConfig;
 
-    public VtGatewayConfigBuilder setEnvironmentType(final EnvironmentType environmentType) {
+    public VtGatewayConfigBuilder setEnvironmentType(EnvironmentType environmentType) {
         this.environmentType = environmentType;
         return this;
     }
 
-    public VtGatewayConfigBuilder setServerKey(final String serverKey) {
+    public VtGatewayConfigBuilder setServerKey(String serverKey) {
         this.serverKey = serverKey;
         return this;
     }
 
-    public VtGatewayConfigBuilder setClientKey(final String clientKey) {
+    public VtGatewayConfigBuilder setClientKey(String clientKey) {
         this.clientKey = clientKey;
         return this;
     }
 
-    public VtGatewayConfigBuilder setHttpConfig(final HttpConfig httpConfig) {
-        this.httpConfig = httpConfig;
+    public VtGatewayConfigBuilder setMaxConnectionPoolSize(int maxConnectionPoolSize) {
+        this.maxConnectionPoolSize = maxConnectionPoolSize;
         return this;
     }
 
-    public VtGatewayConfig createVtGatewayConfig() {
-        return new VtGatewayConfig(environmentType, serverKey, clientKey, httpConfig);
+    public VtGatewayConfigBuilder setProxyConfig(ProxyConfig proxyConfig) {
+        this.proxyConfig = proxyConfig;
+        return this;
+    }
+
+    public VtGatewayConfig build() {
+        return new VtGatewayConfig(environmentType, serverKey, clientKey, maxConnectionPoolSize, proxyConfig);
     }
 }
