@@ -8,9 +8,22 @@ import id.co.veritrans.mdk.gateway.VtWeb;
 import id.co.veritrans.mdk.gateway.impl.DefaultVtDirect;
 import id.co.veritrans.mdk.gateway.impl.DefaultVtWeb;
 import id.co.veritrans.mdk.util.ValidationUtil;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.http.Header;
+import org.apache.http.HttpHost;
+import org.apache.http.auth.AuthScope;
+import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.impl.client.BasicCredentialsProvider;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.message.BasicHeader;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -21,6 +34,7 @@ public class VtGatewayFactory {
     private Validator validator;
     private Set<ConstraintViolation<VtGatewayConfig>> constraintViolations;
     private VtGatewayConfig vtGatewayConfig;
+    private Session session;
 
     /**
      * VtGatewayFactory constructor
@@ -58,6 +72,11 @@ public class VtGatewayFactory {
             throw new NullPointerException("vtGatewayConfig");
         }
         this.vtGatewayConfig = vtGatewayConfig;
+
+        if (this.session != null) {
+            this.session.close();
+        }
+        this.session = new Session();
     }
 
     /**
@@ -116,6 +135,7 @@ public class VtGatewayFactory {
 
     /**
      * Get merchant proxy host configuration
+     *
      * @return Merchant proxy host config
      */
     public String getProxyHost() {
@@ -127,6 +147,7 @@ public class VtGatewayFactory {
 
     /**
      * Set merchant proxy host configuration
+     *
      * @param proxyHost Merchant proxy host config
      */
     public void setProxyHost(String proxyHost) {
@@ -136,6 +157,7 @@ public class VtGatewayFactory {
 
     /**
      * Get merchant proxy port configuration
+     *
      * @return Merchant proxy port config
      */
     public int getProxyPort() {
@@ -147,6 +169,7 @@ public class VtGatewayFactory {
 
     /**
      * Set merchant proxy port configuration
+     *
      * @param proxyPort Merchant proxy port config
      */
     public void setProxyPort(int proxyPort) {
@@ -205,7 +228,7 @@ public class VtGatewayFactory {
      */
     public VtDirect vtDirect() throws InvalidVtConfigException {
         validate(vtGatewayConfig);
-        return new DefaultVtDirect(vtGatewayConfig);
+        return new DefaultVtDirect(vtGatewayConfig, session);
     }
 
     /**
@@ -215,7 +238,7 @@ public class VtGatewayFactory {
      */
     public VtWeb vtWeb() throws InvalidVtConfigException {
         validate(vtGatewayConfig);
-        return new DefaultVtWeb(vtGatewayConfig);
+        return new DefaultVtWeb(vtGatewayConfig, session);
     }
 
     private void validate(VtGatewayConfig vtGatewayConfig) throws InvalidVtConfigException {
@@ -247,5 +270,60 @@ public class VtGatewayFactory {
     @Override
     public int hashCode() {
         return vtGatewayConfig != null ? vtGatewayConfig.hashCode() : 0;
+    }
+
+    /**
+     * This is internal class with design flaw. We should make the whole config classes immutable from the beginning
+     * so don't have to worry about the configuration change, hence we can reuse the returned CloseableHttpClient without
+     * worry.
+     */
+    public class Session {
+
+        private final PoolingHttpClientConnectionManager connectionManager;
+
+        public Session() {
+            connectionManager = new PoolingHttpClientConnectionManager();
+        }
+
+        public void close() {
+            connectionManager.close();
+        }
+
+        public CloseableHttpClient getHttpClient() {
+            checkConnectionManagerConfiguration();
+            final List<Header> defaultHeaders = Arrays.asList(
+                    (Header) new BasicHeader("Accept", "application/json"),
+                    (Header) new BasicHeader("Content-Type", "application/json"),
+                    (Header) new BasicHeader("Authorization", "Basic " + Base64.encodeBase64String(vtGatewayConfig.getServerKey().getBytes()))
+            );
+
+            return configureProxy(HttpClients.custom()
+                    .setConnectionManager(connectionManager)
+                    .setDefaultHeaders(defaultHeaders)).build();
+        }
+
+        private HttpClientBuilder configureProxy(HttpClientBuilder httpClientBuilder) {
+            if (vtGatewayConfig.getProxyConfig() == null) {
+                return httpClientBuilder;
+            }
+
+            final HttpHost proxyHost = new HttpHost(vtGatewayConfig.getProxyConfig().getHost(), vtGatewayConfig.getProxyConfig().getPort());
+            final BasicCredentialsProvider credentialsProvider = new BasicCredentialsProvider();
+            if (vtGatewayConfig.getProxyConfig().getUsername() != null) {
+                credentialsProvider.setCredentials(new AuthScope(proxyHost), new UsernamePasswordCredentials(
+                        vtGatewayConfig.getProxyConfig().getUsername(),
+                        vtGatewayConfig.getProxyConfig().getPassword()));
+            }
+            return httpClientBuilder
+                    .setProxy(proxyHost)
+                    .setDefaultCredentialsProvider(credentialsProvider);
+        }
+
+        private void checkConnectionManagerConfiguration() {
+            if (connectionManager.getMaxTotal() < vtGatewayConfig.getMaxHttpConnectionPoolSize()) {
+                connectionManager.setMaxTotal(vtGatewayConfig.getMaxHttpConnectionPoolSize());
+            }
+            connectionManager.setDefaultMaxPerRoute(vtGatewayConfig.getMaxHttpConnectionPoolSize());
+        }
     }
 }

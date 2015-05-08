@@ -1,6 +1,7 @@
 package id.co.veritrans.mdk.gateway.impl;
 
 import id.co.veritrans.mdk.VtGatewayConfig;
+import id.co.veritrans.mdk.VtGatewayFactory;
 import id.co.veritrans.mdk.gateway.VtDirect;
 import id.co.veritrans.mdk.gateway.model.VtResponse;
 import id.co.veritrans.mdk.gateway.model.vtdirect.VtDirectChargeParam;
@@ -10,8 +11,8 @@ import id.co.veritrans.mdk.gateway.model.vtdirect.VtDirectChargeParam;
  */
 public class DefaultVtDirect extends DefaultVtGateway implements VtDirect {
 
-    public DefaultVtDirect(final VtGatewayConfig vtGatewayConfig) {
-        super(vtGatewayConfig);
+    public DefaultVtDirect(final VtGatewayConfig vtGatewayConfig, final VtGatewayFactory.Session session) {
+        super(vtGatewayConfig, session);
     }
 
     @Override

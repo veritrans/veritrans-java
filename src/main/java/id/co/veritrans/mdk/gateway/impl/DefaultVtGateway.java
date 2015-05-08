@@ -1,6 +1,7 @@
 package id.co.veritrans.mdk.gateway.impl;
 
 import id.co.veritrans.mdk.VtGatewayConfig;
+import id.co.veritrans.mdk.VtGatewayFactory;
 import id.co.veritrans.mdk.gateway.VtGateway;
 import id.co.veritrans.mdk.gateway.model.VtResponse;
 
@@ -10,9 +11,11 @@ import id.co.veritrans.mdk.gateway.model.VtResponse;
 public abstract class DefaultVtGateway implements VtGateway {
 
     private VtGatewayConfig vtGatewayConfig;
+    private VtGatewayFactory.Session session;
 
-    public DefaultVtGateway(final VtGatewayConfig vtGatewayConfig) {
+    public DefaultVtGateway(final VtGatewayConfig vtGatewayConfig, final VtGatewayFactory.Session session) {
         this.vtGatewayConfig = vtGatewayConfig;
+        this.session = session;
     }
 
     public VtGatewayConfig getVtGatewayConfig() {
@@ -21,6 +24,14 @@ public abstract class DefaultVtGateway implements VtGateway {
 
     public void setVtGatewayConfig(final VtGatewayConfig vtGatewayConfig) {
         this.vtGatewayConfig = vtGatewayConfig;
+    }
+
+    public VtGatewayFactory.Session getSession() {
+        return session;
+    }
+
+    public void setSession(final VtGatewayFactory.Session session) {
+        this.session = session;
     }
 
     @Override

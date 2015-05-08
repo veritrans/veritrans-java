@@ -1,6 +1,7 @@
 package id.co.veritrans.mdk.gateway.impl;
 
 import id.co.veritrans.mdk.VtGatewayConfig;
+import id.co.veritrans.mdk.VtGatewayFactory;
 import id.co.veritrans.mdk.gateway.VtWeb;
 
 /**
@@ -8,7 +9,7 @@ import id.co.veritrans.mdk.gateway.VtWeb;
  */
 public class DefaultVtWeb extends DefaultVtGateway implements VtWeb {
 
-    public DefaultVtWeb(final VtGatewayConfig vtGatewayConfig) {
-        super(vtGatewayConfig);
+    public DefaultVtWeb(final VtGatewayConfig vtGatewayConfig, final VtGatewayFactory.Session session) {
+        super(vtGatewayConfig, session);
     }
 }
