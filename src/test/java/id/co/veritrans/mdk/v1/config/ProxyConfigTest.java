@@ -1,6 +1,6 @@
 package id.co.veritrans.mdk.v1.config;
 
-import id.co.veritrans.mdk.util.ValidationUtil;
+import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
@@ -37,7 +37,7 @@ public class ProxyConfigTest {
         Set<ConstraintViolation<ProxyConfig>> error = ValidationUtil.getValidator().validate(proxyConfig);
         Assert.assertFalse(error.isEmpty());
 
-        String errorMessage = ValidationUtil.buildExceptionMessage(error.toArray());
+        String errorMessage = ValidationUtil.buildExceptionMessage(error.toArray(new ConstraintViolation[0]));
         Assert.assertTrue(errorMessage.contains("host"));
     }
 }

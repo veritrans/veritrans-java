@@ -1,7 +1,7 @@
 package id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod;
 
-import id.co.veritrans.mdk.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.util.ValidationUtil;
+import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
+import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import org.testng.annotations.Test;
 
 import javax.validation.ConstraintViolation;
@@ -44,7 +44,7 @@ public class CustomerDetailsTest {
         Set<ConstraintViolation<CustomerDetails>> constraintViolations = ValidationUtil.getValidator().validate(customerDetails);
         assertFalse(constraintViolations.isEmpty());
 
-        String errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray());
+        String errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray(new ConstraintViolation[0]));
         assertTrue(errorMessage.contains("firstName"));
         assertTrue(errorMessage.contains("email"));
         assertTrue(errorMessage.contains("phone"));
@@ -56,7 +56,7 @@ public class CustomerDetailsTest {
         constraintViolations = ValidationUtil.getValidator().validate(customerDetails);
         assertFalse(constraintViolations.isEmpty());
 
-        errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray());
+        errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray(new ConstraintViolation[0]));
         assertTrue(errorMessage.contains("phone"));
     }
 }

@@ -3,7 +3,7 @@ package id.co.veritrans.mdk.v1.config;
 public class ProxyConfigBuilder {
 
     private String host;
-    private int port;
+    private int port = -1;
     private String username;
     private String password;
 

@@ -29,7 +29,7 @@ public class VtDirectTestIT {
     private final VtDirect vtDirect = vtGatewayFactory.vtDirect();
 
     @Test
-    public void testChargeSale() throws RestClientException {
+    public void testChargeMandiriClickpay() throws RestClientException {
         final String orderId = String.valueOf(System.nanoTime());
         final MandiriClickpayRequest req = new MandiriClickpayRequest();
         req.setTransactionDetails(new TransactionDetails(orderId, 10000l));

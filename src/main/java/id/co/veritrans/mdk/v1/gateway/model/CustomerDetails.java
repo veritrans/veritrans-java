@@ -1,7 +1,5 @@
 package id.co.veritrans.mdk.v1.gateway.model;
 
-import id.co.veritrans.mdk.gateway.model.Address;
-
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
@@ -18,8 +16,8 @@ public class CustomerDetails {
     @NotNull
     @Pattern(regexp = "^\\+?[0-9\\-]{5,}$")
     private String phone;
-    private id.co.veritrans.mdk.gateway.model.Address billingAddress;
-    private id.co.veritrans.mdk.gateway.model.Address shippingAddress;
+    private Address billingAddress;
+    private Address shippingAddress;
 
     /**
      * Customer detail constructor
@@ -34,10 +32,10 @@ public class CustomerDetails {
      * @param lastName        Customer last name
      * @param email           Customer email
      * @param phone           Customer phone number
-     * @param billingAddress  Customer {@link id.co.veritrans.mdk.gateway.model.Address billing address}
-     * @param shippingAddress Customer {@link id.co.veritrans.mdk.gateway.model.Address shipping address}
+     * @param billingAddress  Customer {@link id.co.veritrans.mdk.v1.gateway.model.Address billing address}
+     * @param shippingAddress Customer {@link id.co.veritrans.mdk.v1.gateway.model.Address shipping address}
      */
-    public CustomerDetails(final String firstName, final String lastName, final String email, final String phone, final id.co.veritrans.mdk.gateway.model.Address billingAddress, final id.co.veritrans.mdk.gateway.model.Address shippingAddress) {
+    public CustomerDetails(final String firstName, final String lastName, final String email, final String phone, final Address billingAddress, final Address shippingAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -121,34 +119,34 @@ public class CustomerDetails {
     /**
      * Get customer billing address
      *
-     * @return Customer {@link id.co.veritrans.mdk.gateway.model.Address billing address}
+     * @return Customer {@link id.co.veritrans.mdk.v1.gateway.model.Address billing address}
      */
-    public id.co.veritrans.mdk.gateway.model.Address getBillingAddress() {
+    public Address getBillingAddress() {
         return billingAddress;
     }
 
     /**
      * Set customer billing address
      *
-     * @param billingAddress Customer {@link id.co.veritrans.mdk.gateway.model.Address billing address}
+     * @param billingAddress Customer {@link id.co.veritrans.mdk.v1.gateway.model.Address billing address}
      */
-    public void setBillingAddress(final id.co.veritrans.mdk.gateway.model.Address billingAddress) {
+    public void setBillingAddress(final Address billingAddress) {
         this.billingAddress = billingAddress;
     }
 
     /**
      * Get customer shipping address
      *
-     * @return Customer {@link id.co.veritrans.mdk.gateway.model.Address shipping address}
+     * @return Customer {@link id.co.veritrans.mdk.v1.gateway.model.Address shipping address}
      */
-    public id.co.veritrans.mdk.gateway.model.Address getShippingAddress() {
+    public Address getShippingAddress() {
         return shippingAddress;
     }
 
     /**
      * Set customer shipping address
      *
-     * @param shippingAddress Customer {@link id.co.veritrans.mdk.gateway.model.Address shipping address}
+     * @param shippingAddress Customer {@link id.co.veritrans.mdk.v1.gateway.model.Address shipping address}
      */
     public void setShippingAddress(final Address shippingAddress) {
         this.shippingAddress = shippingAddress;

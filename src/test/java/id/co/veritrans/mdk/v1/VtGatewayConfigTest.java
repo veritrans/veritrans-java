@@ -1,10 +1,10 @@
 package id.co.veritrans.mdk.v1;
 
 import id.co.veritrans.mdk.TestUtil;
-import id.co.veritrans.mdk.util.ValidationUtil;
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
-import org.testng.annotations.Test;
+import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import org.testng.Assert;
+import org.testng.annotations.Test;
 
 import javax.validation.ConstraintViolation;
 import java.util.Set;
@@ -38,12 +38,13 @@ public class VtGatewayConfigTest {
     public void testVtGatewayConfigError() {
         VtGatewayConfig config = new VtGatewayConfigBuilder()
                 .setEnvironmentType(EnvironmentType.PRODUCTION)
+                .setMaxConnectionPoolSize(0)
                 .createVtGatewayConfig();
 
         Set<ConstraintViolation<VtGatewayConfig>> err = ValidationUtil.getValidator().validate(config);
         Assert.assertFalse(err.isEmpty());
 
-        String errorMessage = ValidationUtil.buildExceptionMessage(err.toArray());
+        String errorMessage = ValidationUtil.buildExceptionMessage(err.toArray(new ConstraintViolation[0]));
         Assert.assertTrue(errorMessage.contains("maxConnectionPoolSize"));
         Assert.assertTrue(errorMessage.contains("clientKey"));
         Assert.assertTrue(errorMessage.contains("serverKey"));

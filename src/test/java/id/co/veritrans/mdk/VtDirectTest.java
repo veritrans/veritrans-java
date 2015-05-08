@@ -1,10 +1,11 @@
 package id.co.veritrans.mdk;
 
-import id.co.veritrans.mdk.config.EnvironmentType;
-import id.co.veritrans.mdk.exception.InvalidVtConfigException;
-import id.co.veritrans.mdk.gateway.VtDirect;
-import id.co.veritrans.mdk.gateway.model.vtdirect.CreditCardRequest;
-import id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.VtGatewayConfigBuilder;
+import id.co.veritrans.mdk.v1.VtGatewayFactory;
+import id.co.veritrans.mdk.v1.config.EnvironmentType;
+import id.co.veritrans.mdk.v1.gateway.VtDirect;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
@@ -14,14 +15,15 @@ public class VtDirectTest {
 
     @BeforeClass
     public void prepare() {
-        factory = new VtGatewayFactory();
-        factory.setServerKey("a");
-        factory.setClientKey("b");
-        factory.setEnvironmentType(EnvironmentType.SANDBOX);
+        factory = new VtGatewayFactory(new VtGatewayConfigBuilder()
+                .setServerKey("a")
+                .setClientKey("b")
+                .setEnvironmentType(EnvironmentType.SANDBOX)
+                .createVtGatewayConfig());
     }
 
     @Test
-    public void testChargeCreditCardNormal() throws InvalidVtConfigException {
+    public void testChargeCreditCardNormal() {
         CreditCard card = new CreditCard();
         card.setTokenId("token credit card");
 

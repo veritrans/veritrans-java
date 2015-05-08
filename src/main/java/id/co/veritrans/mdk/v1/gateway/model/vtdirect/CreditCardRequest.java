@@ -1,7 +1,10 @@
-package id.co.veritrans.mdk.gateway.model.vtdirect;
+package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
-import id.co.veritrans.mdk.gateway.model.*;
-import id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
+import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
+import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
+import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -10,7 +13,7 @@ import java.util.List;
 /**
  * Veritrans VT-Direct credit card request model
  */
-public class CreditCardRequest extends VtDirectChargeParam {
+public class CreditCardRequest extends VtDirectChargeRequest {
 
     @Valid
     @NotNull
@@ -35,7 +38,7 @@ public class CreditCardRequest extends VtDirectChargeParam {
 
     /**
      * Set credit card data for charging
-     * @param creditCard {@link id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard Credit card} data
+     * @param creditCard {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard Credit card} data
      */
     public void setCreditCard(final CreditCard creditCard) {
         this.creditCard = creditCard;

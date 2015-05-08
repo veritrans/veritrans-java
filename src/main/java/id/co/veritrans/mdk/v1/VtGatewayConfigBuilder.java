@@ -7,7 +7,7 @@ public class VtGatewayConfigBuilder {
     private EnvironmentType environmentType;
     private String serverKey;
     private String clientKey;
-    private int maxConnectionPoolSize;
+    private int maxConnectionPoolSize = 16;
     private ProxyConfig proxyConfig;
 
     public VtGatewayConfigBuilder setEnvironmentType(EnvironmentType environmentType) {

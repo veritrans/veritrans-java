@@ -1,13 +1,13 @@
 package id.co.veritrans.mdk;
 
-import id.co.veritrans.mdk.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.gateway.model.TransactionDetails;
-import id.co.veritrans.mdk.gateway.model.TransactionItem;
-import id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard;
-import id.co.veritrans.mdk.v1.*;
+import id.co.veritrans.mdk.v1.VtGatewayConfigBuilder;
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
 import id.co.veritrans.mdk.v1.config.ProxyConfig;
 import id.co.veritrans.mdk.v1.config.ProxyConfigBuilder;
+import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
+import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
+import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 
 import java.util.Date;
 import java.util.LinkedList;
