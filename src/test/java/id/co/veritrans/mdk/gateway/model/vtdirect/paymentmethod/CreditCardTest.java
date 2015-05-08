@@ -1,5 +1,6 @@
 package id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod;
 
+import id.co.veritrans.mdk.TestUtil;
 import id.co.veritrans.mdk.util.ValidationUtil;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
@@ -20,14 +21,6 @@ public class CreditCardTest {
     private Set<ConstraintViolation<CreditCard>> constraintViolations;
     private Validator validator;
 
-    public static CreditCard buildCreditCard() {
-        CreditCard creditCard = new CreditCard();
-        creditCard.setTokenId("abcdef");
-        creditCard.setAcquirerBank(CreditCard.Bank.BNI);
-
-        return creditCard;
-    }
-
     @BeforeClass
     public void prepare() {
         validator = ValidationUtil.getValidator();
@@ -39,7 +32,7 @@ public class CreditCardTest {
         bins.add("1234");
         bins.add("5678");
 
-        CreditCard creditCard = buildCreditCard();
+        CreditCard creditCard = TestUtil.buildCreditCard();
         creditCard.setBins(bins);
         creditCard.setInstallmentTerm(6);
         creditCard.setSaveTokenId(true);
@@ -55,7 +48,7 @@ public class CreditCardTest {
         constraintViolations = validator.validate(creditCard);
         assertTrue(constraintViolations.isEmpty());
 
-        constraintViolations = validator.validate(buildCreditCard());
+        constraintViolations = validator.validate(TestUtil.buildCreditCard());
         assertTrue(constraintViolations.isEmpty());
     }
 
