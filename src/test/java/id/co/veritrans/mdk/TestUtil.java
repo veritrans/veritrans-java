@@ -5,7 +5,6 @@ import id.co.veritrans.mdk.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard;
 
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -46,7 +45,7 @@ public class TestUtil {
     /* Build list of transaction item object */
     public static List<TransactionItem> buildTransactionItems() {
         List<TransactionItem> transactionItems = new LinkedList<TransactionItem>();
-        transactionItems.add(new TransactionItem("1", "Phone", new BigDecimal(10000L), 1));
+        transactionItems.add(new TransactionItem("1", "Phone", (10000L), 1));
 
         return transactionItems;
     }
