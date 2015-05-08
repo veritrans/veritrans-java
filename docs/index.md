@@ -33,6 +33,7 @@ Please note that every classes related with VtGatewayConfig is `immutable` by de
 
 See [VtGatewayConfig Javadoc](javadoc/id/co/veritrans/mdk/v1/VtGatewayConfig.html).
 See [VtGatewayConfigBuilder Javadoc](javadoc/id/co/veritrans/mdk/v1/VtGatewayConfigBuilder.html).
+See [id.co.veritrans.mdk.v1.config Javadoc](javadoc/id/co/veritrans/mdk/v1/config/package-summary.html)
 
 ### Server & Client Key
 You must set the `Server Key` and `Client Key` as defined in your [Merchant Administration Portal (MAP)](https://my.sandbox.veritrans.co.id/login).
@@ -54,25 +55,73 @@ vtGatewayConfigBuilder.setEnvironment(EnvironmentType.SANDBOX);
 vtGatewayConfigBuilder.setEnvironment(EnvironmentType.PRODUCTION);
 ```
 
-### Proxy Configuration
-You can setup proxy configuration if you need connect to Veritrans Payment API through proxy server.
+<br/>
+### HTTP Configuration
+HTTP Configuration holds various values which is used during executing HTTP Request.  
+See [HttpConfig Javadoc](javadoc/id/co/veritrans/mdk/v1/config/HttpConfig.html).  
+See [HttpConfigBuilder Javadoc](javadoc/id/co/veritrans/mdk/v1/config/HttpConfigBuilder.html).
 ```java
-vtGatewayConfigBuilder.getHttpConfig().getProxyConfig().setHost("proxy host address");
-vtGatewayConfigBuilder.getHttpConfig().getProxyConfig().setPort(12345);
-vtGatewayConfigBuilder.getHttpConfig().getProxyConfig().setUsername("proxy username or null");
-vtGatewayConfigBuilder.getHttpConfig().getProxyConfig().setPassword("proxy password or null");
+HttpConfigBuilder httpConfigBuilder = new HttpConfigBuilder();
+vtGatewayConfigBuilder.setHttpConfig(httpConfigBuilder.createHttpConfig());
+```
+
+<br/>
+#### Connection Pool Size
+Veritrans-Java Client is designed to use a HTTP Connection Pool to maintain it's HTTP Connection to Veritrans Server, thus we can take benefit from the
+HTTP Keep Alive feature and reuse the connection. In order to support this functionality, a connection pool size need to be set explicitly,
+to accomodate the needs of every different companies.  
+We recommend to set `maximum HTTP Connection Pool Size to 16`, however it is up to you to set it to a lower or higher value. Do remember that a too low or too high
+value **`could degrade the system performance`**.
+```java
+httpConfigBuilder.setMaxConnectionPoolSize(16);
+vtGatewayConfigBuilder.setHttpConfig(httpConfigBuilder.createHttpConfig());
+```
+
+<br/>
+#### Proxy Configuration
+You can setup proxy configuration if you need connect to Veritrans Payment API through proxy server.  
+See [ProxyConfig Javadoc](javadoc/id/co/veritrans/mdk/v1/config/ProxyConfig.html)  
+See [ProxyConfigBuilder Javadoc](javadoc/id/co/veritrans/mdk/v1/config/ProxyConfigBuilder.html)
+```java
+//this demonstrate configuring proxy settings using method chaining from the builder class
+ProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();
+
+vtGatewayConfigBuilder.setHttpConfig(
+    httpConfigBuilder.setProxyConfig(
+        proxyConfigBuilder.setHost("proxy host address")
+            .setPort(12345)
+            .setUsername("proxy username or null")
+            .setPassword("proxy password or null")
+            .createProxyConfig()
+    ).createHttpConfig()
+);
+```
+```java
+//this demonstrate configuring proxy settings without method chaining
+ProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();
+
+proxyConfigBuilder.setHost("proxy host address");
+proxyConfigBuilder.setPort(12345);
+proxyConfigBuilder.setUsername("proxy username or null");
+proxyConfigBuilder.setPassword("proxy password or null");
+
+ProxyConfig proxyConfig = proxyConfigBuilder.createProxyConfig();
+HttpConfig httpConfig = httpConfigBuilder.setProxyConfig(proxyConfig).createHttpConfig();
+
+vtGatewayConfigBuilder.setHttpConfig(httpConfig);
 ```
 
 <br/>
 ## VtGatewayFactory
-VtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a single instance of VtGatewayFactory class and maintain the reference to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect and VtWeb.  
+VtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a `single instance of VtGatewayFactory class` and `maintain the reference` to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect and VtWeb.  
   
-If you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a VtGatewayFactory instance for each configuration profile and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances. VtGatewayFactory also has few a convenient methods to directly configure the underlying VtGatewayConfig instance.
-
+If you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a `VtGatewayFactory instance for each configuration profile` and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances.  
 See [VtGatewayFactory Javadoc](javadoc/id/co/veritrans/mdk/v1/VtGatewayFactory.html)  
+
 Example code to build a VtGatewayFactory:
 ```java
-VtGatewayFactory vtGatewayFactory = new VtGatewayFactory(vtGatewayConfigBuilder.createVtGatewayConfig());
+VtGatewayConfig vtGatewayConfig = vtGatewayConfigBuilder.createVtGatewayConfig();
+VtGatewayFactory vtGatewayFactory = new VtGatewayFactory(vtGatewayConfig);
 ```
 
 <br/>
