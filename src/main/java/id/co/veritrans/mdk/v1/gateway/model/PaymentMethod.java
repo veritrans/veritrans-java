@@ -10,9 +10,9 @@ public enum PaymentMethod {
     BANK_TRANSFER("bank_transfer"),
     BRI_EPAY("bri_epay");
 
-    private final String paymentMethod;
+    private final String name;
 
     PaymentMethod(final String paymentMethod) {
-        this.paymentMethod = paymentMethod;
+        this.name = paymentMethod;
     }
 }

@@ -1,5 +1,8 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -11,11 +14,31 @@ public class CreditCard {
     @NotNull
     private String tokenId;
     @NotNull
+    @JsonIgnore
     private Bank acquirerBank;
     private Integer installmentTerm;
     private List<String> bins;
+    @JsonIgnore
     private TransactionType transactionType;
     private Boolean saveTokenId;
+
+    /* Handle enum serialization */
+    @JsonProperty("transaction_type")
+    private String _getTransactionType() {
+        if (transactionType == null){
+            return null;
+        }
+        return transactionType.name;
+    }
+
+    @JsonProperty("acquirer_bank")
+    private String _getAcquirerBank() {
+        if (acquirerBank == null) {
+            return null;
+        }
+        return acquirerBank.name;
+    }
+    /* ************************* */
 
     /**
      * Credit card bank enum

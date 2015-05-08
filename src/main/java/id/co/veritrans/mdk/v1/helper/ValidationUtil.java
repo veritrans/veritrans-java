@@ -1,4 +1,4 @@
-package id.co.veritrans.mdk.v1.util;
+package id.co.veritrans.mdk.v1.helper;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;

@@ -4,6 +4,8 @@ import id.co.veritrans.mdk.gateway.model.CustomerDetails;
 import id.co.veritrans.mdk.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.*;
+import id.co.veritrans.mdk.v1.config.EnvironmentType;
 import id.co.veritrans.mdk.v1.config.ProxyConfig;
 import id.co.veritrans.mdk.v1.config.ProxyConfigBuilder;
 
@@ -56,6 +58,15 @@ public class TestUtil {
     public static ProxyConfig buildProxyConfig() {
         return new ProxyConfigBuilder()
                 .setHost("localhost")
+                .build();
+    }
+
+    public static id.co.veritrans.mdk.v1.VtGatewayConfig buildVtGatewayConfig() {
+        return new VtGatewayConfigBuilder()
+                .setMaxConnectionPoolSize(16)
+                .setEnvironmentType(EnvironmentType.SANDBOX)
+                .setServerKey("a")
+                .setClientKey("b")
                 .build();
     }
 
