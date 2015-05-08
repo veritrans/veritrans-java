@@ -21,8 +21,7 @@ public class VtGatewayConfig {
     private ProxyConfig proxyConfig;
 
     public VtGatewayConfig() {
-        proxyConfig = new ProxyConfig();
-    };
+    }
 
     /**
      * @param serverKey         Merchant server key when connecting to Veritrans API. Can be obtain from veritrans <a href="https://my.sandbox.veritrans.co.id/login">Merchant Administration Portal</a>
@@ -30,8 +29,6 @@ public class VtGatewayConfig {
      * @param environmentType   Veritrans {@link id.co.veritrans.mdk.config.EnvironmentType environment type} when connecting to Veritrans API.
      */
     public VtGatewayConfig(final String serverKey, final String clientKey, final EnvironmentType environmentType) {
-        proxyConfig = new ProxyConfig();
-
         this.serverKey = serverKey;
         this.clientKey = clientKey;
         this.environmentType = environmentType;
@@ -96,7 +93,7 @@ public class VtGatewayConfig {
 
     /**
      * Set merchant proxy configuration
-     * @param proxyConfig {@link id.co.veritrans.mdk.config.ProxyConfig Merchant proxy config}
+     * @param proxyConfig {@link id.co.veritrans.mdk.config.ProxyConfig Merchant proxy config}.
      */
     public void setProxyConfig(ProxyConfig proxyConfig) {
         this.proxyConfig = proxyConfig;
@@ -109,18 +106,20 @@ public class VtGatewayConfig {
 
         final VtGatewayConfig that = (VtGatewayConfig) o;
 
+        if (clientKey != null ? !clientKey.equals(that.clientKey) : that.clientKey != null) return false;
         if (environmentType != that.environmentType) return false;
-        if (serverKey != that.serverKey) return false;
-        if (clientKey != that.clientKey) return false;
+        if (proxyConfig != null ? !proxyConfig.equals(that.proxyConfig) : that.proxyConfig != null) return false;
+        if (serverKey != null ? !serverKey.equals(that.serverKey) : that.serverKey != null) return false;
 
         return true;
     }
 
     @Override
     public int hashCode() {
-        int result = serverKey != null ? serverKey.hashCode() : 0;
+        int result = environmentType != null ? environmentType.hashCode() : 0;
+        result = 31 * result + (serverKey != null ? serverKey.hashCode() : 0);
         result = 31 * result + (clientKey != null ? clientKey.hashCode() : 0);
-        result = 31 * result + (environmentType != null ? environmentType.hashCode() : 0);
+        result = 31 * result + (proxyConfig != null ? proxyConfig.hashCode() : 0);
         return result;
     }
 }

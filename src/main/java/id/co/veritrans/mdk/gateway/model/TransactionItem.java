@@ -1,7 +1,5 @@
 package id.co.veritrans.mdk.gateway.model;
 
-import java.math.BigDecimal;
-
 /**
  * Transaction item details
  */
@@ -9,8 +7,8 @@ public class TransactionItem {
 
     private String id;
     private String name;
-    private BigDecimal price;
-    private BigDecimal quantity;
+    private Long price;
+    private Integer quantity;
 
     /**
      * Transaction item constructor
@@ -26,7 +24,7 @@ public class TransactionItem {
      * @param price    Item price
      * @param quantity Item quantity
      */
-    public TransactionItem(final String id, final String name, final BigDecimal price, final BigDecimal quantity) {
+    public TransactionItem(final String id, final String name, final Long price, final Integer quantity) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -74,7 +72,7 @@ public class TransactionItem {
      *
      * @return Item price
      */
-    public BigDecimal getPrice() {
+    public Long getPrice() {
         return price;
     }
 
@@ -83,7 +81,7 @@ public class TransactionItem {
      *
      * @param price Item price
      */
-    public void setPrice(final BigDecimal price) {
+    public void setPrice(final Long price) {
         this.price = price;
     }
 
@@ -92,7 +90,7 @@ public class TransactionItem {
      *
      * @return Item quantity
      */
-    public BigDecimal getQuantity() {
+    public Integer getQuantity() {
         return quantity;
     }
 
@@ -101,7 +99,7 @@ public class TransactionItem {
      *
      * @param quantity Item quantity
      */
-    public void setQuantity(final BigDecimal quantity) {
+    public void setQuantity(final Integer quantity) {
         this.quantity = quantity;
     }
 

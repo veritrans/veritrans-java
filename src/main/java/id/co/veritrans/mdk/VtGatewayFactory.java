@@ -1,12 +1,13 @@
 package id.co.veritrans.mdk;
 
 import id.co.veritrans.mdk.config.EnvironmentType;
+import id.co.veritrans.mdk.config.ProxyConfig;
 import id.co.veritrans.mdk.exception.InvalidVtConfigException;
 import id.co.veritrans.mdk.gateway.VtDirect;
 import id.co.veritrans.mdk.gateway.VtWeb;
-import id.co.veritrans.mdk.util.ValidationUtil;
 import id.co.veritrans.mdk.gateway.impl.DefaultVtDirect;
 import id.co.veritrans.mdk.gateway.impl.DefaultVtWeb;
+import id.co.veritrans.mdk.util.ValidationUtil;
 
 import javax.validation.ConstraintViolation;
 import javax.validation.Validator;
@@ -25,21 +26,21 @@ public class VtGatewayFactory {
      * VtGatewayFactory constructor
      */
     public VtGatewayFactory() {
-        validator = ValidationUtil.getValidator();
-        vtGatewayConfig = new VtGatewayConfig();
+        this(new VtGatewayConfig());
     }
 
     /**
      * VtGatewayFactory constructor
      *
-     * @param vtGatewayConfig Veritrans {@link id.co.veritrans.mdk.VtGatewayConfig gateway configuration}
+     * @param vtGatewayConfig Veritrans {@link id.co.veritrans.mdk.VtGatewayConfig gateway configuration} (not null)
      */
     public VtGatewayFactory(VtGatewayConfig vtGatewayConfig) {
-        this.vtGatewayConfig = vtGatewayConfig;
+        this.validator = ValidationUtil.getValidator();
+        setVtGatewayConfig(vtGatewayConfig);
     }
 
     /**
-     * Get veritrans gateway config
+     * Get veritrans gateway config.
      *
      * @return {@link id.co.veritrans.mdk.VtGatewayConfig Veritrans gateway config} when connectng to Veritrans API
      */
@@ -50,9 +51,12 @@ public class VtGatewayFactory {
     /**
      * Set veritrans gateway config
      *
-     * @param vtGatewayConfig {@link id.co.veritrans.mdk.VtGatewayConfig Veritrans gateway config} when connecting to Veritrans API
+     * @param vtGatewayConfig {@link id.co.veritrans.mdk.VtGatewayConfig Veritrans gateway config} when connecting to Veritrans API (not null).
      */
     public void setVtGatewayConfig(final VtGatewayConfig vtGatewayConfig) {
+        if (vtGatewayConfig == null) {
+            throw new NullPointerException("vtGatewayConfig");
+        }
         this.vtGatewayConfig = vtGatewayConfig;
     }
 
@@ -115,6 +119,9 @@ public class VtGatewayFactory {
      * @return Merchant proxy host config
      */
     public String getProxyHost() {
+        if (vtGatewayConfig.getProxyConfig() == null) {
+            return null;
+        }
         return vtGatewayConfig.getProxyConfig().getHost();
     }
 
@@ -123,6 +130,7 @@ public class VtGatewayFactory {
      * @param proxyHost Merchant proxy host config
      */
     public void setProxyHost(String proxyHost) {
+        allocateProxyConfigIfNull();
         vtGatewayConfig.getProxyConfig().setHost(proxyHost);
     }
 
@@ -131,6 +139,9 @@ public class VtGatewayFactory {
      * @return Merchant proxy port config
      */
     public int getProxyPort() {
+        if (vtGatewayConfig.getProxyConfig() == null) {
+            return 0;
+        }
         return vtGatewayConfig.getProxyConfig().getPort();
     }
 
@@ -139,6 +150,7 @@ public class VtGatewayFactory {
      * @param proxyPort Merchant proxy port config
      */
     public void setProxyPort(int proxyPort) {
+        allocateProxyConfigIfNull();
         vtGatewayConfig.getProxyConfig().setPort(proxyPort);
     }
 
@@ -148,6 +160,9 @@ public class VtGatewayFactory {
      * @return Merchant proxy username config
      */
     public String getProxyUsername() {
+        if (vtGatewayConfig.getProxyConfig() == null) {
+            return null;
+        }
         return this.vtGatewayConfig.getProxyConfig().getUsername();
     }
 
@@ -157,6 +172,7 @@ public class VtGatewayFactory {
      * @param proxyUsername Merchant proxy username config
      */
     public void setProxyUsername(String proxyUsername) {
+        allocateProxyConfigIfNull();
         this.vtGatewayConfig.getProxyConfig().setUsername(proxyUsername);
     }
 
@@ -166,6 +182,9 @@ public class VtGatewayFactory {
      * @return Merchant proxy password config
      */
     public String getProxyPassword() {
+        if (vtGatewayConfig.getProxyConfig() == null) {
+            return null;
+        }
         return this.vtGatewayConfig.getProxyConfig().getPassword();
     }
 
@@ -175,6 +194,7 @@ public class VtGatewayFactory {
      * @param proxyPassword Merchant proxy password config
      */
     public void setProxyPassword(String proxyPassword) {
+        allocateProxyConfigIfNull();
         this.vtGatewayConfig.getProxyConfig().setPassword(proxyPassword);
     }
 
@@ -205,6 +225,12 @@ public class VtGatewayFactory {
         }
     }
 
+    private void allocateProxyConfigIfNull() {
+        if (vtGatewayConfig.getProxyConfig() == null) {
+            vtGatewayConfig.setProxyConfig(new ProxyConfig());
+        }
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -222,5 +248,4 @@ public class VtGatewayFactory {
     public int hashCode() {
         return vtGatewayConfig != null ? vtGatewayConfig.hashCode() : 0;
     }
-
 }
