@@ -1,8 +1,12 @@
 package id.co.veritrans.mdk.v1.gateway.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.veritrans.mdk.v1.exception.JsonDeserializeException;
 
 import java.io.InputStream;
+import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Date;
 
 /**
@@ -12,17 +16,21 @@ public class VtResponse {
 
     private String transactionId;
     private String orderId;
-    private Long grossAmount;
+    private BigDecimal grossAmount;
+    @JsonProperty("payment_type")
     private PaymentMethod paymentMethod;
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+07")
     private Date transactionTime;
     private TransactionStatus transactionStatus;
-    private id.co.veritrans.mdk.v1.gateway.model.FraudStatus fraudStatus;
+    private FraudStatus fraudStatus;
+    @JsonProperty("masked_card")
     private String maskedCardNumber;
     private String statusCode;
     private String statusMessage;
     private String approvalCode;
     private String permataVaNumber;
     private String signature_key;
+    private String[] validationMessages;
 
     /**
      * Veritrans transaction response constructor
@@ -45,7 +53,7 @@ public class VtResponse {
      * @param statusMessage     Transaction status message
      * @param approvalCode      Transaction approval code
      */
-    public VtResponse(final String transactionId, final String orderId, final Long grossAmount, final PaymentMethod paymentMethod, final Date transactionTime, final TransactionStatus transactionStatus, final id.co.veritrans.mdk.v1.gateway.model.FraudStatus fraudStatus, final String maskedCardNumber, final String statusCode, final String statusMessage, final String approvalCode) {
+    public VtResponse(final String transactionId, final String orderId, final BigDecimal grossAmount, final PaymentMethod paymentMethod, final Date transactionTime, final TransactionStatus transactionStatus, final id.co.veritrans.mdk.v1.gateway.model.FraudStatus fraudStatus, final String maskedCardNumber, final String statusCode, final String statusMessage, final String approvalCode) {
         this.transactionId = transactionId;
         this.orderId = orderId;
         this.grossAmount = grossAmount;
@@ -122,7 +130,7 @@ public class VtResponse {
      *
      * @return Transaction total gross amount
      */
-    public Long getGrossAmount() {
+    public BigDecimal getGrossAmount() {
         return grossAmount;
     }
 
@@ -131,7 +139,7 @@ public class VtResponse {
      *
      * @param grossAmount Transaction total gross amount
      */
-    public void setGrossAmount(final Long grossAmount) {
+    public void setGrossAmount(final BigDecimal grossAmount) {
         this.grossAmount = grossAmount;
     }
 
@@ -194,7 +202,7 @@ public class VtResponse {
      *
      * @return {@link id.co.veritrans.mdk.v1.gateway.model.FraudStatus Transaction fraud status}
      */
-    public id.co.veritrans.mdk.v1.gateway.model.FraudStatus getFraudStatus() {
+    public FraudStatus getFraudStatus() {
         return fraudStatus;
     }
 
@@ -315,29 +323,41 @@ public class VtResponse {
         this.signature_key = signature_key;
     }
 
+    public String[] getValidationMessages() {
+        return validationMessages;
+    }
+
+    public void setValidationMessages(final String[] validationMessages) {
+        this.validationMessages = validationMessages;
+    }
+
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final id.co.veritrans.mdk.v1.gateway.model.VtResponse that = (id.co.veritrans.mdk.v1.gateway.model.VtResponse) o;
+        final VtResponse that = (VtResponse) o;
 
         if (approvalCode != null ? !approvalCode.equals(that.approvalCode) : that.approvalCode != null) return false;
-        if (fraudStatus != null ? !fraudStatus.equals(that.fraudStatus) : that.fraudStatus != null) return false;
+        if (fraudStatus != that.fraudStatus) return false;
         if (grossAmount != null ? !grossAmount.equals(that.grossAmount) : that.grossAmount != null) return false;
         if (maskedCardNumber != null ? !maskedCardNumber.equals(that.maskedCardNumber) : that.maskedCardNumber != null)
             return false;
         if (orderId != null ? !orderId.equals(that.orderId) : that.orderId != null) return false;
         if (paymentMethod != that.paymentMethod) return false;
+        if (permataVaNumber != null ? !permataVaNumber.equals(that.permataVaNumber) : that.permataVaNumber != null)
+            return false;
+        if (signature_key != null ? !signature_key.equals(that.signature_key) : that.signature_key != null)
+            return false;
         if (statusCode != null ? !statusCode.equals(that.statusCode) : that.statusCode != null) return false;
         if (statusMessage != null ? !statusMessage.equals(that.statusMessage) : that.statusMessage != null)
             return false;
         if (transactionId != null ? !transactionId.equals(that.transactionId) : that.transactionId != null)
             return false;
-        if (transactionStatus != null ? !transactionStatus.equals(that.transactionStatus) : that.transactionStatus != null)
-            return false;
+        if (transactionStatus != that.transactionStatus) return false;
         if (transactionTime != null ? !transactionTime.equals(that.transactionTime) : that.transactionTime != null)
             return false;
+        if (!Arrays.equals(validationMessages, that.validationMessages)) return false;
 
         return true;
     }
@@ -355,6 +375,9 @@ public class VtResponse {
         result = 31 * result + (statusCode != null ? statusCode.hashCode() : 0);
         result = 31 * result + (statusMessage != null ? statusMessage.hashCode() : 0);
         result = 31 * result + (approvalCode != null ? approvalCode.hashCode() : 0);
+        result = 31 * result + (permataVaNumber != null ? permataVaNumber.hashCode() : 0);
+        result = 31 * result + (signature_key != null ? signature_key.hashCode() : 0);
+        result = 31 * result + (validationMessages != null ? Arrays.hashCode(validationMessages) : 0);
         return result;
     }
 }

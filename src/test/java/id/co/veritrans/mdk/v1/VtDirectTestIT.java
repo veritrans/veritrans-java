@@ -1,13 +1,11 @@
 package id.co.veritrans.mdk.v1;
 
-import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.MandiriClickpayRequest;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.MandiriClickpay;
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
-import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
+import id.co.veritrans.mdk.v1.gateway.model.*;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.MandiriClickpayRequest;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.MandiriClickpay;
 import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -29,17 +27,30 @@ public class VtDirectTestIT {
     private final VtDirect vtDirect = vtGatewayFactory.vtDirect();
 
     @Test
-    public void testChargeMandiriClickpay() throws RestClientException {
+    public void testChargeMandiriClickpay() throws RestClientException, UnsupportedEncodingException {
         final String orderId = String.valueOf(System.nanoTime());
         final MandiriClickpayRequest req = new MandiriClickpayRequest();
         req.setTransactionDetails(new TransactionDetails(orderId, 10000l));
-        req.setMandiriClickpay(new MandiriClickpay("4111111111111111", "1", "2", "3", "000000"));
+        req.setMandiriClickpay(new MandiriClickpay("4111111111111111", "1111111111", "10000", "12345", "000000"));
         req.setCustomerDetails(new CustomerDetails("gde", "satrigraha", "gde.satrigraha@veritrans.co.id", "123456789", null, null));
 
-        System.out.println(JsonUtil.toJson(req));
         VtResponse vtResponse = vtDirect.charge(req);
+        System.out.println("charge: " + JsonUtil.toJson(vtResponse));
         Assert.assertEquals(vtResponse.getStatusCode(), "200");
-        System.out.println(JsonUtil.toJson(vtResponse));
+        Assert.assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.SETTLED);
+        Assert.assertNull(vtResponse.getFraudStatus());
+
+        vtResponse = vtDirect.cancel(orderId);
+        System.out.println("cancel: " + JsonUtil.toJson(vtResponse));
+        Assert.assertEquals(vtResponse.getStatusCode(), "200");
+        Assert.assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CANCELLED);
+        Assert.assertNull(vtResponse.getFraudStatus());
+
+        vtResponse = vtDirect.status(orderId);
+        System.out.println("status: " + JsonUtil.toJson(vtResponse));
+        Assert.assertEquals(vtResponse.getStatusCode(), "200");
+        Assert.assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CANCELLED);
+        Assert.assertNull(vtResponse.getFraudStatus());
     }
 
     @Test

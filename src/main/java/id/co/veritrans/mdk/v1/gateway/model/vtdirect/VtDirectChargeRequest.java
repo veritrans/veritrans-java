@@ -24,11 +24,7 @@ public abstract class VtDirectChargeRequest extends AbstractVtRequest {
         this.customerDetails = customerDetails;
     }
 
-    @JsonProperty("payment_method")
-    private String _getPaymentMethod() {
-        return getPaymentMethod().getName();
-    }
-
+    @JsonProperty("payment_type")
     public abstract PaymentMethod getPaymentMethod();
 
     public CustomerDetails getCustomerDetails() {
