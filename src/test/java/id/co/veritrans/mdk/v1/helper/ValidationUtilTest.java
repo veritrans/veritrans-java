@@ -1,8 +1,7 @@
-package id.co.veritrans.mdk.v1.util;
+package id.co.veritrans.mdk.v1.helper;
 
 import id.co.veritrans.mdk.v1.VtGatewayConfig;
 import id.co.veritrans.mdk.v1.VtGatewayConfigBuilder;
-import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import org.testng.annotations.Test;
 
 import javax.validation.ConstraintViolation;
