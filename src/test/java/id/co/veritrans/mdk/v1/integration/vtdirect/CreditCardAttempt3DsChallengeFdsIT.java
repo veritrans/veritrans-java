@@ -21,7 +21,7 @@ public class CreditCardAttempt3DsChallengeFdsIT extends AbstractCreditCardIT {
 
     @Test(groups = "integrationTest")
     public void testCharge() throws RestClientException, URISyntaxException {
-        final String cardToken = getToken("4511111111111117", "01", "2020", "123");
+        final String cardToken = getToken("5510111111111115", "01", "2020", "123");
         final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.BNI, null, null, null, null));
 
         assertEquals(vtResponse.getStatusCode(), "201");
