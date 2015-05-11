@@ -5,6 +5,9 @@ import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 
 import java.io.UnsupportedEncodingException;
 
+/**
+ * VT Gateway
+ */
 public interface VtGateway {
 
     /**

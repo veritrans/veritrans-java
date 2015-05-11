@@ -1,7 +1,7 @@
 package id.co.veritrans.mdk.v1.exception;
 
 /**
- * Created by gde on 5/7/15.
+ * Json deserialization exception
  */
 public class JsonDeserializeException extends VtException {
 

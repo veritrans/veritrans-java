@@ -1,7 +1,7 @@
 package id.co.veritrans.mdk.v1.exception;
 
 /**
- * Created by andes on 5/8/15.
+ * Network exception
  */
 public class NetworkException extends VtException {
 
