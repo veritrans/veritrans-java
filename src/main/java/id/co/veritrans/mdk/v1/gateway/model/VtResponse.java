@@ -45,6 +45,7 @@ public class VtResponse {
     private String xlTunaiOrderId;
     private String biiVaNumber;
     private String redirectUrl;
+    private String eci;
     private String[] validationMessages;
 
     /**
@@ -387,6 +388,14 @@ public class VtResponse {
 
     public void setRedirectUrl(final String redirectUrl) {
         this.redirectUrl = redirectUrl;
+    }
+
+    public String getEci() {
+        return eci;
+    }
+
+    public void setEci(final String eci) {
+        this.eci = eci;
     }
 
     public String[] getValidationMessages() {

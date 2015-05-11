@@ -7,11 +7,13 @@ import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import org.testng.annotations.Test;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.assertNull;
 
 /**
  * Created by gde on 5/11/15.
@@ -23,8 +25,8 @@ public class CreditCardFull3DsChargeSavedTokenIT extends AbstractCreditCardIT {
     private String cardToken;
 
     @Test(groups = "integrationTest")
-    public void testCharge() throws RestClientException, URISyntaxException {
-        final String cardToken = getToken("4811111111111114", "01", "2020", "123");
+    public void testCharge() throws RestClientException, URISyntaxException, IOException {
+        final String cardToken = getToken3Ds("4811111111111114", "01", "2020", "123", CreditCard.Bank.BNI);
         final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.BNI, null, null, null, Boolean.TRUE));
 
         assertEquals(vtResponse.getStatusCode(), "200");
@@ -64,18 +66,14 @@ public class CreditCardFull3DsChargeSavedTokenIT extends AbstractCreditCardIT {
         assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
     }
 
-    @Test(groups = "disabled", dependsOnMethods = "testCharge")
+    @Test(groups = "integrationTest", dependsOnMethods = "testCharge")
     public void testChargeUsingSavedToken() throws RestClientException, URISyntaxException {
         final VtResponse vtResponse = charge(orderId2, new CreditCard(cardToken, CreditCard.Bank.BNI, null, null, null, null));
 
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CAPTURED);
-        assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
+        assertNull(vtResponse.getFraudStatus());
         assertNotNull(vtResponse.getTransactionId());
         assertNotNull(vtResponse.getGrossAmount());
-
-        assertNotNull(vtResponse.getSavedCardToken());
-        assertNotNull(vtResponse.getSavedCardTokenExpiredAt());
-        assertNotNull(vtResponse.getSecureToken());
     }
 }
