@@ -20,7 +20,7 @@ public class CreditCardAttempt3DsIT extends AbstractCreditCardIT {
     final String orderId = String.valueOf(System.nanoTime());
 
     @Test(groups = "integrationTest")
-    public void testCharge() throws RestCglientException, URISyntaxException {
+    public void testCharge() throws RestClientException, URISyntaxException {
         final String cardToken = getToken("4411111111111118", "01", "2020", "123");
         final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.BNI, null, null, null, null));
 
