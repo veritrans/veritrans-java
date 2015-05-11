@@ -1,12 +1,15 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod;
 
 /**
- * Created by gde on 5/4/15.
+ * Bank transfer detail
  */
 public class BankTransfer {
 
     private Bank bank;
 
+    /**
+     * Enum bank for bank transfer
+     */
     public static enum Bank {
         PERMATA("permata");
 
@@ -17,17 +20,32 @@ public class BankTransfer {
         }
     }
 
+    /**
+     * Bank transfer constructor
+     */
     public BankTransfer() {
     }
 
+    /**
+     * Bank transfer constructor
+     * @param bank Bank name
+     */
     public BankTransfer(final Bank bank) {
         this.bank = bank;
     }
 
+    /**
+     * Get bank name
+     * @return Bank name
+     */
     public Bank getBank() {
         return bank;
     }
 
+    /**
+     * Set bank name
+     * @param bank Bank name
+     */
     public void setBank(final Bank bank) {
         this.bank = bank;
     }
