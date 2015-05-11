@@ -1,6 +1,5 @@
 package id.co.veritrans.mdk.v1;
 
-import id.co.veritrans.mdk.TestUtil;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import org.testng.Assert;
 import org.testng.annotations.Test;

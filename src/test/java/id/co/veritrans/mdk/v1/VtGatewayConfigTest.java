@@ -1,6 +1,5 @@
 package id.co.veritrans.mdk.v1;
 
-import id.co.veritrans.mdk.TestUtil;
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
 import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import org.testng.Assert;

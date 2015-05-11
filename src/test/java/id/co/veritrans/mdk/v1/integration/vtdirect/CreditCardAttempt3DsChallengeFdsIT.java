@@ -1,4 +1,4 @@
-package id.co.veritrans.mdk.test.integration.vtdirect;
+package id.co.veritrans.mdk.v1.integration.vtdirect;
 
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.model.FraudStatus;

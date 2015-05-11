@@ -1,4 +1,4 @@
-package id.co.veritrans.mdk.gateway.model.vtdirect;
+package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
 /**
  * Created by andes on 5/7/15.

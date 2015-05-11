@@ -1,6 +1,5 @@
-package id.co.veritrans.mdk;
+package id.co.veritrans.mdk.v1;
 
-import id.co.veritrans.mdk.v1.VtGatewayConfigBuilder;
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
 import id.co.veritrans.mdk.v1.config.ProxyConfig;
 import id.co.veritrans.mdk.v1.config.ProxyConfigBuilder;

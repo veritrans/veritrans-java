@@ -1,7 +1,6 @@
-package id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod;
+package id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod;
 
-import id.co.veritrans.mdk.TestUtil;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.TestUtil;
 import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;

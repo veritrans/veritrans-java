@@ -1,4 +1,4 @@
-package id.co.veritrans.mdk.util;
+package id.co.veritrans.mdk.v1.util;
 
 import id.co.veritrans.mdk.v1.VtGatewayConfig;
 import id.co.veritrans.mdk.v1.VtGatewayConfigBuilder;
