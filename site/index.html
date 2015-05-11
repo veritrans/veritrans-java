@@ -295,7 +295,9 @@ vtDirectChargeParam.getBankTransfer().setBank(BankTransfer.Bank.PERMATA);
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+
     //handle successful Bank Transfer charge request
     //check the permataVaNumber in the vtResponse
 } else {
@@ -310,7 +312,9 @@ setVtDirectChargeParamValues(vtDirectChargeParam);
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+
     //handle successful Bank Transfer charge request
     //check the redirectUrl value in the vtResponse
 } else {
@@ -329,7 +333,9 @@ vtDirectChargeParam.getCimbClicks().setDescription(&quot;Payment for Merchant XY
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+
     //handle successful Cimb Clicks charge request
     //check the redirectUrl value in the vtResponse
 } else {
@@ -354,14 +360,16 @@ vtDirectChargeParam.getCreditCard().setAcquirerBank(CreditCard.Bank.BNI);
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
-    if (vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
-        //handle successful capture
-    } else if (vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
-        //handle FDS challenge, you can do this later
-    } else {
-        //unexpected condition that should never happen
-    }
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &amp;&amp;
+    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+
+    //handle successful capture
+} else if (vtResponse.getStatusCode().equals(&quot;201&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &amp;&amp;
+    vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
+
+    //handle FDS challenge (you can do this later)
 } else {
     //handle denied / unexpected response
 }
@@ -386,14 +394,16 @@ vtDirectChargeParam.getCreditCard().setType(CreditCard.TransactionType.AUTHORIZE
 
 VtResponse vtResponseAuthorize = vtDirect.charge(vtDirectChargeParam);
 
-if (vtResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED) {
-    if (vtResponseAuthorize.getFraudStatus() == FraudStatus.ACCEPTED) {
-        //handle successful authorize
-    } else if (vtResponseAuthorize.getFraudStatus() == FraudStatus.CHALLENGE) {
-        //handle FDS challenge, you can do this later
-    } else {
-        //unexpected condition that should never happen
-    }
+if (vtResponseAuthorize.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED &amp;&amp;
+    vtResponseAuthorize.getFraudStatus() == FraudStatus.ACCEPTED) {
+
+    //handle successful capture
+} else if (vtResponseAuthorize.getStatusCode().equals(&quot;201&quot;) &amp;&amp;
+    vtResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED &amp;&amp;
+    vtResponseAuthorize.getFraudStatus() == FraudStatus.CHALLENGE) {
+
+    //handle FDS challenge (you can do this later)
 } else {
     //handle denied / unexpected response
 }
@@ -405,7 +415,9 @@ if (vtResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED) 
 Long captureAmount = vtResponseAuthorize.getGrossAmount().longValue();
 VtResponse vtResponseCapture = vtDirect.capture(transactionId, captureAmount);
 
-if (vtResponseCapture.getTransactionStatus() == TransactionStatus.CAPTURED) {
+if (vtResponseCapture.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponseCapture.getTransactionStatus() == TransactionStatus.CAPTURED) {
+
     //handle successful capture
 } else {
     //handle denied / unexpected response
@@ -428,7 +440,9 @@ vtDirectChargeParam.getMandiriClickpay().setToken(&quot;000000&quot;);
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
+
     //handle successful Mandiri Clickpay charge request
 } else {
     //handle denied / unexpected response
