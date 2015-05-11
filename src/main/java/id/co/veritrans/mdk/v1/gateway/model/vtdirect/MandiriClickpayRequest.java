@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Created by gde on 5/5/15.
+ * Mandiri clickpay request class
  */
 public class MandiriClickpayRequest extends VtDirectChargeRequest {
 
@@ -19,23 +19,46 @@ public class MandiriClickpayRequest extends VtDirectChargeRequest {
     @NotNull
     private MandiriClickpay mandiriClickpay;
 
+    /**
+     * Mandiri clickpay request constructor
+     */
     public MandiriClickpayRequest() {
     }
 
+    /**
+     * Mandiri clickpay request constructor
+     *
+     * @param transactionDetails    {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
+     * @param transactionItems      {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem List of transaction item}
+     * @param customerDetails       {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails Customer details}
+     * @param mandiriClickpay       {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.MandiriClickpay Mandiri clickpay detail request}
+     */
     public MandiriClickpayRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final MandiriClickpay mandiriClickpay) {
         super(transactionDetails, transactionItems, customerDetails);
         this.mandiriClickpay = mandiriClickpay;
     }
 
+    /**
+     * Get mandiri clickpay payment method
+     * @return {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#MANDIRI_CLICKPAY Mandiri clickpay payment method}
+     */
     @Override
     public PaymentMethod getPaymentMethod() {
         return PaymentMethod.MANDIRI_CLICKPAY;
     }
 
+    /**
+     * Get mandiri clickpay detail request
+     * @return {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.MandiriClickpay Mandiri clickpay} detail
+     */
     public MandiriClickpay getMandiriClickpay() {
         return mandiriClickpay;
     }
 
+    /**
+     * Set mandiri clickpay detail request
+     * @param mandiriClickpay {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.MandiriClickpay Mandiri clickpay} detail
+     */
     public void setMandiriClickpay(final MandiriClickpay mandiriClickpay) {
         this.mandiriClickpay = mandiriClickpay;
     }

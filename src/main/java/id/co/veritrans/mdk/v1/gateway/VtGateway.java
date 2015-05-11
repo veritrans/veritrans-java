@@ -5,26 +5,31 @@ import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 
 import java.io.UnsupportedEncodingException;
 
-/**
- * Created by gde on 4/30/15.
- */
 public interface VtGateway {
 
     /**
      * Approve a charge transaction which has <b>challenge</b> ChargeResult.
      *
-     * @param orderId
-     * @return
+     * @param orderId   {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse#orderId Order id} of transaction
+     * @return          {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse Veritrans response}
      */
     VtResponse approve(String orderId) throws RestClientException, UnsupportedEncodingException;
 
     /**
      * Get the status of a transaction using the orderId from the charge request.
      *
-     * @param orderId
-     * @return
+     * @param orderId   {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse#orderId Order id} of transaction
+     * @return          {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse Veritrans response}
      */
     VtResponse status(String orderId) throws RestClientException, UnsupportedEncodingException;
 
+    /**
+     * Cancel a charge transaction which has been approved
+     *
+     * @param orderId   {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse#orderId Order id} of transaction
+     * @return          {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse Veritrans response}
+     * @throws RestClientException
+     * @throws UnsupportedEncodingException
+     */
     VtResponse cancel(String orderId) throws RestClientException, UnsupportedEncodingException;
 }
