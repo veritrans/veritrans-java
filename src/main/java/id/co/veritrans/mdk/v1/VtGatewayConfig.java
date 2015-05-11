@@ -8,7 +8,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 /**
- * Created by gde on 5/8/15.
+ * Veritrans gateway configuration
  */
 public class VtGatewayConfig {
 
@@ -24,6 +24,14 @@ public class VtGatewayConfig {
     @Valid
     private final ProxyConfig proxyConfig;
 
+    /**
+     * Veritrans gateway configuration constructor
+     * @param environmentType       {@link id.co.veritrans.mdk.v1.config.EnvironmentType Environment type}
+     * @param serverKey             Merchant <a href="https://my.sandbox.veritrans.co.id/login">server key</a>
+     * @param clientKey             Merchant <a href="https://my.sandbox.veritrans.co.id/login">client key</a>
+     * @param maxConnectionPoolSize Http client max connection pool size
+     * @param proxyConfig           Http client {@link id.co.veritrans.mdk.v1.config.ProxyConfig proxy configuration}
+     */
     public VtGatewayConfig(EnvironmentType environmentType, String serverKey, String clientKey, int maxConnectionPoolSize, ProxyConfig proxyConfig) {
         this.environmentType = environmentType;
         this.serverKey = serverKey;
@@ -32,22 +40,42 @@ public class VtGatewayConfig {
         this.proxyConfig = proxyConfig;
     }
 
+    /**
+     * Get environment type
+     * @return {@link id.co.veritrans.mdk.v1.config.EnvironmentType Environment type}
+     */
     public EnvironmentType getEnvironmentType() {
         return environmentType;
     }
 
+    /**
+     * Get merchant server key
+     * @return Merchant <a href="https://my.sandbox.veritrans.co.id/login">server key</a>
+     */
     public String getServerKey() {
         return serverKey;
     }
 
+    /**
+     * Get merchant client key
+     * @return Merchant <a href="https://my.sandbox.veritrans.co.id/login">client key</a>
+     */
     public String getClientKey() {
         return clientKey;
     }
 
+    /**
+     * Get http client max connection pool size
+     * @return Http client max connection pool size
+     */
     public int getMaxConnectionPoolSize() {
         return maxConnectionPoolSize;
     }
 
+    /**
+     * Get http client proxy configuration
+     * @return Http client {@link id.co.veritrans.mdk.v1.config.ProxyConfig proxy configuration}
+     */
     public ProxyConfig getProxyConfig() {
         return proxyConfig;
     }

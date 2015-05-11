@@ -19,26 +19,44 @@ public class CreditCardRequest extends VtDirectChargeRequest {
     @NotNull
     private CreditCard creditCard;
 
+    /**
+     * Credit card request constructor
+     */
     public CreditCardRequest() {
     }
 
+    /**
+     * Credit catd request constructor
+     * @param transactionDetails    {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
+     * @param transactionItems      List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
+     * @param customerDetails       {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails Customer details}
+     * @param creditCard            {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard Credit card} detail
+     */
     public CreditCardRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final CreditCard creditCard) {
         super(transactionDetails, transactionItems, customerDetails);
         this.creditCard = creditCard;
     }
 
+    /**
+     * Get credit card payment method
+     * @return Credit card {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#CREDIT_CARD payment method}
+     */
     @Override
     public PaymentMethod getPaymentMethod() {
         return PaymentMethod.CREDIT_CARD;
     }
 
+    /**
+     * Get credit card detail
+     * @return {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard Credit card} detail
+     */
     public CreditCard getCreditCard() {
         return creditCard;
     }
 
     /**
-     * Set credit card data for charging
-     * @param creditCard {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard Credit card} data
+     * Set credit card detail
+     * @param creditCard {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard Credit card} detail
      */
     public void setCreditCard(final CreditCard creditCard) {
         this.creditCard = creditCard;

@@ -7,7 +7,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import java.io.IOException;
 
 /**
- * Created by gde on 5/8/15.
+ * VT-Gateway session
  */
 public interface VtGatewaySession {
 

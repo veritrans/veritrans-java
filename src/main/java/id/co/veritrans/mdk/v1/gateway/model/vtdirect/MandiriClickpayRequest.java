@@ -29,7 +29,7 @@ public class MandiriClickpayRequest extends VtDirectChargeRequest {
      * Mandiri clickpay request constructor
      *
      * @param transactionDetails    {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
-     * @param transactionItems      {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem List of transaction item}
+     * @param transactionItems      List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
      * @param customerDetails       {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails Customer details}
      * @param mandiriClickpay       {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.MandiriClickpay Mandiri clickpay detail request}
      */

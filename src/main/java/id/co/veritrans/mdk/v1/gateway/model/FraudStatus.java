@@ -3,7 +3,7 @@ package id.co.veritrans.mdk.v1.gateway.model;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Created by gde on 5/5/15.
+ * Veritrans fraud status enum
  */
 public enum FraudStatus {
     ACCEPTED("accept"),

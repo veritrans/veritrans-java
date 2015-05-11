@@ -1,7 +1,7 @@
 package id.co.veritrans.mdk.v1.exception;
 
 /**
- * Created by andes on 5/7/15.
+ * Veritrans exception
  */
 public class VtException extends Exception {
 

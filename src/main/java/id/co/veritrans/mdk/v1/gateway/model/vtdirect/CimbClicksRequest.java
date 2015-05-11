@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Created by gde on 5/5/15.
+ * CIMB clicks request
  */
 public class CimbClicksRequest extends VtDirectChargeRequest {
 
@@ -19,23 +19,45 @@ public class CimbClicksRequest extends VtDirectChargeRequest {
     @NotNull
     private CimbClicks cimbClicks;
 
+    /**
+     * CIMB clicks request constructor
+     */
     public CimbClicksRequest() {
     }
 
+    /**
+     * CIMB clicks request constructor
+     * @param transactionDetails    {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
+     * @param transactionItems      List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
+     * @param customerDetails       {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails Customer details}
+     * @param cimbClicks            {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CimbClicks CIMB clicks} details
+     */
     public CimbClicksRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final CimbClicks cimbClicks) {
         super(transactionDetails, transactionItems, customerDetails);
         this.cimbClicks = cimbClicks;
     }
 
+    /**
+     * Get CIMB clicks payment method
+     * @return CIMB clicks {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#CIMB_CLICKS payment method}
+     */
     @Override
     public PaymentMethod getPaymentMethod() {
         return PaymentMethod.CIMB_CLICKS;
     }
 
+    /**
+     * Get CIMB clicks detail
+     * @return {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CimbClicks CIMB clicks} detail
+     */
     public CimbClicks getCimbClicks() {
         return cimbClicks;
     }
 
+    /**
+     * Set CIMB clicks detail
+     * @param cimbClicks {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CimbClicks CIMB clicks} detail
+     */
     public void setCimbClicks(final CimbClicks cimbClicks) {
         this.cimbClicks = cimbClicks;
     }

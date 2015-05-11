@@ -3,7 +3,7 @@ package id.co.veritrans.mdk.v1.gateway.model;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Created by gde on 5/4/15.
+ * Veritrans payment method enum
  */
 public enum PaymentMethod {
     CREDIT_CARD("credit_card"),

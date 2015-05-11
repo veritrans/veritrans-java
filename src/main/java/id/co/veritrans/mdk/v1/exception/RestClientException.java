@@ -1,7 +1,7 @@
 package id.co.veritrans.mdk.v1.exception;
 
 /**
- * Created by gde on 5/8/15.
+ * Rest client exception
  */
 public class RestClientException extends VtException {
 

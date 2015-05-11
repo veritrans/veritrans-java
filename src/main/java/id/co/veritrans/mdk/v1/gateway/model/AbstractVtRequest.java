@@ -5,7 +5,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Created by gde on 5/8/15.
+ * Abstract VtRequest
  */
 public abstract class AbstractVtRequest implements VtRequest {
 
