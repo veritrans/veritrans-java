@@ -20,7 +20,7 @@ import static org.testng.Assert.assertNull;
  */
 public class MandiriClickpayIT extends AbstractIntegrationTest {
 
-    final String orderId = String.valueOf(System.nanoTime());
+    private final String orderId = String.valueOf(System.nanoTime());
 
     @Test(groups = "integrationTest")
     public void testChargeMandiriClickpay() throws RestClientException, UnsupportedEncodingException {

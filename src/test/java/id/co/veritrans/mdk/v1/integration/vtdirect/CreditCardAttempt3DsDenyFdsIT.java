@@ -17,7 +17,7 @@ import static org.testng.Assert.assertEquals;
  */
 public class CreditCardAttempt3DsDenyFdsIT extends AbstractCreditCardIT {
 
-    final String orderId = String.valueOf(System.nanoTime());
+    private final String orderId = String.valueOf(System.nanoTime());
 
     @Test(groups = "integrationTest")
     public void testCharge() throws RestClientException, URISyntaxException {

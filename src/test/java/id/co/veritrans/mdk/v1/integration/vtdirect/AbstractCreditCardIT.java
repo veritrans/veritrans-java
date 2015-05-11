@@ -1,5 +1,6 @@
 package id.co.veritrans.mdk.v1.integration.vtdirect;
 
+import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import id.co.veritrans.mdk.v1.integration.AbstractIntegrationTest;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtDirect;
@@ -21,8 +22,10 @@ import static org.testng.Assert.assertNotNull;
  */
 public class AbstractCreditCardIT extends AbstractIntegrationTest {
 
+    private static final Object LOCK = new Object();
+
     public String getToken(String cardNumber, String expiryMonth, String expiryYear, String cvv) throws URISyntaxException, RestClientException {
-        final URIBuilder tokenUriBuilder = new URIBuilder(vtGatewayFactory.getEnvironmentType().getBaseUrl() +"/" + StringConstant.TOKEN)
+        final URIBuilder tokenUriBuilder = new URIBuilder(vtGatewayFactory.getEnvironmentType().getBaseUrl() + "/" + StringConstant.TOKEN)
                 .addParameter("card_number", cardNumber)
                 .addParameter("card_cvv", cvv)
                 .addParameter("card_exp_month", expiryMonth)
@@ -43,7 +46,9 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
         req.setCustomerDetails(new CustomerDetails("gde", "satrigraha", "gde.satrigraha@veritrans.co.id", "123456789", null, null));
         req.setCreditCard(creditCard);
 
+        System.out.println("charging: " + JsonUtil.toJson(req));
         final VtResponse vtResponse = vtDirect.charge(req);
+        System.out.println("response: " + JsonUtil.toJson(vtResponse));
         return vtResponse;
     }
 }
