@@ -46,7 +46,6 @@ public class VtResponse {
     private String biiVaNumber;
     private String redirectUrl;
     private String[] validationMessages;
-    private String redirectUrl;
 
     /**
      * Veritrans transaction response constructor
@@ -396,14 +395,6 @@ public class VtResponse {
 
     public void setValidationMessages(final String[] validationMessages) {
         this.validationMessages = validationMessages;
-    }
-
-    public String getRedirectUrl() {
-        return redirectUrl;
-    }
-
-    public void setRedirectUrl(String redirectUrl) {
-        this.redirectUrl = redirectUrl;
     }
 
     @Override
