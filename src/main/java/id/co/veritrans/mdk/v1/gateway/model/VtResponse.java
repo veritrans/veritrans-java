@@ -33,42 +33,23 @@ public class VtResponse {
     private String signature_key;
     @JsonProperty("token_id")
     private String cardToken;
+    @JsonProperty("saved_token_id")
+    private String savedCardToken;
+    @JsonProperty("saved_token_id_expired_at")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+07")
+    private Date savedCardTokenExpiredAt;
+    private Boolean secureToken;
     private CreditCard.Bank bank;
+    private String billerCode;
+    private String billKey;
+    private String xlTunaiOrderId;
+    private String biiVaNumber;
     private String[] validationMessages;
 
     /**
      * Veritrans transaction response constructor
      */
     public VtResponse() {
-    }
-
-    /**
-     * Veritrans transaction response constructor
-     *
-     * @param transactionId     Transaction identifier
-     * @param orderId           Transaction order identifier
-     * @param grossAmount       Transaction total gross amount
-     * @param paymentMethod     Transaction payment method
-     * @param transactionTime   Transaction time
-     * @param transactionStatus {@link id.co.veritrans.mdk.v1.gateway.model.TransactionStatus Transaction status}
-     * @param fraudStatus       {@link id.co.veritrans.mdk.v1.gateway.model.FraudStatus Transaction fraud status}
-     * @param maskedCardNumber  Transaction masked card (for credit card)
-     * @param statusCode        <a href="http://docs.veritrans.co.id/sandbox/status_code.html">Transaction status code</a>
-     * @param statusMessage     Transaction status message
-     * @param approvalCode      Transaction approval code
-     */
-    public VtResponse(final String transactionId, final String orderId, final BigDecimal grossAmount, final PaymentMethod paymentMethod, final Date transactionTime, final TransactionStatus transactionStatus, final id.co.veritrans.mdk.v1.gateway.model.FraudStatus fraudStatus, final String maskedCardNumber, final String statusCode, final String statusMessage, final String approvalCode) {
-        this.transactionId = transactionId;
-        this.orderId = orderId;
-        this.grossAmount = grossAmount;
-        this.paymentMethod = paymentMethod;
-        this.transactionTime = transactionTime;
-        this.transactionStatus = transactionStatus;
-        this.fraudStatus = fraudStatus;
-        this.maskedCardNumber = maskedCardNumber;
-        this.statusCode = statusCode;
-        this.statusMessage = statusMessage;
-        this.approvalCode = approvalCode;
     }
 
     /**
@@ -335,12 +316,68 @@ public class VtResponse {
         this.cardToken = cardToken;
     }
 
+    public String getSavedCardToken() {
+        return savedCardToken;
+    }
+
+    public void setSavedCardToken(final String savedCardToken) {
+        this.savedCardToken = savedCardToken;
+    }
+
+    public Date getSavedCardTokenExpiredAt() {
+        return savedCardTokenExpiredAt;
+    }
+
+    public void setSavedCardTokenExpiredAt(final Date savedCardTokenExpiredAt) {
+        this.savedCardTokenExpiredAt = savedCardTokenExpiredAt;
+    }
+
+    public Boolean getSecureToken() {
+        return secureToken;
+    }
+
+    public void setSecureToken(final Boolean secureToken) {
+        this.secureToken = secureToken;
+    }
+
     public CreditCard.Bank getBank() {
         return bank;
     }
 
     public void setBank(final CreditCard.Bank bank) {
         this.bank = bank;
+    }
+
+    public String getBillerCode() {
+        return billerCode;
+    }
+
+    public void setBillerCode(final String billerCode) {
+        this.billerCode = billerCode;
+    }
+
+    public String getBillKey() {
+        return billKey;
+    }
+
+    public void setBillKey(final String billKey) {
+        this.billKey = billKey;
+    }
+
+    public String getXlTunaiOrderId() {
+        return xlTunaiOrderId;
+    }
+
+    public void setXlTunaiOrderId(final String xlTunaiOrderId) {
+        this.xlTunaiOrderId = xlTunaiOrderId;
+    }
+
+    public String getBiiVaNumber() {
+        return biiVaNumber;
+    }
+
+    public void setBiiVaNumber(final String biiVaNumber) {
+        this.biiVaNumber = biiVaNumber;
     }
 
     public String[] getValidationMessages() {
@@ -360,6 +397,9 @@ public class VtResponse {
 
         if (approvalCode != null ? !approvalCode.equals(that.approvalCode) : that.approvalCode != null) return false;
         if (bank != that.bank) return false;
+        if (biiVaNumber != null ? !biiVaNumber.equals(that.biiVaNumber) : that.biiVaNumber != null) return false;
+        if (billKey != null ? !billKey.equals(that.billKey) : that.billKey != null) return false;
+        if (billerCode != null ? !billerCode.equals(that.billerCode) : that.billerCode != null) return false;
         if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
         if (fraudStatus != that.fraudStatus) return false;
         if (grossAmount != null ? !grossAmount.equals(that.grossAmount) : that.grossAmount != null) return false;
@@ -369,6 +409,11 @@ public class VtResponse {
         if (paymentMethod != that.paymentMethod) return false;
         if (permataVaNumber != null ? !permataVaNumber.equals(that.permataVaNumber) : that.permataVaNumber != null)
             return false;
+        if (savedCardToken != null ? !savedCardToken.equals(that.savedCardToken) : that.savedCardToken != null)
+            return false;
+        if (savedCardTokenExpiredAt != null ? !savedCardTokenExpiredAt.equals(that.savedCardTokenExpiredAt) : that.savedCardTokenExpiredAt != null)
+            return false;
+        if (secureToken != null ? !secureToken.equals(that.secureToken) : that.secureToken != null) return false;
         if (signature_key != null ? !signature_key.equals(that.signature_key) : that.signature_key != null)
             return false;
         if (statusCode != null ? !statusCode.equals(that.statusCode) : that.statusCode != null) return false;
@@ -380,6 +425,8 @@ public class VtResponse {
         if (transactionTime != null ? !transactionTime.equals(that.transactionTime) : that.transactionTime != null)
             return false;
         if (!Arrays.equals(validationMessages, that.validationMessages)) return false;
+        if (xlTunaiOrderId != null ? !xlTunaiOrderId.equals(that.xlTunaiOrderId) : that.xlTunaiOrderId != null)
+            return false;
 
         return true;
     }
@@ -400,7 +447,14 @@ public class VtResponse {
         result = 31 * result + (permataVaNumber != null ? permataVaNumber.hashCode() : 0);
         result = 31 * result + (signature_key != null ? signature_key.hashCode() : 0);
         result = 31 * result + (cardToken != null ? cardToken.hashCode() : 0);
+        result = 31 * result + (savedCardToken != null ? savedCardToken.hashCode() : 0);
+        result = 31 * result + (savedCardTokenExpiredAt != null ? savedCardTokenExpiredAt.hashCode() : 0);
+        result = 31 * result + (secureToken != null ? secureToken.hashCode() : 0);
         result = 31 * result + (bank != null ? bank.hashCode() : 0);
+        result = 31 * result + (billerCode != null ? billerCode.hashCode() : 0);
+        result = 31 * result + (billKey != null ? billKey.hashCode() : 0);
+        result = 31 * result + (xlTunaiOrderId != null ? xlTunaiOrderId.hashCode() : 0);
+        result = 31 * result + (biiVaNumber != null ? biiVaNumber.hashCode() : 0);
         result = 31 * result + (validationMessages != null ? Arrays.hashCode(validationMessages) : 0);
         return result;
     }

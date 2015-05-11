@@ -1,4 +1,4 @@
-package id.co.veritrans.mdk.gateway.model.vtdirect.paymentmethod;
+package id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod;
 
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
 import id.co.veritrans.mdk.v1.helper.ValidationUtil;

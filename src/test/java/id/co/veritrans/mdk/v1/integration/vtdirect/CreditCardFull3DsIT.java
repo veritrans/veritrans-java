@@ -1,4 +1,4 @@
-package id.co.veritrans.mdk.test.integration.vtdirect;
+package id.co.veritrans.mdk.v1.integration.vtdirect;
 
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.model.FraudStatus;
@@ -15,13 +15,13 @@ import static org.testng.Assert.assertEquals;
 /**
  * Created by gde on 5/11/15.
  */
-public class CreditCardAttempt3DsIT extends AbstractCreditCardIT {
+public class CreditCardFull3DsIT extends AbstractCreditCardIT {
 
     final String orderId = String.valueOf(System.nanoTime());
 
     @Test(groups = "integrationTest")
     public void testCharge() throws RestClientException, URISyntaxException {
-        final String cardToken = getToken("4411111111111118", "01", "2020", "123");
+        final String cardToken = getToken("4811111111111114", "01", "2020", "123");
         final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.BNI, null, null, null, null));
 
         assertEquals(vtResponse.getStatusCode(), "200");
