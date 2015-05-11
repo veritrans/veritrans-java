@@ -15,13 +15,13 @@ public class JsonUtilTest {
         creditCard.setCardToken("1234567890");
         creditCard.setAcquirerBank(CreditCard.Bank.BNI);
         creditCard.setInstallmentTerm(6);
-        creditCard.setSaveTokenId(true);
+        creditCard.setSaveCardToken(true);
 
         String json = JsonUtil.toJson(creditCard);
         Assert.assertTrue(json.contains("token_id"));
-        Assert.assertTrue(json.contains("acquirer_bank"));
+        Assert.assertTrue(json.contains("bank"));
         Assert.assertTrue(json.contains("installment_term"));
         Assert.assertTrue(json.contains("save_token_id"));
-        Assert.assertFalse(json.contains("transaction_type"));
+        Assert.assertFalse(json.contains("type"));
     }
 }

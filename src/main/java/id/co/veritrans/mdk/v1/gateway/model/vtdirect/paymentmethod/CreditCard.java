@@ -1,6 +1,5 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
@@ -16,31 +15,14 @@ public class CreditCard {
     @JsonProperty("token_id")
     private String cardToken;
     @NotNull
-    @JsonIgnore
+    @JsonProperty("bank")
     private Bank acquirerBank;
     private Integer installmentTerm;
     private List<String> bins;
-    @JsonIgnore
+    @JsonProperty("type")
     private TransactionType transactionType;
-    private Boolean saveTokenId;
-
-    /* Handle enum serialization */
-    @JsonProperty("transaction_type")
-    private String _getTransactionType() {
-        if (transactionType == null){
-            return null;
-        }
-        return transactionType.name;
-    }
-
-    @JsonProperty("acquirer_bank")
-    private String _getAcquirerBank() {
-        if (acquirerBank == null) {
-            return null;
-        }
-        return acquirerBank.name;
-    }
-    /* ************************* */
+    @JsonProperty("save_token_id")
+    private Boolean saveCardToken;
 
     /**
      * Credit card bank enum
@@ -73,6 +55,11 @@ public class CreditCard {
         TransactionType(final String name) {
             this.name = name;
         }
+
+        @JsonValue
+        public String getName() {
+            return name;
+        }
     }
 
     /**
@@ -89,15 +76,15 @@ public class CreditCard {
      * @param installmentTerm Transaction installment term (month)
      * @param bins            Merchant bin promo
      * @param transactionType {@link CreditCard.TransactionType Transaction type} for current transaction
-     * @param saveTokenId     Save token id for one/two click feature
+     * @param saveCardToken     Save token id for one/two click feature
      */
-    public CreditCard(final String cardToken, final Bank acquirerBank, final Integer installmentTerm, final List<String> bins, final TransactionType transactionType, final Boolean saveTokenId) {
+    public CreditCard(final String cardToken, final Bank acquirerBank, final Integer installmentTerm, final List<String> bins, final TransactionType transactionType, final Boolean saveCardToken) {
         this.cardToken = cardToken;
         this.acquirerBank = acquirerBank;
         this.installmentTerm = installmentTerm;
         this.bins = bins;
         this.transactionType = transactionType;
-        this.saveTokenId = saveTokenId;
+        this.saveCardToken = saveCardToken;
     }
 
     /**
@@ -195,17 +182,17 @@ public class CreditCard {
      *
      * @return Save token id config
      */
-    public Boolean getSaveTokenId() {
-        return saveTokenId;
+    public Boolean getSaveCardToken() {
+        return saveCardToken;
     }
 
     /**
      * Set save token id for one/two click feature config
      *
-     * @param saveTokenId Save token id config
+     * @param saveCardToken Save token id config
      */
-    public void setSaveTokenId(final Boolean saveTokenId) {
-        this.saveTokenId = saveTokenId;
+    public void setSaveCardToken(final Boolean saveCardToken) {
+        this.saveCardToken = saveCardToken;
     }
 
     @Override
@@ -219,7 +206,7 @@ public class CreditCard {
         if (bins != null ? !bins.equals(that.bins) : that.bins != null) return false;
         if (installmentTerm != null ? !installmentTerm.equals(that.installmentTerm) : that.installmentTerm != null)
             return false;
-        if (saveTokenId != null ? !saveTokenId.equals(that.saveTokenId) : that.saveTokenId != null) return false;
+        if (saveCardToken != null ? !saveCardToken.equals(that.saveCardToken) : that.saveCardToken != null) return false;
         if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
         if (transactionType != that.transactionType) return false;
 
@@ -233,7 +220,7 @@ public class CreditCard {
         result = 31 * result + (installmentTerm != null ? installmentTerm.hashCode() : 0);
         result = 31 * result + (bins != null ? bins.hashCode() : 0);
         result = 31 * result + (transactionType != null ? transactionType.hashCode() : 0);
-        result = 31 * result + (saveTokenId != null ? saveTokenId.hashCode() : 0);
+        result = 31 * result + (saveCardToken != null ? saveCardToken.hashCode() : 0);
         return result;
     }
 }

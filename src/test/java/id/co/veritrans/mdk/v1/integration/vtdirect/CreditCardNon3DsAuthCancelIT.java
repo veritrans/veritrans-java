@@ -8,32 +8,41 @@ import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import org.testng.annotations.Test;
 
 import java.io.UnsupportedEncodingException;
+import java.math.BigDecimal;
 import java.net.URISyntaxException;
 
 import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertNotNull;
 
 /**
  * Created by gde on 5/11/15.
  */
-public class CreditCardFull3DsIT extends AbstractCreditCardIT {
+public class CreditCardNon3DsAuthCancelIT extends AbstractCreditCardIT {
 
     private final String orderId = String.valueOf(System.nanoTime());
+    private String transactionId = null;
+    private BigDecimal grossAmount = null;
 
     @Test(groups = "integrationTest")
     public void testCharge() throws RestClientException, URISyntaxException {
-        final String cardToken = getToken("4811111111111114", "01", "2020", "123");
-        final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.BNI, null, null, null, null));
+        final String cardToken = getToken("4011111111111112", "01", "2020", "123");
+        final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.MANDIRI, null, null, CreditCard.TransactionType.AUTHORIZE, null));
 
         assertEquals(vtResponse.getStatusCode(), "200");
-        assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CAPTURED);
+        assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.AUTHORIZED);
         assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
+        assertNotNull(vtResponse.getTransactionId());
+        assertNotNull(vtResponse.getGrossAmount());
+
+        transactionId = vtResponse.getTransactionId();
+        grossAmount = vtResponse.getGrossAmount();
     }
 
     @Test(groups = "integrationTest", dependsOnMethods = "testCharge")
     public void testStatusAfterCharge() throws RestClientException, UnsupportedEncodingException {
         final VtResponse vtResponse = vtDirect.status(orderId);
         assertEquals(vtResponse.getStatusCode(), "200");
-        assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CAPTURED);
+        assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.AUTHORIZED);
         assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
     }
 
