@@ -15,13 +15,13 @@ import static org.testng.Assert.assertEquals;
 /**
  * Created by gde on 5/11/15.
  */
-public class CreditCardFull3DsIT extends AbstractCreditCardIT {
+public class CreditCardNon3DsIT extends AbstractCreditCardIT {
 
     private final String orderId = String.valueOf(System.nanoTime());
 
     @Test(groups = "integrationTest")
     public void testCharge() throws RestClientException, URISyntaxException {
-        final String cardToken = getToken("4811111111111114", "01", "2020", "123");
+        final String cardToken = getToken("5481161111111081", "01", "2020", "123");
         final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.BNI, null, null, null, null));
 
         assertEquals(vtResponse.getStatusCode(), "200");

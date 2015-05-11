@@ -11,6 +11,8 @@ import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import id.co.veritrans.mdk.v1.helper.StringConstant;
 import org.apache.http.client.utils.URIBuilder;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.net.URISyntaxException;
 
@@ -22,7 +24,7 @@ import static org.testng.Assert.assertNotNull;
  */
 public class AbstractCreditCardIT extends AbstractIntegrationTest {
 
-    private static final Object LOCK = new Object();
+    private static final Logger LOGGER = LoggerFactory.getLogger(AbstractCreditCardIT.class);
 
     public String getToken(String cardNumber, String expiryMonth, String expiryYear, String cvv) throws URISyntaxException, RestClientException {
         final URIBuilder tokenUriBuilder = new URIBuilder(vtGatewayFactory.getEnvironmentType().getBaseUrl() + "/" + StringConstant.TOKEN)
@@ -46,9 +48,9 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
         req.setCustomerDetails(new CustomerDetails("gde", "satrigraha", "gde.satrigraha@veritrans.co.id", "123456789", null, null));
         req.setCreditCard(creditCard);
 
-        System.out.println("charging: " + JsonUtil.toJson(req));
+        LOGGER.info("charging: " + JsonUtil.toJson(req));
         final VtResponse vtResponse = vtDirect.charge(req);
-        System.out.println("response: " + JsonUtil.toJson(vtResponse));
+        LOGGER.info("charge response: " + JsonUtil.toJson(vtResponse));
         return vtResponse;
     }
 }

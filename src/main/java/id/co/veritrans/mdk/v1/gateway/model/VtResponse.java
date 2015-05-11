@@ -30,7 +30,7 @@ public class VtResponse {
     private String statusMessage;
     private String approvalCode;
     private String permataVaNumber;
-    private String signature_key;
+    private String signatureKey;
     @JsonProperty("token_id")
     private String cardToken;
     @JsonProperty("saved_token_id")
@@ -44,6 +44,7 @@ public class VtResponse {
     private String billKey;
     private String xlTunaiOrderId;
     private String biiVaNumber;
+    private String redirectUrl;
     private String[] validationMessages;
 
     /**
@@ -295,17 +296,17 @@ public class VtResponse {
      *
      * @return Signature key
      */
-    public String getSignature_key() {
-        return signature_key;
+    public String getSignatureKey() {
+        return signatureKey;
     }
 
     /**
      * Set signature key
      *
-     * @param signature_key Signature key
+     * @param signatureKey Signature key
      */
-    public void setSignature_key(String signature_key) {
-        this.signature_key = signature_key;
+    public void setSignatureKey(String signatureKey) {
+        this.signatureKey = signatureKey;
     }
 
     public String getCardToken() {
@@ -380,6 +381,14 @@ public class VtResponse {
         this.biiVaNumber = biiVaNumber;
     }
 
+    public String getRedirectUrl() {
+        return redirectUrl;
+    }
+
+    public void setRedirectUrl(final String redirectUrl) {
+        this.redirectUrl = redirectUrl;
+    }
+
     public String[] getValidationMessages() {
         return validationMessages;
     }
@@ -409,13 +418,13 @@ public class VtResponse {
         if (paymentMethod != that.paymentMethod) return false;
         if (permataVaNumber != null ? !permataVaNumber.equals(that.permataVaNumber) : that.permataVaNumber != null)
             return false;
+        if (redirectUrl != null ? !redirectUrl.equals(that.redirectUrl) : that.redirectUrl != null) return false;
         if (savedCardToken != null ? !savedCardToken.equals(that.savedCardToken) : that.savedCardToken != null)
             return false;
         if (savedCardTokenExpiredAt != null ? !savedCardTokenExpiredAt.equals(that.savedCardTokenExpiredAt) : that.savedCardTokenExpiredAt != null)
             return false;
         if (secureToken != null ? !secureToken.equals(that.secureToken) : that.secureToken != null) return false;
-        if (signature_key != null ? !signature_key.equals(that.signature_key) : that.signature_key != null)
-            return false;
+        if (signatureKey != null ? !signatureKey.equals(that.signatureKey) : that.signatureKey != null) return false;
         if (statusCode != null ? !statusCode.equals(that.statusCode) : that.statusCode != null) return false;
         if (statusMessage != null ? !statusMessage.equals(that.statusMessage) : that.statusMessage != null)
             return false;
@@ -445,7 +454,7 @@ public class VtResponse {
         result = 31 * result + (statusMessage != null ? statusMessage.hashCode() : 0);
         result = 31 * result + (approvalCode != null ? approvalCode.hashCode() : 0);
         result = 31 * result + (permataVaNumber != null ? permataVaNumber.hashCode() : 0);
-        result = 31 * result + (signature_key != null ? signature_key.hashCode() : 0);
+        result = 31 * result + (signatureKey != null ? signatureKey.hashCode() : 0);
         result = 31 * result + (cardToken != null ? cardToken.hashCode() : 0);
         result = 31 * result + (savedCardToken != null ? savedCardToken.hashCode() : 0);
         result = 31 * result + (savedCardTokenExpiredAt != null ? savedCardTokenExpiredAt.hashCode() : 0);
@@ -455,6 +464,7 @@ public class VtResponse {
         result = 31 * result + (billKey != null ? billKey.hashCode() : 0);
         result = 31 * result + (xlTunaiOrderId != null ? xlTunaiOrderId.hashCode() : 0);
         result = 31 * result + (biiVaNumber != null ? biiVaNumber.hashCode() : 0);
+        result = 31 * result + (redirectUrl != null ? redirectUrl.hashCode() : 0);
         result = 31 * result + (validationMessages != null ? Arrays.hashCode(validationMessages) : 0);
         return result;
     }
