@@ -12,7 +12,7 @@ public class JsonUtilTest {
     @Test
     public void testJsonSerializer() throws Exception {
         CreditCard creditCard = new CreditCard();
-        creditCard.setTokenId("1234567890");
+        creditCard.setCardToken("1234567890");
         creditCard.setAcquirerBank(CreditCard.Bank.BNI);
         creditCard.setInstallmentTerm(6);
         creditCard.setSaveTokenId(true);

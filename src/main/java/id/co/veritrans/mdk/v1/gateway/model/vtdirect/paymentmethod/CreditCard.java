@@ -2,6 +2,7 @@ package id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonValue;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;
@@ -12,7 +13,8 @@ import java.util.List;
 public class CreditCard {
 
     @NotNull
-    private String tokenId;
+    @JsonProperty("token_id")
+    private String cardToken;
     @NotNull
     @JsonIgnore
     private Bank acquirerBank;
@@ -53,6 +55,11 @@ public class CreditCard {
         Bank(final String name) {
             this.name = name;
         }
+
+        @JsonValue
+        public String getName() {
+            return name;
+        }
     }
 
     /**
@@ -77,15 +84,15 @@ public class CreditCard {
     /**
      * Credit card constructor
      *
-     * @param tokenId         Veritrans card token identifier
+     * @param cardToken         Veritrans card token identifier
      * @param acquirerBank    Veritrans credit card {@link CreditCard.Bank acquiring bank}
      * @param installmentTerm Transaction installment term (month)
      * @param bins            Merchant bin promo
      * @param transactionType {@link CreditCard.TransactionType Transaction type} for current transaction
      * @param saveTokenId     Save token id for one/two click feature
      */
-    public CreditCard(final String tokenId, final Bank acquirerBank, final Integer installmentTerm, final List<String> bins, final TransactionType transactionType, final Boolean saveTokenId) {
-        this.tokenId = tokenId;
+    public CreditCard(final String cardToken, final Bank acquirerBank, final Integer installmentTerm, final List<String> bins, final TransactionType transactionType, final Boolean saveTokenId) {
+        this.cardToken = cardToken;
         this.acquirerBank = acquirerBank;
         this.installmentTerm = installmentTerm;
         this.bins = bins;
@@ -98,17 +105,17 @@ public class CreditCard {
      *
      * @return Credit card token identifier
      */
-    public String getTokenId() {
-        return tokenId;
+    public String getCardToken() {
+        return cardToken;
     }
 
     /**
      * Set credit card token ID
      *
-     * @param tokenId Credit card token identifier
+     * @param cardToken Credit card token identifier
      */
-    public void setTokenId(final String tokenId) {
-        this.tokenId = tokenId;
+    public void setCardToken(final String cardToken) {
+        this.cardToken = cardToken;
     }
 
     /**
@@ -213,7 +220,7 @@ public class CreditCard {
         if (installmentTerm != null ? !installmentTerm.equals(that.installmentTerm) : that.installmentTerm != null)
             return false;
         if (saveTokenId != null ? !saveTokenId.equals(that.saveTokenId) : that.saveTokenId != null) return false;
-        if (tokenId != null ? !tokenId.equals(that.tokenId) : that.tokenId != null) return false;
+        if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
         if (transactionType != that.transactionType) return false;
 
         return true;
@@ -221,7 +228,7 @@ public class CreditCard {
 
     @Override
     public int hashCode() {
-        int result = tokenId != null ? tokenId.hashCode() : 0;
+        int result = cardToken != null ? cardToken.hashCode() : 0;
         result = 31 * result + (acquirerBank != null ? acquirerBank.hashCode() : 0);
         result = 31 * result + (installmentTerm != null ? installmentTerm.hashCode() : 0);
         result = 31 * result + (bins != null ? bins.hashCode() : 0);

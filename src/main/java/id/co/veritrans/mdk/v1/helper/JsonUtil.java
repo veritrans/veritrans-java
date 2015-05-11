@@ -9,8 +9,6 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import id.co.veritrans.mdk.v1.exception.JsonDeserializeException;
 import org.apache.http.HttpResponse;
 
-import java.io.IOException;
-
 /**
  * Created by andes on 5/8/15.
  */
@@ -21,7 +19,7 @@ public class JsonUtil {
     public static <T> T fromJson(HttpResponse httpResponse, Class<T> clazz) throws JsonDeserializeException {
         try {
             return jsonMapper.readValue(httpResponse.getEntity().getContent(), clazz);
-        } catch (IOException e) {
+        } catch (Exception e) {
             throw new JsonDeserializeException(e);
         }
     }

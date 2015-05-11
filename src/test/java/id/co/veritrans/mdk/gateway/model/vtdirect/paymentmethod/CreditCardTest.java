@@ -39,7 +39,7 @@ public class CreditCardTest {
         creditCard.setSaveTokenId(true);
         creditCard.setTransactionType(CreditCard.TransactionType.AUTHORIZE);
 
-        assertEquals(creditCard.getTokenId(), "abcdef");
+        assertEquals(creditCard.getCardToken(), "abcdef");
         assertEquals(creditCard.getAcquirerBank(), CreditCard.Bank.BNI);
         assertEquals(creditCard.getBins(), bins);
         assertEquals(creditCard.getInstallmentTerm(), Integer.valueOf(6));
@@ -61,7 +61,7 @@ public class CreditCardTest {
         assertFalse(constraintViolations.isEmpty());
 
         String errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray(new ConstraintViolation[0]));
-        assertTrue(errorMessage.contains("tokenId"));
+        assertTrue(errorMessage.contains("cardToken"));
         assertTrue(errorMessage.contains("acquirerBank"));
     }
 }

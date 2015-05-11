@@ -3,6 +3,7 @@ package id.co.veritrans.mdk.v1.gateway.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.veritrans.mdk.v1.exception.JsonDeserializeException;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -30,6 +31,9 @@ public class VtResponse {
     private String approvalCode;
     private String permataVaNumber;
     private String signature_key;
+    @JsonProperty("token_id")
+    private String cardToken;
+    private CreditCard.Bank bank;
     private String[] validationMessages;
 
     /**
@@ -323,6 +327,22 @@ public class VtResponse {
         this.signature_key = signature_key;
     }
 
+    public String getCardToken() {
+        return cardToken;
+    }
+
+    public void setCardToken(final String cardToken) {
+        this.cardToken = cardToken;
+    }
+
+    public CreditCard.Bank getBank() {
+        return bank;
+    }
+
+    public void setBank(final CreditCard.Bank bank) {
+        this.bank = bank;
+    }
+
     public String[] getValidationMessages() {
         return validationMessages;
     }
@@ -339,6 +359,8 @@ public class VtResponse {
         final VtResponse that = (VtResponse) o;
 
         if (approvalCode != null ? !approvalCode.equals(that.approvalCode) : that.approvalCode != null) return false;
+        if (bank != that.bank) return false;
+        if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
         if (fraudStatus != that.fraudStatus) return false;
         if (grossAmount != null ? !grossAmount.equals(that.grossAmount) : that.grossAmount != null) return false;
         if (maskedCardNumber != null ? !maskedCardNumber.equals(that.maskedCardNumber) : that.maskedCardNumber != null)
@@ -377,6 +399,8 @@ public class VtResponse {
         result = 31 * result + (approvalCode != null ? approvalCode.hashCode() : 0);
         result = 31 * result + (permataVaNumber != null ? permataVaNumber.hashCode() : 0);
         result = 31 * result + (signature_key != null ? signature_key.hashCode() : 0);
+        result = 31 * result + (cardToken != null ? cardToken.hashCode() : 0);
+        result = 31 * result + (bank != null ? bank.hashCode() : 0);
         result = 31 * result + (validationMessages != null ? Arrays.hashCode(validationMessages) : 0);
         return result;
     }

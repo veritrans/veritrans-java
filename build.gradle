@@ -45,7 +45,18 @@ test {
     }
 
     useTestNG {
-        suiteName 'unitTest'
+        excludeGroups 'integrationTest'
+    }
+}
+
+task integrationTest(type: Test, dependsOn: 'test') {
+    testLogging {
+        events "started", "passed", "skipped", "failed", "standardOut", "standardError"
+        exceptionFormat "full"
+    }
+
+    useTestNG() {
+        includeGroups 'integrationTest'
     }
 }
 

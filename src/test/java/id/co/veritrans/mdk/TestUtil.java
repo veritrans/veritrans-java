@@ -21,7 +21,7 @@ public class TestUtil {
     /* Build credit card object */
     public static CreditCard buildCreditCard() {
         CreditCard creditCard = new CreditCard();
-        creditCard.setTokenId("abcdef");
+        creditCard.setCardToken("abcdef");
         creditCard.setAcquirerBank(CreditCard.Bank.BNI);
 
         return creditCard;

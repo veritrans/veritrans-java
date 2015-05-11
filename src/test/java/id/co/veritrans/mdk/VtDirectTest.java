@@ -25,7 +25,7 @@ public class VtDirectTest {
     @Test
     public void testChargeCreditCardNormal() {
         CreditCard card = new CreditCard();
-        card.setTokenId("token credit card");
+        card.setCardToken("token credit card");
 
         CreditCardRequest creditCardRequest = new CreditCardRequest();
 

@@ -24,6 +24,7 @@ public abstract class DefaultVtGateway implements VtGateway {
         return vtGatewaySession;
     }
 
+    @Override
     public VtResponse approve(final String orderId) throws RestClientException, UnsupportedEncodingException {
         final String safeOrderId = URLEncoder.encode(orderId, "UTF-8");
         final VtGatewaySession vtGatewaySession = getVtGatewaySession();
@@ -36,6 +37,7 @@ public abstract class DefaultVtGateway implements VtGateway {
         return getVtGatewaySession().getRestClient().post(url);
     }
 
+    @Override
     public VtResponse status(final String orderId) throws RestClientException, UnsupportedEncodingException {
         final String safeOrderId = URLEncoder.encode(orderId, "UTF-8");
         final VtGatewaySession vtGatewaySession = getVtGatewaySession();
@@ -48,6 +50,7 @@ public abstract class DefaultVtGateway implements VtGateway {
         return getVtGatewaySession().getRestClient().get(url);
     }
 
+    @Override
     public VtResponse cancel(final String orderId) throws RestClientException, UnsupportedEncodingException {
         final String safeOrderId = URLEncoder.encode(orderId, "UTF-8");
         final VtGatewaySession vtGatewaySession = getVtGatewaySession();

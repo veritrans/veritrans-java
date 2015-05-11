@@ -6,7 +6,7 @@ package id.co.veritrans.mdk.v1.helper;
 public class StringConstant {
 
     /* URL */
-    public final static String GET_TOKENL             = "token";
+    public final static String TOKEN                  = "token";
     public final static String CHARGE                 = "charge";
     public final static String CAPTURE                = "capture";
     public final static String GET_STATUS             = "status";
