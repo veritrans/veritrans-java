@@ -60,7 +60,7 @@ public class TestUtil {
                 .createProxyConfig();
     }
 
-    public static id.co.veritrans.mdk.v1.VtGatewayConfig buildVtGatewayConfig() {
+    public static VtGatewayConfig buildVtGatewayConfig() {
         return new VtGatewayConfigBuilder()
                 .setMaxConnectionPoolSize(16)
                 .setEnvironmentType(EnvironmentType.SANDBOX)

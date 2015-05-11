@@ -13,6 +13,9 @@ public class ProxyConfig {
     private final String username;
     private final String password;
 
+    /**
+     * Proxy config constructor
+     */
     public ProxyConfig(final String host, final int port, final String username, final String password) {
         this.host = host;
         this.port = port;
