@@ -45,7 +45,7 @@ public abstract class DefaultVtGateway implements VtGateway {
                 "/" +
                 StringConstant.GET_STATUS;
 
-        return getVtGatewaySession().getRestClient().post(url);
+        return getVtGatewaySession().getRestClient().get(url);
     }
 
     public VtResponse cancel(final String orderId) throws RestClientException, UnsupportedEncodingException {

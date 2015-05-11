@@ -42,14 +42,13 @@ public class VtDirectTestIT {
 
         vtResponse = vtDirect.cancel(orderId);
         System.out.println("cancel: " + JsonUtil.toJson(vtResponse));
-        Assert.assertEquals(vtResponse.getStatusCode(), "200");
-        Assert.assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CANCELLED);
+        Assert.assertEquals(vtResponse.getStatusCode(), "412");
         Assert.assertNull(vtResponse.getFraudStatus());
 
         vtResponse = vtDirect.status(orderId);
         System.out.println("status: " + JsonUtil.toJson(vtResponse));
         Assert.assertEquals(vtResponse.getStatusCode(), "200");
-        Assert.assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CANCELLED);
+        Assert.assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.SETTLED);
         Assert.assertNull(vtResponse.getFraudStatus());
     }
 
