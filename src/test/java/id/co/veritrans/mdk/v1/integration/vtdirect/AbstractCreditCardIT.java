@@ -46,12 +46,20 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
     private static final Pattern PATTERN_FORM_ACS_ACTION = Pattern.compile("id='acsForm'.*action=\"(.*)\" method");
 
     public String getToken(String cardNumber, String expiryMonth, String expiryYear, String cvv) throws URISyntaxException, RestClientException {
-        final URIBuilder tokenUriBuilder = new URIBuilder(vtGatewayFactory.getEnvironmentType().getBaseUrl() + "/" + StringConstant.TOKEN)
+        return getToken(cardNumber, expiryMonth, expiryYear, cvv, null);
+    }
+
+    public String getToken(String cardNumber, String expiryMonth, String expiryYear, String cvv, CreditCard.TransactionType transactionType) throws URISyntaxException, RestClientException {
+        URIBuilder tokenUriBuilder = new URIBuilder(vtGatewayFactory.getEnvironmentType().getBaseUrl() + "/" + StringConstant.TOKEN)
                 .addParameter("card_number", cardNumber)
                 .addParameter("card_cvv", cvv)
                 .addParameter("card_exp_month", expiryMonth)
                 .addParameter("card_exp_year", expiryYear)
                 .addParameter("client_key", vtGatewayFactory.getClientKey());
+
+        if (transactionType != null) {
+            tokenUriBuilder = tokenUriBuilder.addParameter("type", transactionType.getName());
+        }
 
         final VtResponse vtResponse = ((DefaultVtDirect) vtDirect).getVtGatewaySession().getRestClient()
                 .get(tokenUriBuilder.build().toString());
@@ -62,7 +70,11 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
     }
 
     public String getToken3Ds(String cardNumber, String expiryMonth, String expiryYear, String cvv, CreditCard.Bank bank) throws URISyntaxException, RestClientException, IOException {
-        final URIBuilder tokenUriBuilder = new URIBuilder(vtGatewayFactory.getEnvironmentType().getBaseUrl() + "/" + StringConstant.TOKEN)
+        return getToken3Ds(cardNumber, expiryMonth, expiryYear, cvv, bank, null);
+    }
+
+    public String getToken3Ds(String cardNumber, String expiryMonth, String expiryYear, String cvv, CreditCard.Bank bank, CreditCard.TransactionType transactionType) throws URISyntaxException, RestClientException, IOException {
+        URIBuilder tokenUriBuilder = new URIBuilder(vtGatewayFactory.getEnvironmentType().getBaseUrl() + "/" + StringConstant.TOKEN)
                 .addParameter("card_number", cardNumber)
                 .addParameter("card_cvv", cvv)
                 .addParameter("card_exp_month", expiryMonth)
@@ -71,6 +83,10 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
                 .addParameter("secure", "true")
                 .addParameter("gross_amount", String.valueOf(10000))
                 .addParameter("bank", bank.toString());
+
+        if (transactionType != null) {
+            tokenUriBuilder = tokenUriBuilder.addParameter("type", transactionType.getName());
+        }
 
         final VtResponse vtResponse = ((DefaultVtDirect) vtDirect).getVtGatewaySession().getRestClient()
                 .get(tokenUriBuilder.build().toString());

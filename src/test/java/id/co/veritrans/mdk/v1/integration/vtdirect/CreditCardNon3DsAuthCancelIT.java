@@ -25,7 +25,7 @@ public class CreditCardNon3DsAuthCancelIT extends AbstractCreditCardIT {
 
     @Test(groups = "integrationTest")
     public void testCharge() throws RestClientException, URISyntaxException {
-        final String cardToken = getToken("4011111111111112", "01", "2020", "123");
+        final String cardToken = getToken("4011111111111112", "01", "2020", "123", CreditCard.TransactionType.AUTHORIZE);
         final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.MANDIRI, null, null, CreditCard.TransactionType.AUTHORIZE, null));
 
         assertEquals(vtResponse.getStatusCode(), "200");
