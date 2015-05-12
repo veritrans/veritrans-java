@@ -70,9 +70,10 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     private CloseableHttpClient buildHttpClient() {
+        final String authHeaderVal = vtGatewayConfig.getServerKey() + ":";
         final List<Header> defaultHeaders = Arrays.asList(
                 (Header) new BasicHeader("Accept", "application/json"),
-                (Header) new BasicHeader("Authorization", "Basic " + Base64.encodeBase64String(vtGatewayConfig.getServerKey().getBytes()))
+                (Header) new BasicHeader("Authorization", "Basic " + Base64.encodeBase64String(authHeaderVal.getBytes()))
         );
 
         return configureProxy(HttpClients.custom()
