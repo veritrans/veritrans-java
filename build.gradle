@@ -7,9 +7,16 @@
  * user guide available at http://gradle.org/docs/2.2.1/userguide/tutorial_java_projects.html
  */
 
+plugins {
+    id "com.jfrog.bintray" version "1.1"
+}
+
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
+apply plugin: 'maven'
 
+archivesBaseName = 'vt-java-client'
+group = 'id.co.veritrans'
 version = '0.1.1-preview'
 
 sourceCompatibility = '1.5'
@@ -65,7 +72,46 @@ task integrationTest(type: Test, dependsOn: 'test') {
     }
 }
 
+configurations {
+    published
+}
+
 configurations.all {
     resolutionStrategy {
+    }
+}
+
+task sourceJar(type: Jar) {
+    from sourceSets.main.allSource
+    classifier = 'sources'
+}
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+// Add the sourceJars to non-extractor modules
+artifacts {
+    published sourceJar
+    published javadocJar
+}
+
+bintray {
+    user = 'gde-vt'
+    key = '7392fe80b5e0f0874594b7fe1b68ec61e65f293a'
+
+    configurations = ['published', 'archives']
+    dryRun = false //Whether to run this as dry-run, without deploying
+    publish = true //If version should be auto published after an upload
+    //Package configuration. The plugin will use the repo and name properties to check if the package already exists. In that case, there's no need to configure the other package properties (like userOrg, desc, etc).
+    pkg {
+        repo = 'maven'
+        name = 'veritrans-java-client'
+        desc = 'Official Veritrans Payment API Java Client'
+        websiteUrl = 'https://github.com/gde-vt/veritrans-java'
+        issueTrackerUrl = 'https://github.com/gde-vt/veritrans-java/issues'
+        vcsUrl = 'https://github.com/gde-vt/veritrans-java.git'
+        licenses = ['Unlicense']
+        publicDownloadNumbers = true
     }
 }
