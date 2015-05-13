@@ -15,7 +15,7 @@ public interface VtGateway {
      *
      * @param orderId   {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse#orderId Order id} of transaction
      * @return          {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse Veritrans response}
-     * @throws {@link id.co.veritrans.mdk.v1.exception.RestClientException} when an exception was occurred during
+     * @throws RestClientException when an exception was occurred during
      * executing the request.
      * @throws UnsupportedEncodingException when UTF-8 Encoding is not available.
      */
@@ -26,7 +26,7 @@ public interface VtGateway {
      *
      * @param orderId   {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse#orderId Order id} of transaction
      * @return          {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse Veritrans response}
-     * @throws {@link id.co.veritrans.mdk.v1.exception.RestClientException} when an exception was occurred during
+     * @throws RestClientException when an exception was occurred during
      * executing the request.
      * @throws UnsupportedEncodingException when UTF-8 Encoding is not available.
      */
@@ -37,7 +37,7 @@ public interface VtGateway {
      *
      * @param orderId   {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse#orderId Order id} of the transaction
      * @return          {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse Veritrans response}
-     * @throws {@link id.co.veritrans.mdk.v1.exception.RestClientException} when an exception was occurred during
+     * @throws RestClientException when an exception was occurred during
      * executing the request.
      * @throws UnsupportedEncodingException when UTF-8 Encoding is not available.
      */
