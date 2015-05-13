@@ -1,15 +1,17 @@
 package id.co.veritrans.mdk.v1.config;
 
+import java.net.URI;
+
 /**
  * Enum of veritrans environment type API.
  */
 public enum EnvironmentType {
-    SANDBOX("https://api.sandbox.veritrans.co.id/v2"),
-    PRODUCTION("https://api.veritrans.co.id/v2");
+    SANDBOX(URI.create("https://api.sandbox.veritrans.co.id/v2")),
+    PRODUCTION(URI.create("https://api.veritrans.co.id/v2"));
 
-    private final String baseUrl;
+    private final URI baseUrl;
 
-    private EnvironmentType(final String baseUrl) {
+    private EnvironmentType(final URI baseUrl) {
         this.baseUrl = baseUrl;
     }
 
@@ -18,7 +20,7 @@ public enum EnvironmentType {
      *
      * @return  veritrans base URL API
      */
-    public String getBaseUrl() {
+    public URI getBaseUrl() {
         return baseUrl;
     }
 }

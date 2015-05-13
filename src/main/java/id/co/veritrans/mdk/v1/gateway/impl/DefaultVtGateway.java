@@ -27,12 +27,7 @@ public abstract class DefaultVtGateway implements VtGateway {
     @Override
     public VtResponse approve(final String orderId) throws RestClientException, UnsupportedEncodingException {
         final String safeOrderId = URLEncoder.encode(orderId, "UTF-8");
-        final VtGatewaySession vtGatewaySession = getVtGatewaySession();
-        final String url = vtGatewaySession.getVtGatewayConfig().getEnvironmentType().getBaseUrl() +
-                "/" +
-                safeOrderId +
-                "/" +
-                StringConstant.APPROVE;
+        final String url = safeOrderId + "/" + StringConstant.APPROVE;
 
         return getVtGatewaySession().getRestClient().post(url);
     }
@@ -40,12 +35,7 @@ public abstract class DefaultVtGateway implements VtGateway {
     @Override
     public VtResponse status(final String orderId) throws RestClientException, UnsupportedEncodingException {
         final String safeOrderId = URLEncoder.encode(orderId, "UTF-8");
-        final VtGatewaySession vtGatewaySession = getVtGatewaySession();
-        final String url = vtGatewaySession.getVtGatewayConfig().getEnvironmentType().getBaseUrl() +
-                "/" +
-                safeOrderId +
-                "/" +
-                StringConstant.GET_STATUS;
+        final String url = safeOrderId + "/" + StringConstant.GET_STATUS;
 
         return getVtGatewaySession().getRestClient().get(url);
     }
@@ -53,12 +43,7 @@ public abstract class DefaultVtGateway implements VtGateway {
     @Override
     public VtResponse cancel(final String orderId) throws RestClientException, UnsupportedEncodingException {
         final String safeOrderId = URLEncoder.encode(orderId, "UTF-8");
-        final VtGatewaySession vtGatewaySession = getVtGatewaySession();
-        final String url = vtGatewaySession.getVtGatewayConfig().getEnvironmentType().getBaseUrl() +
-                "/" +
-                safeOrderId +
-                "/" +
-                StringConstant.CANCEL;
+        final String url = safeOrderId + "/" + StringConstant.CANCEL;
 
         return getVtGatewaySession().getRestClient().post(url);
     }

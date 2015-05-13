@@ -50,7 +50,7 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
     }
 
     public String getToken(String cardNumber, String expiryMonth, String expiryYear, String cvv, CreditCard.TransactionType transactionType) throws URISyntaxException, RestClientException {
-        URIBuilder tokenUriBuilder = new URIBuilder(vtGatewayFactory.getEnvironmentType().getBaseUrl() + "/" + StringConstant.TOKEN)
+        URIBuilder tokenUriBuilder = new URIBuilder(StringConstant.TOKEN)
                 .addParameter("card_number", cardNumber)
                 .addParameter("card_cvv", cvv)
                 .addParameter("card_exp_month", expiryMonth)
@@ -74,7 +74,7 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
     }
 
     public String getToken3Ds(String cardNumber, String expiryMonth, String expiryYear, String cvv, CreditCard.Bank bank, CreditCard.TransactionType transactionType) throws URISyntaxException, RestClientException, IOException {
-        URIBuilder tokenUriBuilder = new URIBuilder(vtGatewayFactory.getEnvironmentType().getBaseUrl() + "/" + StringConstant.TOKEN)
+        URIBuilder tokenUriBuilder = new URIBuilder(StringConstant.TOKEN)
                 .addParameter("card_number", cardNumber)
                 .addParameter("card_cvv", cvv)
                 .addParameter("card_exp_month", expiryMonth)

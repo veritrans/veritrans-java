@@ -106,8 +106,9 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse get(final String url) throws RestClientException {
+    public VtResponse get(final String path) throws RestClientException {
         try {
+            final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
             final HttpResponse httpResponse = getHttpClient().execute(new HttpGet(url));
             return JsonUtil.fromJson(httpResponse, VtResponse.class);
         } catch (Exception e) {
@@ -116,8 +117,9 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse post(final String url) throws RestClientException {
+    public VtResponse post(final String path) throws RestClientException {
         try {
+            final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
             final HttpResponse httpResponse = getHttpClient().execute(new HttpPost(url));
             return JsonUtil.fromJson(httpResponse, VtResponse.class);
         } catch (Exception e) {
@@ -126,9 +128,10 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse post(final String url, final VtRequest vtRequest) throws RestClientException {
+    public VtResponse post(final String path, final VtRequest vtRequest) throws RestClientException {
         validate(vtRequest);
         try {
+            final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
             final HttpPost httpPost = new HttpPost(url);
             httpPost.setEntity(new StringEntity(JsonUtil.toJson(vtRequest)));
             httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));

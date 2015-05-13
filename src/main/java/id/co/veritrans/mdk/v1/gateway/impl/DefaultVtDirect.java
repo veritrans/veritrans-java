@@ -20,17 +20,13 @@ public class DefaultVtDirect extends DefaultVtGateway implements VtDirect {
 
     @Override
     public VtResponse charge(VtDirectChargeRequest vtDirectChargeRequest) throws RestClientException {
-        final VtGatewaySession vtGatewaySession = getVtGatewaySession();
-        final String url = vtGatewaySession.getVtGatewayConfig().getEnvironmentType().getBaseUrl() + "/" + StringConstant.CHARGE;
-
+        final String url = StringConstant.CHARGE;
         return getVtGatewaySession().getRestClient().post(url, vtDirectChargeRequest);
     }
 
     @Override
     public VtResponse capture(final String transactionId, final Long amount) throws RestClientException {
-        final VtGatewaySession vtGatewaySession = getVtGatewaySession();
-        final String url = vtGatewaySession.getVtGatewayConfig().getEnvironmentType().getBaseUrl() + "/" + StringConstant.CAPTURE;
-
+        final String url = StringConstant.CAPTURE;
         return getVtGatewaySession().getRestClient().post(url, new VtRequest() {
 
             @JsonProperty("transaction_id")
