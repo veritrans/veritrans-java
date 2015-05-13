@@ -11,7 +11,9 @@ import java.util.Arrays;
 import java.util.Date;
 
 /**
- * Veritrans transaction response
+ * Veritrans API response. Every response returned by Veritrans Payment API is represented by this class.
+ * Generally one must check the <b>statusCode</b> property to reliably determine the result of a request, do not ever
+ * rely on the HTTP status code.
  */
 public class VtResponse {
 
@@ -20,7 +22,7 @@ public class VtResponse {
     private BigDecimal grossAmount;
     @JsonProperty("payment_type")
     private PaymentMethod paymentMethod;
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+07")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+07")
     private Date transactionTime;
     private TransactionStatus transactionStatus;
     private FraudStatus fraudStatus;
@@ -36,7 +38,7 @@ public class VtResponse {
     @JsonProperty("saved_token_id")
     private String savedCardToken;
     @JsonProperty("saved_token_id_expired_at")
-    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd hh:mm:ss", timezone="GMT+07")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+07")
     private Date savedCardTokenExpiredAt;
     private Boolean secureToken;
     private CreditCard.Bank bank;

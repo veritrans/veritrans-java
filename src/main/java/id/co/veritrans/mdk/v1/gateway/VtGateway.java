@@ -27,9 +27,9 @@ public interface VtGateway {
     VtResponse status(String orderId) throws RestClientException, UnsupportedEncodingException;
 
     /**
-     * Cancel a charge transaction which has been approved
+     * Cancel a charge transaction which has been processed.
      *
-     * @param orderId   {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse#orderId Order id} of transaction
+     * @param orderId   {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse#orderId Order id} of the transaction
      * @return          {@link id.co.veritrans.mdk.v1.gateway.model.VtResponse Veritrans response}
      * @throws RestClientException
      * @throws UnsupportedEncodingException
