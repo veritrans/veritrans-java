@@ -437,7 +437,7 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
 #### VtWeb
 ```java
 String orderId = "your unique order ID";
-VtResponse vtResponse = vtWeb.approve(orderId);
+VtResponse vtResponse = vtWeb.cancel(orderId);
 
 if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
     //handle successful transaction cancel
