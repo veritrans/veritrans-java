@@ -14,26 +14,50 @@ public abstract class AbstractVtRequest implements VtRequest {
     private TransactionDetails transactionDetails;
     private List<TransactionItem> transactionItems;
 
+    /**
+     * AbstractVtRequest constructor
+     */
     public AbstractVtRequest() {
     }
 
+    /**
+     * AbstractVtRequest constructor
+     * @param transactionDetails    {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
+     * @param transactionItems      List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
+     */
     public AbstractVtRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems) {
         this.transactionDetails = transactionDetails;
         this.transactionItems = transactionItems;
     }
 
+    /**
+     * Get transaction details
+     * @return {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
+     */
     public TransactionDetails getTransactionDetails() {
         return transactionDetails;
     }
 
+    /**
+     * Set transaction details
+     * @param transactionDetails {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
+     */
     public void setTransactionDetails(final TransactionDetails transactionDetails) {
         this.transactionDetails = transactionDetails;
     }
 
+    /**
+     * Get list of transaction item
+     * @return List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
+     */
     public List<TransactionItem> getTransactionItems() {
         return transactionItems;
     }
 
+    /**
+     * Set list of transaction item
+     * @param transactionItems List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
+     */
     public void setTransactionItems(final List<TransactionItem> transactionItems) {
         this.transactionItems = transactionItems;
     }

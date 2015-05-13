@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
- * Created by gde on 5/4/15.
+ * Abstract of VtDirectChargeRequest
  */
 public abstract class VtDirectChargeRequest extends AbstractVtRequest {
 
@@ -16,21 +16,52 @@ public abstract class VtDirectChargeRequest extends AbstractVtRequest {
     @NotNull
     private CustomerDetails customerDetails;
 
+    /**
+     * VtDirectChargeRequest constructor
+     */
     public VtDirectChargeRequest() {
     }
 
+    /**
+     * VtDirectChargeRequest constructor
+     * @param transactionDetails    {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
+     * @param customerDetails       Transaction {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails customer details}
+     */
+    public VtDirectChargeRequest(final TransactionDetails transactionDetails, final CustomerDetails customerDetails) {
+        super(transactionDetails, null);
+        this.customerDetails = customerDetails;
+    }
+
+    /**
+     * VtDirectChargeRequest constructor
+     * @param transactionDetails    {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
+     * @param transactionItems      List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
+     * @param customerDetails       Transaction {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails customer details}
+     */
     public VtDirectChargeRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails) {
         super(transactionDetails, transactionItems);
         this.customerDetails = customerDetails;
     }
 
+    /**
+     * Get transaction payment method
+     * @return Transaction {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod payment method}
+     */
     @JsonProperty("payment_type")
     public abstract PaymentMethod getPaymentMethod();
 
+    /**
+     * Get transaction customer details
+     * @return Transaction {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails customer details}
+     */
     public CustomerDetails getCustomerDetails() {
         return customerDetails;
     }
 
+    /**
+     * Set transaction customer details
+     * @param customerDetails Transaction {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails customer details}
+     */
     public void setCustomerDetails(final CustomerDetails customerDetails) {
         this.customerDetails = customerDetails;
     }
