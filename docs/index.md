@@ -403,7 +403,9 @@ VtResponse vtResponse = vtWeb.status(orderId);
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtDirect.approve(orderId);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+if (vtResponse.getStatusCode().equals("200") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+
     //handle successful capture approval
 } else {
     //handle denied / unexpected response
@@ -414,7 +416,9 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtWeb.approve(orderId);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+if (vtResponse.getStatusCode().equals("200") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+
     //handle successful capture approval
 } else {
     //handle denied / unexpected response
@@ -428,7 +432,9 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtDirect.cancel(orderId);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+if (vtResponse.getStatusCode().equals("200") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+
     //handle successful transaction cancel
 } else {
     //handle denied / unexpected response
@@ -439,7 +445,9 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtWeb.cancel(orderId);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+if (vtResponse.getStatusCode().equals("200") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+
     //handle successful transaction cancel
 } else {
     //handle denied / unexpected response
