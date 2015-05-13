@@ -484,7 +484,9 @@ VtResponse vtResponse = vtWeb.status(orderId);
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtDirect.approve(orderId);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+
     //handle successful capture approval
 } else {
     //handle denied / unexpected response
@@ -495,7 +497,9 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtWeb.approve(orderId);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
+
     //handle successful capture approval
 } else {
     //handle denied / unexpected response
@@ -508,7 +512,9 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtDirect.cancel(orderId);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+
     //handle successful transaction cancel
 } else {
     //handle denied / unexpected response
@@ -519,7 +525,9 @@ if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
 <pre><code class="java">String orderId = &quot;your unique order ID&quot;;
 VtResponse vtResponse = vtWeb.cancel(orderId);
 
-if (vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {
+
     //handle successful transaction cancel
 } else {
     //handle denied / unexpected response
