@@ -10,6 +10,8 @@
 // Apply the java plugin to add support for Java
 apply plugin: 'java'
 
+version = '0.1.0-SNAPSHOT'
+
 sourceCompatibility = '1.5'
 targetCompatibility = '1.5'
 
