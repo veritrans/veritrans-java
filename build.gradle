@@ -15,9 +15,12 @@ plugins {
 apply plugin: 'java'
 apply plugin: 'maven'
 
-archivesBaseName = 'vt-java-client'
+def siteUrl = 'https://github.com/gde-vt/veritrans-java'
+def gitUrl = 'https://github.com/gde-vt/veritrans-java.git'
+def gitIssuesUrl = 'https://github.com/gde-vt/veritrans-java/issues'
+
 group = 'id.co.veritrans'
-version = '0.1.2-preview'
+version = '0.1.2g-preview'
 
 sourceCompatibility = '1.5'
 targetCompatibility = '1.5'
@@ -72,10 +75,6 @@ task integrationTest(type: Test, dependsOn: 'test') {
     }
 }
 
-configurations {
-    published
-}
-
 configurations.all {
     resolutionStrategy {
     }
@@ -90,28 +89,92 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
     from javadoc.destinationDir
 }
 
-// Add the sourceJars to non-extractor modules
 artifacts {
-    published sourceJar
-    published javadocJar
+    archives sourceJar
+    archives javadocJar
 }
 
-bintray {
-    user = 'gde-vt'
-    key = '7392fe80b5e0f0874594b7fe1b68ec61e65f293a'
+install {
+    repositories.mavenInstaller {
+        // This generates POM.xml with proper parameters
+        pom {
+            project {
+                packaging 'jar'
 
-    configurations = ['published', 'archives']
+                // Add your description here
+                name 'Veritrans Java Client Library'
+                description = 'Official Veritrans Payment API Java Client.'
+                url siteUrl
+
+                // Set your license
+                licenses {
+                    license {
+                        name 'Unlicense'
+                        url 'http://unlicense.org/UNLICENSE'
+                    }
+                }
+                developers {
+                    [
+                            developer {
+                                id 'gde.satrigraha'
+                                name 'Gde Mahardhikha Satrigraha'
+                                email 'gde.satrigraha@veritrans.co.id'
+                            },
+                            developer {
+                                id 'andes.yudanto'
+                                name 'Andes Haryo Yudanto'
+                                email 'andes.yudanto@veritrans.co.id'
+                            },
+                    ]
+                }
+                scm {
+                    connection gitUrl
+                    developerConnection gitUrl
+                    url siteUrl
+                }
+            }
+        }
+    }
+}
+
+def Properties bintrayProperties = new Properties()
+bintrayProperties.load(project.file('bintray.properties').newDataInputStream())
+
+bintray {
+    user = bintrayProperties.getProperty("bintray.user")
+    key = bintrayProperties.getProperty("bintray.apikey")
+
+    configurations = ['archives']
     dryRun = false //Whether to run this as dry-run, without deploying
     publish = true //If version should be auto published after an upload
     //Package configuration. The plugin will use the repo and name properties to check if the package already exists. In that case, there's no need to configure the other package properties (like userOrg, desc, etc).
     pkg {
         repo = 'maven'
         name = 'veritrans-java-client'
-        desc = 'Official Veritrans Payment API Java Client'
-        websiteUrl = 'https://github.com/gde-vt/veritrans-java'
-        issueTrackerUrl = 'https://github.com/gde-vt/veritrans-java/issues'
-        vcsUrl = 'https://github.com/gde-vt/veritrans-java.git'
+        desc = 'Official Veritrans Payment API Java Client.'
+
+        websiteUrl = siteUrl
+        issueTrackerUrl = gitIssuesUrl
+        vcsUrl = gitUrl
+
         licenses = ['Unlicense']
         publicDownloadNumbers = true
+
+        //Optional version descriptor
+        version {
+            //Optional configuration for GPG signing
+            gpg {
+                sign = true //Determines whether to GPG sign the files. The default is false
+                passphrase = 'VeriTrans!23' //Optional. The passphrase for GPG signing'
+            }
+
+            //Optional configuration for Maven Central Synchronization
+//            mavenCentralSync {
+//                sync = true //Optional (true by default). Determines whether to sync the version to Maven Central.
+//                user = bintrayProperties.getProperty("bintray.oss.user") //OSS user token
+//                password = bintrayProperties.getProperty("bintray.oss.password") //OSS user password
+//                close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+//            }
+        }
     }
 }

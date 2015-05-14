@@ -16,4 +16,4 @@ include 'api'
 include 'services:webservice'
 */
 
-rootProject.name = 'veritrans-java'
+rootProject.name = 'vt-java-client'
