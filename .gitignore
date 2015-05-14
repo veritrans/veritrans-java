@@ -1,5 +1,8 @@
 # Created by https://www.gitignore.io
 
+# local secret property file
+bintray.properties
+
 ### Intellij ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 
