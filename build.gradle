@@ -80,6 +80,10 @@ configurations.all {
     }
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
+
 task sourceJar(type: Jar) {
     from sourceSets.main.allSource
     classifier = 'sources'
