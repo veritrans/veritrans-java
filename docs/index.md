@@ -150,6 +150,7 @@ VtDirectChargeParam has specific subclass for a specific payment method, ex: for
 - [CreditCardRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/CreditCardRequest.html)  
 - [MandiriClickpayRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/MandiriClickpayRequest.html)  
 - [BcaKlikpayRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BcaKlikpayRequest.html)  
+- [KlikBcaRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/KlikBcaRequest.html)
   
 See [id.co.veritrans.mdk.gateway.model Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/package-summary.html)  
 See [id.co.veritrans.mdk.gateway.model.vtdirect Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/package-summary.html)
@@ -373,6 +374,28 @@ vtDirectChargeParam.setBcaKlikpay(new BcaKlikpay());
 vtDirectChargeParam.getBcaKlikpay().setType(1);
 vtDirectChargeParam.getBcaKlikpay().setMiscFee(10000L);
 vtDirectChargeParam.getBcaKlikpay().setDescription("Product X");
+
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+
+if (vtResponse.getStatusCode().equals("200") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+
+    //handle successful  BCA Klikpay charge request
+} else {
+    //handle denied / unexpected response
+}
+```
+
+<br/>
+#### Klik BCA
+See [Klik BCA Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/KlikBca.html)  
+```java
+KlikBcaRequest vtDirectChargeParam = new KlikBcaRequest();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+vtDirectChargeParam.setKlikBca(new KlikBca());
+
+vtDirectChargeParam.getKlikBca().setUserId("user ID");
+vtDirectChargeParam.getKlikBca().setDescription("Transaction description");
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 

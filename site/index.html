@@ -249,7 +249,8 @@ Visit <a href="http://docs.veritrans.co.id/sandbox/charge.html">http://docs.veri
 - <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/CimbClicksRequest.html">CimbClicksRequest</a><br />
 - <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/CreditCardRequest.html">CreditCardRequest</a><br />
 - <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/MandiriClickpayRequest.html">MandiriClickpayRequest</a><br />
-- <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BcaKlikpayRequest.html">BcaKlikpayRequest</a>  </p>
+- <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BcaKlikpayRequest.html">BcaKlikpayRequest</a><br />
+- <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/KlikBcaRequest.html">KlikBcaRequest</a></p>
 <p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/package-summary.html">id.co.veritrans.mdk.gateway.model Javadoc</a><br />
 See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/package-summary.html">id.co.veritrans.mdk.gateway.model.vtdirect Javadoc</a></p>
 <p>It is recommended to have a single method to configure the generic VtDirectChargeParam values. Example for Credit Card charge:</p>
@@ -460,6 +461,27 @@ vtDirectChargeParam.setBcaKlikpay(new BcaKlikpay());
 vtDirectChargeParam.getBcaKlikpay().setType(1);
 vtDirectChargeParam.getBcaKlikpay().setMiscFee(10000L);
 vtDirectChargeParam.getBcaKlikpay().setDescription(&quot;Product X&quot;);
+
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+
+    //handle successful  BCA Klikpay charge request
+} else {
+    //handle denied / unexpected response
+}
+</code></pre>
+
+<p><br/></p>
+<h4 id="klik-bca">Klik BCA</h4>
+<p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/KlikBca.html">Klik BCA Javadoc</a>  </p>
+<pre><code class="java">KlikBcaRequest vtDirectChargeParam = new KlikBcaRequest();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+vtDirectChargeParam.setKlikBca(new KlikBca());
+
+vtDirectChargeParam.getKlikBca().setUserId(&quot;user ID&quot;);
+vtDirectChargeParam.getKlikBca().setDescription(&quot;Transaction description&quot;);
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
 
