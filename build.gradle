@@ -142,7 +142,7 @@ install {
 }
 
 def Properties bintrayProperties = new Properties()
-bintrayProperties.load(project.file('bintray.properties').newDataInputStream())
+//bintrayProperties.load(project.file('bintray.properties').newDataInputStream())
 
 bintray {
     user = bintrayProperties.getProperty("bintray.user")
