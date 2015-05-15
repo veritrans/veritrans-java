@@ -135,15 +135,15 @@ VtDirect vtDirect = vtGatewayFactory.vtDirect();
 ```
 
 ### Charging a transaction
-VtDirect has method named `charge` which takes an instance of VtDirectChargeParam subclass as the parameter.
+VtDirect has method named `charge` which takes an instance of VtDirectChargeRequest subclass as the parameter.
 This method will make a charge request to Veritrans Payment API and return a VtResponse as a result, which can be used to determine the status of the transaction.  
 
-See [VtDirectChargeParam](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/VtDirectChargeParam.html)  
+See [VtDirectChargeRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/VtDirectChargeRequest.html)  
 See [VtResponse](javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html)  
 Visit [http://docs.veritrans.co.id/sandbox/charge.html](http://docs.veritrans.co.id/sandbox/charge.html) for more information.
 
-#### VtDirectChargeParam
-VtDirectChargeParam has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:  
+#### VtDirectChargeRequest
+VtDirectChargeRequest has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:  
 - [BankTransferRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BankTransferRequest.html)  
 - [BriEpayRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BriEpayRequest.html)  
 - [CimbClicksRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/CimbClicksRequest.html)  
@@ -155,12 +155,12 @@ VtDirectChargeParam has specific subclass for a specific payment method, ex: for
 See [id.co.veritrans.mdk.gateway.model Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/package-summary.html)  
 See [id.co.veritrans.mdk.gateway.model.vtdirect Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/package-summary.html)
 
-It is recommended to have a single method to configure the generic VtDirectChargeParam values. Example for Credit Card charge:
+It is recommended to have a single method to configure the generic VtDirectChargeRequest values. Example for Credit Card charge:
 ```java
 ...
 //somewhere in the code
-CreditCardRequest vtDirectChargeParam = new CreditCardRequest();
-setVtDirectChargeParamValues(vtDirectChargeParam);
+CreditCardRequest vtDirectChargeRequest = new CreditCardRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
 //continue processing
 ...
 
@@ -168,19 +168,19 @@ setVtDirectChargeParamValues(vtDirectChargeParam);
  * This method is just for example.
  * The actual values should be obtained from another sources.
  */
-public void setVtDirectChargeParamValues(VtDirectChargeParam vtDirectChargeParam) {
-    vtDirectChargeParam.setTransactionDetails(new TransactionDetails());
-    vtDirectChargeParam.setCustomerDetails(new CustomerDetails());
+public void setVtDirectChargeRequestValues(VtDirectChargeRequest vtDirectChargeRequest) {
+    vtDirectChargeRequest.setTransactionDetails(new TransactionDetails());
+    vtDirectChargeRequest.setCustomerDetails(new CustomerDetails());
 
-    vtDirectChargeParam.getTransactionDetails().setOrderId("your unique order ID");
-    vtDirectChargeParam.getTransactionDetails().setGrossAmount(10000l);
+    vtDirectChargeRequest.getTransactionDetails().setOrderId("your unique order ID");
+    vtDirectChargeRequest.getTransactionDetails().setGrossAmount(10000l);
 
-    vtDirectChargeParam.getCustomerDetails().setEmail("user@domain.com");
-    vtDirectChargeParam.getCustomerDetails().setFirstName("firstName");
-    vtDirectChargeParam.getCustomerDetails().setPhone("0123456789");
-    vtDirectChargeParam.getCustomerDetails().setBillingAddress(new Address());
+    vtDirectChargeRequest.getCustomerDetails().setEmail("user@domain.com");
+    vtDirectChargeRequest.getCustomerDetails().setFirstName("firstName");
+    vtDirectChargeRequest.getCustomerDetails().setPhone("0123456789");
+    vtDirectChargeRequest.getCustomerDetails().setBillingAddress(new Address());
 
-    Address billingAddress = vtDirectChargeParam.getCustomerDetails().getBillingAddress();
+    Address billingAddress = vtDirectChargeRequest.getCustomerDetails().getBillingAddress();
     billingAddress.setAddress("Random Street 6A");
     billingAddress.setCity("Jakarta Pusat");
     billingAddress.setPostalCode("12210");
@@ -192,14 +192,14 @@ public void setVtDirectChargeParamValues(VtDirectChargeParam vtDirectChargeParam
 See [BankTransfer Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/BankTransfer.html)  
 See [Bank Transfer Process Flow](sequence_diagram/index.html#process-flow-for-charging-via-bank-transfer)
 ```java
-BankTransferRequest vtDirectChargeParam = new BankTransferRequest();
-setVtDirectChargeParamValues(vtDirectChargeParam);
-vtDirectChargeParam.setBankTransfer(new BankTransfer());
+BankTransferRequest vtDirectChargeRequest = new BankTransferRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+vtDirectChargeRequest.setBankTransfer(new BankTransfer());
 
-vtDirectChargeParam.getBankTransfer().setDescription("Payment for Merchant XYZ");
-vtDirectChargeParam.getBankTransfer().setBank(BankTransfer.Bank.PERMATA);
+vtDirectChargeRequest.getBankTransfer().setDescription("Payment for Merchant XYZ");
+vtDirectChargeRequest.getBankTransfer().setBank(BankTransfer.Bank.PERMATA);
 
-VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
@@ -214,10 +214,10 @@ if (vtResponse.getStatusCode().equals("200") &&
 <br/>
 #### Bri Epay
 ```java
-BriEpayRequest vtDirectChargeParam = new BriEpayRequest();
-setVtDirectChargeParamValues(vtDirectChargeParam);
+BriEpayRequest vtDirectChargeRequest = new BriEpayRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
 
-VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
@@ -233,13 +233,13 @@ if (vtResponse.getStatusCode().equals("200") &&
 #### Cimb Clicks
 See [CimbClicks Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/CimbClicks.html)
 ```java
-CimbClicksRequest vtDirectChargeParam = new CimbClicksRequest();
-setVtDirectChargeParamValues(vtDirectChargeParam);
-vtDirectChargeParam.setCimbClicks(new CimbClicks());
+CimbClicksRequest vtDirectChargeRequest = new CimbClicksRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+vtDirectChargeRequest.setCimbClicks(new CimbClicks());
 
-vtDirectChargeParam.getCimbClicks().setDescription("Payment for Merchant XYZ");
+vtDirectChargeRequest.getCimbClicks().setDescription("Payment for Merchant XYZ");
 
-VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
@@ -259,16 +259,16 @@ See [CreditCard Process Flow With 3D Secure Authentication](sequence_diagram/ind
 
 **Every Credit Card transaction must use a `Token` generated by Veritrans Payment API instead of using plain card number.** Please visit [Acquiring Credit Card Token](http://docs.veritrans.co.id/vtdirect/integration_cc.html#step1) for further information.
 ```
-CreditCardRequest vtDirectChargeParam = new CreditCardRequest();
-setVtDirectChargeParamValues(vtDirectChargeParam);
-vtDirectChargeParam.setCreditCard(new CreditCard());
+CreditCardRequest vtDirectChargeRequest = new CreditCardRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+vtDirectChargeRequest.setCreditCard(new CreditCard());
 
 //token is obtained from HTTP POST variable.
-vtDirectChargeParam.getCreditCard().setTokenId("creditCardToken");
+vtDirectChargeRequest.getCreditCard().setTokenId("creditCardToken");
 //your acquirer bank for Credit Card
-vtDirectChargeParam.getCreditCard().setAcquirerBank(CreditCard.Bank.BNI);
+vtDirectChargeRequest.getCreditCard().setAcquirerBank(CreditCard.Bank.BNI);
 
-VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
@@ -294,17 +294,17 @@ See [CreditCard Process Flow With 3D Secure Authentication](sequence_diagram/ind
 
 **Every Credit Card transaction must use a `Token` generated by Veritrans Payment API instead of using plain card number.** Please visit [Acquiring Credit Card Token](http://docs.veritrans.co.id/vtdirect/integration_cc.html#step1) for further information.
 ```java
-CreditCardRequest vtDirectChargeParam = new CreditCardRequest();
-setVtDirectChargeParamValues(vtDirectChargeParam);
-vtDirectChargeParam.setCreditCard(new CreditCard());
+CreditCardRequest vtDirectChargeRequest = new CreditCardRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+vtDirectChargeRequest.setCreditCard(new CreditCard());
 
 //token is obtained from HTTP POST variable.
-vtDirectChargeParam.getCreditCard().setTokenId("creditCardToken");
+vtDirectChargeRequest.getCreditCard().setTokenId("creditCardToken");
 //your acquirer bank for Credit Card
-vtDirectChargeParam.getCreditCard().setAcquirerBank(CreditCard.Bank.BNI);
-vtDirectChargeParam.getCreditCard().setType(CreditCard.TransactionType.AUTHORIZE);
+vtDirectChargeRequest.getCreditCard().setAcquirerBank(CreditCard.Bank.BNI);
+vtDirectChargeRequest.getCreditCard().setType(CreditCard.TransactionType.AUTHORIZE);
 
-VtResponse vtResponseAuthorize = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponseAuthorize = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponseAuthorize.getStatusCode().equals("200") &&
     vtResponseAuthorize.getTransactionStatus() == TransactionStatus.AUTHORIZED &&
@@ -342,17 +342,17 @@ if (vtResponseCapture.getStatusCode().equals("200") &&
 See [MandiriClickpay Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/MandiriClickpay.html)  
 Visit [Veritrans Mandiri Clickpay Documentation](http://docs.veritrans.co.id/sandbox/charge.html#vtdirect-mandiri) for more information.
 ```java
-MandiriClickpayRequest vtDirectChargeParam = new MandiriClickpayRequest();
-setVtDirectChargeParamValues(vtDirectChargeParam);
-vtDirectChargeParam.setMandiriClickpay(new MandiriClickpay());
+MandiriClickpayRequest vtDirectChargeRequest = new MandiriClickpayRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+vtDirectChargeRequest.setMandiriClickpay(new MandiriClickpay());
 
-vtDirectChargeParam.getMandiriClickpay().setCardNumber("4111111111111111");
-vtDirectChargeParam.getMandiriClickpay().setInput1("111111111");
-vtDirectChargeParam.getMandiriClickpay().setInput2("10000");
-vtDirectChargeParam.getMandiriClickpay().setInput3("54321");
-vtDirectChargeParam.getMandiriClickpay().setToken("000000");
+vtDirectChargeRequest.getMandiriClickpay().setCardNumber("4111111111111111");
+vtDirectChargeRequest.getMandiriClickpay().setInput1("111111111");
+vtDirectChargeRequest.getMandiriClickpay().setInput2("10000");
+vtDirectChargeRequest.getMandiriClickpay().setInput3("54321");
+vtDirectChargeRequest.getMandiriClickpay().setToken("000000");
 
-VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
@@ -367,15 +367,15 @@ if (vtResponse.getStatusCode().equals("200") &&
 #### BCA KlikPay
 See [BcaKlikpay Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/BcaKlikpay.html)  
 ```java
-BcaKlikpayRequest vtDirectChargeParam = new BcaKlikpayRequest();
-setVtDirectChargeParamValues(vtDirectChargeParam);
-vtDirectChargeParam.setBcaKlikpay(new BcaKlikpay());
+BcaKlikpayRequest vtDirectChargeRequest = new BcaKlikpayRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+vtDirectChargeRequest.setBcaKlikpay(new BcaKlikpay());
 
-vtDirectChargeParam.getBcaKlikpay().setType(1);
-vtDirectChargeParam.getBcaKlikpay().setMiscFee(10000L);
-vtDirectChargeParam.getBcaKlikpay().setDescription("Product X");
+vtDirectChargeRequest.getBcaKlikpay().setType(1);
+vtDirectChargeRequest.getBcaKlikpay().setMiscFee(10000L);
+vtDirectChargeRequest.getBcaKlikpay().setDescription("Product X");
 
-VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
@@ -390,14 +390,14 @@ if (vtResponse.getStatusCode().equals("200") &&
 #### Klik BCA
 See [Klik BCA Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/KlikBca.html)  
 ```java
-KlikBcaRequest vtDirectChargeParam = new KlikBcaRequest();
-setVtDirectChargeParamValues(vtDirectChargeParam);
-vtDirectChargeParam.setKlikBca(new KlikBca());
+KlikBcaRequest vtDirectChargeRequest = new KlikBcaRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+vtDirectChargeRequest.setKlikBca(new KlikBca());
 
-vtDirectChargeParam.getKlikBca().setUserId("user ID");
-vtDirectChargeParam.getKlikBca().setDescription("Transaction description");
+vtDirectChargeRequest.getKlikBca().setUserId("user ID");
+vtDirectChargeRequest.getKlikBca().setDescription("Transaction description");
 
-VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
