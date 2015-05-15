@@ -149,6 +149,7 @@ VtDirectChargeParam has specific subclass for a specific payment method, ex: for
 - [CimbClicksRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/CimbClicksRequest.html)  
 - [CreditCardRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/CreditCardRequest.html)  
 - [MandiriClickpayRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/MandiriClickpayRequest.html)  
+- [BcaKlikpayRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BcaKlikpayRequest.html)  
   
 See [id.co.veritrans.mdk.gateway.model Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/package-summary.html)  
 See [id.co.veritrans.mdk.gateway.model.vtdirect Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/package-summary.html)
@@ -356,6 +357,29 @@ if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {
 
     //handle successful Mandiri Clickpay charge request
+} else {
+    //handle denied / unexpected response
+}
+```
+
+<br/>
+#### BCA KlikPay
+See [BcaKlikpay Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/BcaKlikpay.html)  
+```java
+BcaKlikpayRequest vtDirectChargeParam = new BcaKlikpayRequest();
+setVtDirectChargeParamValues(vtDirectChargeParam);
+vtDirectChargeParam.setBcaKlikpay(new BcaKlikpay());
+
+vtDirectChargeParam.getBcaKlikpay().setType(1);
+vtDirectChargeParam.getBcaKlikpay().setMiscFee(10000L);
+vtDirectChargeParam.getBcaKlikpay().setDescription("Product X");
+
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeParam);
+
+if (vtResponse.getStatusCode().equals("200") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
+
+    //handle successful  BCA Klikpay charge request
 } else {
     //handle denied / unexpected response
 }
