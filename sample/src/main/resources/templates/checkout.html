@@ -1,10 +1,26 @@
 <html>
     <head th:replace="layout::html-head"></head>
     <body>
-        <div th:replace="layout::header">
+        <div th:replace="layout::header"/>
+
+        <div style="text-align: center; width: 100%;">
+            <h1>Checkout Items</h1>
+            <table border="1" align="center">
+                <tr>
+                    <th>Product</th>
+                    <th>Price Each</th>
+                    <th>Amount</th>
+                    <th>Total</th>
+                </tr>
+                <tr th:each="cartItem : ${cartItems}">
+                    <td th:text="${cartItem.product.shortName}"></td>
+                    <td th:text="|Rp. ${cartItem.product.priceIdr}|"></td>
+                    <td th:text="${cartItem.count}"></td>
+                    <td th:text="|Rp. ${cartItem.totalPrice}|"></td>
+                </tr>
+            </table>
         </div>
-            <h1>TODO: Finish This Page :D</h1>
-        <div th:replace="layout::footer">
-        </div>
+        <div th:replace="layout::footer"/>
     </body>
 </html>
+
