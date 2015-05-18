@@ -10,7 +10,10 @@ public enum PaymentMethod {
     MANDIRI_CLICKPAY("mandiri_clickpay"),
     CIMB_CLICKS("cimb_clicks"),
     BANK_TRANSFER("bank_transfer"),
-    BRI_EPAY("bri_epay");
+    BRI_EPAY("bri_epay"),
+    BCA_KLIKPAY("bca_klikpay"),
+    KLIK_BCA("bca_klikbca");
+
 
     private final String name;
 

@@ -12,7 +12,7 @@ public abstract class AbstractVtRequest implements VtRequest {
     @Valid
     @NotNull
     private TransactionDetails transactionDetails;
-    private List<TransactionItem> transactionItems;
+    private List<TransactionItem> itemDetails;
 
     /**
      * AbstractVtRequest constructor
@@ -23,11 +23,11 @@ public abstract class AbstractVtRequest implements VtRequest {
     /**
      * AbstractVtRequest constructor
      * @param transactionDetails    {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
-     * @param transactionItems      List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
+     * @param itemDetails      List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
      */
-    public AbstractVtRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems) {
+    public AbstractVtRequest(final TransactionDetails transactionDetails, final List<TransactionItem> itemDetails) {
         this.transactionDetails = transactionDetails;
-        this.transactionItems = transactionItems;
+        this.itemDetails = itemDetails;
     }
 
     /**
@@ -50,16 +50,16 @@ public abstract class AbstractVtRequest implements VtRequest {
      * Get list of transaction item
      * @return List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
      */
-    public List<TransactionItem> getTransactionItems() {
-        return transactionItems;
+    public List<TransactionItem> getItemDetails() {
+        return itemDetails;
     }
 
     /**
      * Set list of transaction item
-     * @param transactionItems List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
+     * @param itemDetails List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
      */
-    public void setTransactionItems(final List<TransactionItem> transactionItems) {
-        this.transactionItems = transactionItems;
+    public void setItemDetails(final List<TransactionItem> itemDetails) {
+        this.itemDetails = itemDetails;
     }
 
     @Override
@@ -71,7 +71,7 @@ public abstract class AbstractVtRequest implements VtRequest {
 
         if (transactionDetails != null ? !transactionDetails.equals(vtRequest.transactionDetails) : vtRequest.transactionDetails != null)
             return false;
-        if (transactionItems != null ? !transactionItems.equals(vtRequest.transactionItems) : vtRequest.transactionItems != null)
+        if (itemDetails != null ? !itemDetails.equals(vtRequest.itemDetails) : vtRequest.itemDetails != null)
             return false;
 
         return true;
@@ -80,7 +80,7 @@ public abstract class AbstractVtRequest implements VtRequest {
     @Override
     public int hashCode() {
         int result = transactionDetails != null ? transactionDetails.hashCode() : 0;
-        result = 31 * result + (transactionItems != null ? transactionItems.hashCode() : 0);
+        result = 31 * result + (itemDetails != null ? itemDetails.hashCode() : 0);
         return result;
     }
 }
