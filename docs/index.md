@@ -9,7 +9,7 @@ Please visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more
 # Installation
 
 ## Maven
-If you're using Maven as the build tools for your project, add the following dependency to your project's build definition (pom.xml):
+If you're using Maven as the build tools for your project, please add **[jcenter](https://bintray.com/bintray/jcenter)** repository to your build definition, then add the following dependency to your project's build definition (pom.xml):
 ```xml
 <dependency>
     <groupId>id.co.veritrans</groupId>
@@ -19,7 +19,7 @@ If you're using Maven as the build tools for your project, add the following dep
 ```
 
 ## Gradle
-If you're using Gradle as the build tools for your project, add the following dependency to your project's build definition (build.gradle):
+If you're using Gradle as the build tools for your project, please add **[jcenter](https://bintray.com/bintray/jcenter)** repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```groovy
 compile 'id.co.veritrans:veritrans-java:1.0.0'
 ```
