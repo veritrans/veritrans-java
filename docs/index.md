@@ -1,3 +1,4 @@
+[ ![Download](https://api.bintray.com/packages/pt-midtrans/maven/java-client/images/download.svg) ](https://bintray.com/pt-midtrans/maven/java-client/_latestVersion)
 # Veritrans - Java Client Documentation
 This is the official Java Client for Veritrans Payment API.  
 
