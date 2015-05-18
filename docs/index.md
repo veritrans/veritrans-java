@@ -13,15 +13,15 @@ If you're using Maven as the build tools for your project, please add **[jcenter
 ```xml
 <dependency>
     <groupId>id.co.veritrans</groupId>
-    <artifactId>veritrans-java</artifactId>
-    <version>1.0.0</version>
+    <artifactId>vt-java-client</artifactId>
+    <version>1.0.0-release</version>
 </dependency>
 ```
 
 ## Gradle
 If you're using Gradle as the build tools for your project, please add **[jcenter](https://bintray.com/bintray/jcenter)** repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```groovy
-compile 'id.co.veritrans:veritrans-java:1.0.0'
+compile 'id.co.veritrans:vt-java-client:1.0.0-release'
 ```
 
 ***
