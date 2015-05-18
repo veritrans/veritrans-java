@@ -6,7 +6,16 @@
     </head>
     <body>
         <div th:fragment="header">
-            header
+            <table width="100%">
+                <tr>
+                    <td align="left">
+                        <span>Items in Cart: </span><span th:text="${itemsInCartCount}"/>
+                    </td>
+                    <td align="right">
+                        <a href="/checkout">Checkout (<span th:text="${itemsInCartCount}"/>)</a>
+                    </td>
+                </tr>
+            </table>
             <hr/>
         </div>
         <div th:fragment="footer">

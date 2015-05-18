@@ -3,7 +3,28 @@
     <body>
         <div th:replace="layout::header">
         </div>
-        Uyeee!
+            <h1>Product list</h1>
+
+            <table border="1">
+                <tr>
+                    <th>Product</th>
+                    <th>Price Each</th>
+                    <th>Action</th>
+                </tr>
+                <tr th:each="product : ${products}">
+                    <td align="center">
+                        <img th:src="${product.thumbnailFilePath}"/><br/>
+                        <span th:text="${product.shortName}"/>
+                    </td>
+                    <td th:text="${product.priceIdr}"/>
+                    <td>
+                        <form method="get" action="/cart_add">
+                            <input type="hidden" name="product_id" th:value="${product.id}"/>
+                            <input type="submit" th:value="'Add to Cart'"/>
+                        </form>
+                    </td>
+                </tr>
+            </table>
         <div th:replace="layout::footer">
         </div>
     </body>

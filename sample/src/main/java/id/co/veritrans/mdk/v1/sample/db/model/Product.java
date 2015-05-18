@@ -21,6 +21,9 @@ public class Product {
     @Column(name = "long_name", nullable = true)
     private String longName;
 
+    @Column(name = "thumbnail_file_path", nullable = false)
+    private String thumbnailFilePath;
+
     @Column(name = "price_idr", nullable = false)
     private BigDecimal priceIdr;
 
@@ -46,6 +49,14 @@ public class Product {
 
     public void setLongName(final String longName) {
         this.longName = longName;
+    }
+
+    public String getThumbnailFilePath() {
+        return thumbnailFilePath;
+    }
+
+    public void setThumbnailFilePath(final String thumbnailFilePath) {
+        this.thumbnailFilePath = thumbnailFilePath;
     }
 
     public BigDecimal getPriceIdr() {
