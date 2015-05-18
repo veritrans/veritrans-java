@@ -20,7 +20,7 @@ def gitUrl = 'https://github.com/gde-vt/veritrans-java.git'
 def gitIssuesUrl = 'https://github.com/gde-vt/veritrans-java/issues'
 
 group = 'id.co.veritrans'
-version = '0.1.3-preview'
+version = '1.0.0-release'
 
 sourceCompatibility = '1.5'
 targetCompatibility = '1.5'
@@ -107,7 +107,7 @@ install {
 
                 // Add your description here
                 name 'Veritrans Java Client Library'
-                description = 'Official Veritrans Payment API Java Client.'
+                description = 'Official Payment API Java Client.'
                 url siteUrl
 
                 // Set your license
@@ -142,7 +142,7 @@ install {
 }
 
 def Properties bintrayProperties = new Properties()
-//bintrayProperties.load(project.file('bintray.properties').newDataInputStream())
+bintrayProperties.load(project.file('bintray.properties').newDataInputStream())
 
 bintray {
     user = bintrayProperties.getProperty("bintray.user")
@@ -154,8 +154,9 @@ bintray {
     //Package configuration. The plugin will use the repo and name properties to check if the package already exists. In that case, there's no need to configure the other package properties (like userOrg, desc, etc).
     pkg {
         repo = 'maven'
-        name = 'veritrans-java-client'
-        desc = 'Official Veritrans Payment API Java Client.'
+        name = 'java-client'
+        userOrg = 'pt-midtrans'
+        desc = 'Official Veritrans Indonesia Payment API Java Client.'
 
         websiteUrl = siteUrl
         issueTrackerUrl = gitIssuesUrl
@@ -169,7 +170,7 @@ bintray {
             //Optional configuration for GPG signing
             gpg {
                 sign = true //Determines whether to GPG sign the files. The default is false
-                passphrase = 'VeriTrans!23' //Optional. The passphrase for GPG signing'
+                passphrase = bintrayProperties.getProperty("bintray.gpg.passphrase") //Optional. The passphrase for GPG signing'
             }
 
             //Optional configuration for Maven Central Synchronization
