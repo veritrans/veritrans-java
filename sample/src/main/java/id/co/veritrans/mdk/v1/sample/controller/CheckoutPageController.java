@@ -1,7 +1,9 @@
 package id.co.veritrans.mdk.v1.sample.controller;
 
+import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.sample.db.model.Product;
 import id.co.veritrans.mdk.v1.sample.db.repo.ProductRepo;
+import id.co.veritrans.mdk.v1.sample.manager.VtPaymentManager;
 import id.co.veritrans.mdk.v1.sample.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
 import java.util.LinkedHashMap;
@@ -20,13 +23,33 @@ import java.util.Map;
  * Created by gde on 5/18/15.
  */
 @Controller
+@RequestMapping("/checkout")
 public class CheckoutPageController {
 
     @Autowired
+    private VtPaymentManager vtPaymentManager;
+    @Autowired
     private ProductRepo productRepo;
+    private VtDirect vtDirect;
 
-    @RequestMapping(value = "/checkout", method = RequestMethod.GET)
-    public ModelAndView index(final HttpSession httpSession) {
+    @PostConstruct
+    public void setup() {
+        vtDirect = vtPaymentManager.getVtGatewayFactory().vtDirect();
+    }
+
+    @RequestMapping(method = RequestMethod.POST)
+    public String checkoutPost(
+            final HttpSession httpSession,
+            final CheckoutForm checkoutForm) {
+
+        final Map<Long, Long> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Long>());
+        cartItems.clear();
+
+        return "redirect:/checkout";
+    }
+
+    @RequestMapping(method = RequestMethod.GET)
+    public ModelAndView checkoutGet(final HttpSession httpSession) {
         final Map<Long, Long> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Long>());
         final int itemsInCartCount = cartItems.size();
 
@@ -49,6 +72,26 @@ public class CheckoutPageController {
         modelValue.put("totalPrice", totalPrice);
 
         return new ModelAndView("checkout", modelValue);
+    }
+
+    public static class CheckoutForm {
+
+        private String paymentMethod;
+
+        public String getPaymentMethod() {
+            return paymentMethod;
+        }
+
+        public void setPaymentMethod(final String paymentMethod) {
+            this.paymentMethod = paymentMethod;
+        }
+
+        @Override
+        public String toString() {
+            return "CheckoutForm{" +
+                    "paymentMethod='" + paymentMethod + '\'' +
+                    '}';
+        }
     }
 
     public static class CartItem {

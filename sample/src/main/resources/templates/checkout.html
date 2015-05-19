@@ -1,8 +1,10 @@
-<html>
-    <head th:replace="layout::html-head"/>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+
+    <head th:replace="layout::html-head"></head>
     <body>
         <div th:replace="layout::header"/>
-
         <div style="text-align: center; width: 100%;">
             <div style="display: inline-block;">
 
@@ -26,12 +28,11 @@
                 </table>
 
                 <form method="post">
-                    <button class='button btn-vt-web' id='vtweb' name='payment_method' type='submit' value='vtweb'></button>
-                    <button class='button btn-vt-direct' id='vtdirect' name='payment_method' type='submit' value='credit_card'></button>
+                    <button class='button btn-vt-web' id='vtweb' name='paymentMethod' type='submit' value='vtweb'></button>
+                    <button class='button btn-vt-direct' id='vtdirect' name='paymentMethod' type='submit' value='creditCard'></button>
                 </form>
             </div>
         </div>
         <div th:replace="layout::footer"/>
     </body>
 </html>
-
