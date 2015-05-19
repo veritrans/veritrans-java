@@ -1,61 +1,102 @@
-<html>
-    <head th:fragment="html-head">
-        <title>
-            Veritrans Java Client Client Sample Store
-        </title>
+<head th:fragment="html-head-gde">
+    <title>
+        Veritrans Java Client Client Sample Store
+    </title>
+    <style>
+        .button + .button {
+            margin-left: 10px
+        }
 
-        <style>
-            .button+
-            .button{
-                margin-left:10px
-            }
-            .button{
-                border:0;
-                padding:8px 20px;
-                color:white
-            }
-            .button:hover{
-                text-decoration:none;
-                color:white
-            }
-            .button:active,.button:focus{
-                outline:0
-            }
+        .button {
+            border: 0;
+            padding: 8px 20px;
+            color: white
+        }
 
-            .btn-vt-web{
-                background:#3693d6 url("/assets/images/vt_web-logo.png") center center no-repeat;
-                display:inline-block;
-                background-size:58%;
-                padding:20px 80px !important
-            }
-            .btn-vt-web:hover{background-color:rgba(54,147,214,0.9)}
+        .button:hover {
+            text-decoration: none;
+            color: white
+        }
 
-            .btn-vt-direct{
-                background:#67364b url("/assets/images/vt_direct-logo.png") center center no-repeat;
-                display:inline-block;
-                background-size:70%;
-                padding:20px 80px !important
-            }
-            .btn-vt-direct:hover{background-color:rgba(103,54,75,0.9)}
-        </style>
-    </head>
-    <body>
-        <div th:fragment="header">
-            <table width="100%">
-                <tr>
-                    <td align="left">
-                        <span>Items in Cart: </span><span th:text="${itemsInCartCount}"/>
-                    </td>
-                    <td align="right">
-                        <a href="/checkout">Checkout (<span th:text="${itemsInCartCount}"/>)</a>
-                    </td>
-                </tr>
-            </table>
-            <hr/>
+        .button:active,
+        .button:focus {
+            outline: 0
+        }
+
+        .btn-vt-web {
+            background: #3693d6 url("/assets/images/vt_web-logo.png") center center no-repeat;
+            display: inline-block;
+            background-size: 58%;
+            padding: 20px 80px !important
+        }
+
+        .btn-vt-web:hover {
+            background-color: rgba(54, 147, 214, 0.9)
+        }
+
+        .btn-vt-direct {
+            background: #67364b url("/assets/images/vt_direct-logo.png") center center no-repeat;
+            display: inline-block;
+            background-size: 70%;
+            padding: 20px 80px !important
+        }
+
+        .btn-vt-direct:hover {
+            background-color: rgba(103, 54, 75, 0.9)
+        }
+    </style>
+</head>
+
+<div th:fragment="header-gde">
+    <table width="100%">
+        <tr>
+            <td align="left">
+                <span>Items in Cart: </span><span th:text="${itemsInCartCount}" />
+            </td>
+            <td align="right">
+                <a href="/checkout">Checkout (<span th:text="${itemsInCartCount}"/>)</a>
+            </td>
+        </tr>
+    </table>
+    <hr/>
+</div>
+
+<head th:fragment="html-head">
+    <title>Veritrans Java Client Client Sample Store</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700" rel="stylesheet" type="text/css" />
+    <link href="/assets/application-221b9cfb81500a9c4cb8871b215e792c.css" media="all" rel="stylesheet" />
+</head>
+
+<div class="container head" style="padding-top: 20px;" th:fragment="header">
+    <div class="row-fluid">
+        <div class="span6">
+            <a href="https://www.veritrans.co.id/">
+                <img alt="Vt icon" src="/assets/vt_icon.png" />
+            </a>
         </div>
-        <div th:fragment="footer">
-            <hr/>
-            footer
+        <div class="span6">
+            <div class="top-cart-widget">
+                <div class="compact">
+                    <p class="text-right">
+                        <i class="icon icon-shopping-cart"></i>
+                        <a href="/checkout" th:text="|you have ${itemsInCartCount} item(s)|"></a>
+                    </p>
+                </div>
+                <div class="complete"></div>
+            </div>
         </div>
-    </body>
-</html>
+    </div>
+    <hr class="top-off" />
+</div>
+
+<div class="container foot" th:fragment="footer">
+    <div class="row-fluid">
+        <div class="span12">
+            <hr class="top-off" />
+            <small>© 2015 PT Midtrans (Veritrans Indonesia). All Rights Reserved</small>
+        </div>
+    </div>
+    <div class='bottom-js' style='display:none'>
+        <script src="/assets/application-62b44bb9cc401cfcad44686fbd2dddc0.js"></script>
+    </div>
+</div>

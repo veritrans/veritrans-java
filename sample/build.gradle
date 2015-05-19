@@ -14,8 +14,8 @@ buildscript {
 apply plugin: 'java'
 apply plugin: 'eclipse'
 apply plugin: 'idea'
-apply plugin: 'spring-boot' 
-apply plugin: 'io.spring.dependency-management' 
+apply plugin: 'spring-boot'
+apply plugin: 'io.spring.dependency-management'
 
 jar {
     baseName = 'mdk-v1-sample-app'
@@ -30,7 +30,6 @@ repositories {
 }
 
 dependencies {
-    compile("id.co.veritrans:vt-java-client:1.0.0-release")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-aop")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -40,8 +39,9 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     compile("org.springframework.boot:spring-boot-starter-web")
+    compile("id.co.veritrans:vt-java-client:1.0.0-release")
     runtime("com.h2database:h2")
-    testCompile("org.springframework.boot:spring-boot-starter-test") 
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 

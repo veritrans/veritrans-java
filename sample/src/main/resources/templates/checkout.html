@@ -1,37 +1,76 @@
 <html>
-    <head th:replace="layout::html-head"/>
-    <body>
-        <div th:replace="layout::header"/>
+<head th:replace="layout::html-head" />
 
-        <div style="text-align: center; width: 100%;">
-            <div style="display: inline-block;">
-
-                <h1>Checkout Items</h1>
-                <table border="1">
-                    <tr>
-                        <th>Product</th>
-                        <th>Price Each</th>
-                        <th>Amount</th>
-                        <th>Total</th>
-                    </tr>
-                    <tr th:each="cartItem : ${cartItems}">
-                        <td th:text="${cartItem.product.shortName}"></td>
-                        <td th:text="|Rp. ${cartItem.product.priceIdr}|"></td>
-                        <td th:text="${cartItem.count}"></td>
-                        <td th:text="|Rp. ${cartItem.totalPrice}|"></td>
-                    </tr>
-                    <tr>
-                        <td colspan="4" align="right" th:text="|Rp. ${totalPrice}|"></td>
-                    </tr>
-                </table>
-
-                <form method="post">
-                    <button class='button btn-vt-web' id='vtweb' name='payment_method' type='submit' value='vtweb'></button>
-                    <button class='button btn-vt-direct' id='vtdirect' name='payment_method' type='submit' value='credit_card'></button>
-                </form>
+<body>
+<div th:replace="layout::header" />
+<div class="container component">
+    <div class="row-fluid" id="notif-app">
+        <div class="span12">
+            <div class="alert alert-success">
+                <p>Product Added to cart</p>
             </div>
         </div>
-        <div th:replace="layout::footer"/>
-    </body>
-</html>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <!-- .well -->
+            <h2 class="no-bold">Carts</h2>
+            <hr class="top-off" />
+            <table class="table table-stripped table-condensed current_cart">
+                <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Qty</th>
+                    <th>Price</th>
+                    <th>
+                        <div class="text-right">Total</div>
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="cartItem : ${cartItems}">
+                    <td class="span6">
+                        <div class="cart-item-image">
+                            <span class="product-name" th:text="${cartItem.product.shortName}" />
+                        </div>
+                    </td>
+                    <td>
+                        <span class="qty" th:text="${cartItem.count}" />
+                    </td>
+                    <td>
+                        <span class="price_per_unit" th:text="|Rp. ${cartItem.product.priceIdr}|" />
+                    </td>
+                    <td>
+                        <div class="text-right">
+                            <span class="price_total_per_unit" th:text="|Rp. ${cartItem.totalPrice}|" />
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <div class="text-right">Total :</div>
+                    </td>
+                    <td>
+                        <div class="text-right">
+                            <b th:text="|Rp. ${totalPrice}|" />
+                        </div>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <hr class="top-off" />
+            <div class="row-fluid">
+                <div class="span12">
+                    <div class="text-right">
+                        <a class="button back-button" href="/index">Back</a>
+                        <a class="button checkout-button" data-method="put" href="/cart/confirm" rel="nofollow">Checkout</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="layout::footer" />
+</body>
 
+</html>
