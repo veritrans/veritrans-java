@@ -1,80 +1,197 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout::html-head" />
 
 <body>
-<div th:replace="layout::header" />
-<div class="container component">
-    <div class="row-fluid" id="notif-app">
-        <div class="span12">
-            <div class="alert alert-success">
-                <p>Product Added to cart</p>
-            </div>
-        </div>
-    </div>
-    <div class="row-fluid">
-        <div class="span12">
-            <!-- .well -->
-            <h2 class="no-bold">Carts</h2>
-            <hr class="top-off" />
-            <table class="table table-stripped table-condensed current_cart">
-                <thead>
-                <tr>
-                    <th>Product</th>
-                    <th>Qty</th>
-                    <th>Price</th>
-                    <th>
-                        <div class="text-right">Total</div>
-                    </th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr th:each="cartItem : ${cartItems}">
-                    <td class="span6">
-                        <div class="cart-item-image">
-                            <span class="product-name" th:text="${cartItem.product.shortName}" />
-                        </div>
-                    </td>
-                    <td>
-                        <span class="qty" th:text="${cartItem.count}" />
-                    </td>
-                    <td>
-                        <span class="price_per_unit" th:text="|Rp. ${cartItem.product.priceIdr}|" />
-                    </td>
-                    <td>
-                        <div class="text-right">
-                            <span class="price_total_per_unit" th:text="|Rp. ${cartItem.totalPrice}|" />
-                        </div>
-                    </td>
-                </tr>
-                <tr>
-                    <td colspan="3">
-                        <div class="text-right">Total :</div>
-                    </td>
-                    <td>
-                        <div class="text-right">
-                            <b th:text="|Rp. ${totalPrice}|" />
-                        </div>
-                    </td>
-                </tr>
-                </tbody>
-            </table>
-            <hr class="top-off" />
-            <div class="row-fluid">
-                <div class="span12">
-                    <div class="text-right">
-                        <form method="post">
-                            <button class='button btn-vt-web' id='vtweb' name='paymentMethod' type='submit' value='vtweb'></button>
-                            <button class='button btn-vt-direct' id='vtdirect' name='paymentMethod' type='submit' value='creditCard'></button>
-                        </form>
-                    </div>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid" id="notif-app">
+            <div class="span12">
+                <div class="alert alert-success">
+                    <p>Product Added to cart</p>
                 </div>
             </div>
         </div>
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- .well -->
+                <h2 class="no-bold">Carts</h2>
+                <hr class="top-off" />
+                <table class="table table-stripped table-condensed current_cart">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>Price</th>
+                            <th>
+                                <div class="text-right">Total</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="cartItem : ${cartItems}">
+                            <td class="span6">
+                                <div class="cart-item-image">
+                                    <span class="product-name" th:text="${cartItem.product.shortName}" />
+                                </div>
+                            </td>
+                            <td>
+                                <span class="qty" th:text="${cartItem.count}" />
+                            </td>
+                            <td>
+                                <span class="price_per_unit" th:text="|Rp. ${cartItem.product.priceIdr}|" />
+                            </td>
+                            <td>
+                                <div class="text-right">
+                                    <span class="price_total_per_unit" th:text="|Rp. ${cartItem.totalPrice}|" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="text-right">Total :</div>
+                            </td>
+                            <td>
+                                <div class="text-right">
+                                    <b th:text="|Rp. ${totalPrice}|" />
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <form accept-charset="UTF-8" action="/orders/6948768b/checkout" class="edit_order_record" id="edit_order_record_323" method="post">
+                    <div style="display:none">
+                        <input name="utf8" type="hidden" value="&#x2713;" />
+                        <input name="_method" type="hidden" value="put" />
+                        <input name="authenticity_token" type="hidden" value="zqFMAe4eNIZF5Ixv8O+tk8agyCYSsoDQfPpgKL2pRpw=" />
+                    </div>
+                    <div class='row-fluid'>
+                        <div class='span12'>
+                            <div class='form-horizontal'>
+                                <!-- .well -->
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_email">Email</label>
+                                    <div class='controls'>
+                                        <input class="span8" id="order_record_email" name="email" type="text" value="vt-testing@veritrans.co.id" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class='row-fluid'>
+                        <div class='span6'>
+                            <h4 class='no-bold'>Billing Info</h4>
+                            <hr class='top-off' />
+                            <div class='form-horizontal'>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_billing_first_name">First Name</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_billing_first_name" name="billingFirstName" type="text" value="Mid" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_billing_last_name">Last Name</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_billing_last_name" name="billingLastName" type="text" value="Trans" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_billing_address_1">Address 1</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_billing_address_1" name="billingAddress1" type="text" value="Midplaza 2, 24" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_billing_address_2">Address 2</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_billing_address_2" name="billingAddress2" type="text" value="JL. Jendral Sudirman Kav. 10.11" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_billing_city">City</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_billing_city" name="billingCity" type="text" value="Jakarta" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_billing_postal_code">Postal Code</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_billing_postal_code" name="billingPostalCode" type="text" value="10220" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_billing_phone">Phone</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_billing_phone" name="billingPhone" type="text" value="62 21 573 6789" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='span6'>
+                            <h4 class='no-bold'>Shipping Info</h4>
+                            <hr class='top-off' />
+                            <div class='form-horizontal'>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_shipping_first_name">First Name</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_shipping_first_name" name="shippingFirstName" type="text" value="Mid" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_shipping_last_name">Last Name</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_shipping_last_name" name="shippingLastName" type="text" value="Trans" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_shipping_address_1">Address 1</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_shipping_address_1" name="shippingAddress1" type="text" value="Midplaza 2, 24" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_shipping_address_2">Address 2</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_shipping_address_2" name="shippingAddress2" type="text" value="JL. Jendral Sudirman Kav. 10.11" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_shipping_city">City</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_shipping_city" name="shippingCity" type="text" value="Jakarta" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_shipping_postal_code">Postal Code</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_shipping_postal_code" name="shippingPostalCode" type="text" value="10220" />
+                                    </div>
+                                </div>
+                                <div class='control-group'>
+                                    <label class="control-label" for="order_record_shipping_phone">Phone</label>
+                                    <div class='controls'>
+                                        <input class="span12" id="order_record_shipping_phone" name="shippingPhone" type="text" value="62 21 573 6789" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class='row-fluid'>
+                            <div class='span12'>
+                                <div class='text-center'>
+                                    <p>Pay with</p>
+                                    <div class='btn-group'>
+                                        <button class='button btn-vt-web' id='vtweb' name='payment_type' type='submit' value='vtweb'></button>
+                                        <button class='button btn-vt-direct' id='vtdirect' name='payment_type' type='submit' value='credit_card'></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-</div>
-<div th:replace="layout::footer" />
+    <div th:replace="layout::footer" />
 </body>
 
 </html>
