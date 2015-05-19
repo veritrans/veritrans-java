@@ -1,16 +1,16 @@
 package id.co.veritrans.mdk.v1.sample.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
-import id.co.veritrans.mdk.v1.gateway.model.Address;
-import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
+import id.co.veritrans.mdk.v1.gateway.model.*;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
-import id.co.veritrans.mdk.v1.sample.db.model.Product;
+import id.co.veritrans.mdk.v1.sample.db.model.*;
 import id.co.veritrans.mdk.v1.sample.db.repo.ProductRepo;
+import id.co.veritrans.mdk.v1.sample.db.repo.TransactionItemRepo;
+import id.co.veritrans.mdk.v1.sample.db.repo.TransactionRepo;
 import id.co.veritrans.mdk.v1.sample.manager.VtPaymentManager;
 import id.co.veritrans.mdk.v1.sample.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
+import javax.transaction.Transactional;
 import java.util.*;
 
 /**
@@ -35,6 +36,10 @@ public class CheckoutPageController {
     private VtPaymentManager vtPaymentManager;
     @Autowired
     private ProductRepo productRepo;
+    @Autowired
+    private TransactionRepo transactionRepo;
+    @Autowired
+    private TransactionItemRepo transactionItemRepo;
     private VtDirect vtDirect;
 
     @PostConstruct
@@ -103,6 +108,7 @@ public class CheckoutPageController {
         return new ModelAndView("checkout/credit_card", modelValue);
     }
 
+    @Transactional
     @RequestMapping(value = "credit_card", method = RequestMethod.POST)
     public ModelAndView checkoutCreditCardPost(final HttpSession httpSession, @RequestParam("vt_token") final String vtToken) throws JsonProcessingException {
         final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
@@ -117,8 +123,16 @@ public class CheckoutPageController {
         }
 
         final CreditCardRequest creditCardRequest = createCreditCardRequest(vtToken, checkoutForm, cartItemList);
-        final ObjectMapper om = new ObjectMapper();
-        System.out.println("creditCardRequest: " + om.writeValueAsString(creditCardRequest));
+        final Transaction transaction = saveTransaction(creditCardRequest, cartItemList);
+
+        try {
+            final VtResponse vtResponse = vtDirect.charge(creditCardRequest);
+            transaction.setPaymentTransactionId(vtResponse.getTransactionId());
+            transaction.setPaymentFdsStatus(vtResponse.getFraudStatus() == null ? null : vtResponse.getFraudStatus().name());
+            transaction.setPaymentStatus(vtResponse.getTransactionStatus() == null ? null : vtResponse.getTransactionStatus().name());
+        } catch (RestClientException e) {
+            transaction.setPaymentStatus("ERROR");
+        }
 
         cartItems.clear();
         return new ModelAndView("redirect:/index");
@@ -148,6 +162,50 @@ public class CheckoutPageController {
         modelValue.put("totalPrice", totalPrice);
 
         return new ModelAndView("checkout", modelValue);
+    }
+
+    private Transaction saveTransaction(final CreditCardRequest creditCardRequest, final List<CartItem> cartItems) {
+        final Transaction ret = new Transaction();
+        ret.setBillingAddress(creditCardRequest.getCustomerDetails().getBillingAddress().getAddress());
+        ret.setBillingCity(creditCardRequest.getCustomerDetails().getBillingAddress().getCity());
+        ret.setBillingCountryCode(creditCardRequest.getCustomerDetails().getBillingAddress().getCountryCode());
+        ret.setBillingFirstName(creditCardRequest.getCustomerDetails().getBillingAddress().getFirstName());
+        ret.setBillingLastName(creditCardRequest.getCustomerDetails().getBillingAddress().getLastName());
+        ret.setBillingPhone(creditCardRequest.getCustomerDetails().getBillingAddress().getPhone());
+        ret.setBillingPostalCode(creditCardRequest.getCustomerDetails().getBillingAddress().getPostalCode());
+        
+        ret.setCustomerEmail(creditCardRequest.getCustomerDetails().getEmail());
+        ret.setCustomerFirstName(creditCardRequest.getCustomerDetails().getFirstName());
+        ret.setCustomerLastName(creditCardRequest.getCustomerDetails().getLastName());
+        ret.setCustomerPhone(creditCardRequest.getCustomerDetails().getPhone());
+
+        ret.setShippingAddress(creditCardRequest.getCustomerDetails().getShippingAddress().getAddress());
+        ret.setShippingCity(creditCardRequest.getCustomerDetails().getShippingAddress().getCity());
+        ret.setShippingCountryCode(creditCardRequest.getCustomerDetails().getShippingAddress().getCountryCode());
+        ret.setShippingFirstName(creditCardRequest.getCustomerDetails().getShippingAddress().getFirstName());
+        ret.setShippingLastName(creditCardRequest.getCustomerDetails().getShippingAddress().getLastName());
+        ret.setShippingPhone(creditCardRequest.getCustomerDetails().getShippingAddress().getPhone());
+        ret.setShippingPostalCode(creditCardRequest.getCustomerDetails().getShippingAddress().getPostalCode());
+
+        ret.setPaymentFdsStatus(null);
+        ret.setPaymentMethod(PaymentMethod.CREDIT_CARD.name());
+        ret.setPaymentOrderId(creditCardRequest.getTransactionDetails().getOrderId());
+        ret.setPaymentStatus(null);
+        ret.setPaymentTransactionId(null);
+
+        ret.setTotalPriceIdr(creditCardRequest.getTransactionDetails().getGrossAmount());
+
+        final Transaction managedTransaction = transactionRepo.save(ret);
+        for (final CartItem cartItem : cartItems) {
+            final id.co.veritrans.mdk.v1.sample.db.model.TransactionItem transactionItem = new id.co.veritrans.mdk.v1.sample.db.model.TransactionItem();
+            transactionItem.setProduct(cartItem.getProduct());
+            transactionItem.setTransaction(managedTransaction);
+            transactionItem.setAmount(cartItem.getCount());
+            transactionItem.setPriceEachIdr(cartItem.getProduct().getPriceIdr());
+            transactionItem.setTotalPriceIdr(cartItem.getTotalPrice());
+            transactionItemRepo.save(transactionItem);
+        }
+        return managedTransaction;
     }
 
     private CreditCardRequest createCreditCardRequest(final String vtToken, final CheckoutForm checkoutForm, final List<CartItem> cartItems) {

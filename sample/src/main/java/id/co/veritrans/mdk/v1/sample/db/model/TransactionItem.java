@@ -23,7 +23,7 @@ public class TransactionItem {
     private Product product;
 
     @Column(name = "amount", nullable = false)
-    private Long amount;
+    private Integer amount;
 
     @Column(name = "price_each_idr", nullable = false)
     private Long priceEachIdr;
@@ -55,11 +55,11 @@ public class TransactionItem {
         this.product = product;
     }
 
-    public Long getAmount() {
+    public Integer getAmount() {
         return amount;
     }
 
-    public void setAmount(final Long amount) {
+    public void setAmount(final Integer amount) {
         this.amount = amount;
     }
 

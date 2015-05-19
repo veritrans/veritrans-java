@@ -71,7 +71,7 @@ public class Transaction {
     @Column(name = "payment_order_id", length = 50, nullable = false)
     private String paymentOrderId;
 
-    @Column(name = "payment_transaction_id", length = 100, nullable = false)
+    @Column(name = "payment_transaction_id", length = 100)
     private String paymentTransactionId;
 
     @Column(name = "total_price_idr", nullable = false)
@@ -80,10 +80,10 @@ public class Transaction {
     @Column(name = "payment_method", length = 20, nullable = false)
     private String paymentMethod;
 
-    @Column(name = "payment_status", length = 20, nullable = false)
+    @Column(name = "payment_status", length = 20)
     private String paymentStatus;
 
-    @Column(name = "payment_fds_status", length = 20, nullable = false)
+    @Column(name = "payment_fds_status", length = 20)
     private String paymentFdsStatus;
 
     public Long getId() {
