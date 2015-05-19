@@ -154,7 +154,7 @@ bintray {
     //Package configuration. The plugin will use the repo and name properties to check if the package already exists. In that case, there's no need to configure the other package properties (like userOrg, desc, etc).
     pkg {
         repo = 'maven'
-        name = 'java-client'
+        name = 'veritrans-java-client'
         userOrg = 'pt-midtrans'
         desc = 'Official Veritrans Indonesia Payment API Java Client.'
 
