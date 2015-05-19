@@ -15,14 +15,15 @@ import id.co.veritrans.mdk.v1.sample.manager.VtPaymentManager;
 import id.co.veritrans.mdk.v1.sample.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import java.util.*;
 
 /**
@@ -110,7 +111,7 @@ public class CheckoutPageController {
 
     @Transactional
     @RequestMapping(value = "credit_card", method = RequestMethod.POST)
-    public ModelAndView checkoutCreditCardPost(final HttpSession httpSession, @RequestParam("vt_token") final String vtToken) throws JsonProcessingException {
+    public ModelAndView checkoutCreditCardPost(final HttpSession httpSession, @RequestParam("vt_token") final String vtToken, final RedirectAttributes redirectAttributes) throws JsonProcessingException {
         final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
         final CheckoutForm checkoutForm = SessionUtil.getAttribute(httpSession, "checkoutForm", null);
 
@@ -130,12 +131,45 @@ public class CheckoutPageController {
             transaction.setPaymentTransactionId(vtResponse.getTransactionId());
             transaction.setPaymentFdsStatus(vtResponse.getFraudStatus() == null ? null : vtResponse.getFraudStatus().name());
             transaction.setPaymentStatus(vtResponse.getTransactionStatus() == null ? null : vtResponse.getTransactionStatus().name());
+
+            if (vtResponse.getStatusCode().equals("200")) {
+                cartItems.clear();
+                httpSession.removeAttribute("checkoutForm");
+
+                redirectAttributes.addAttribute("transactionId", transaction.getId());
+                return new ModelAndView("redirect:/checkout/success");
+            }
         } catch (RestClientException e) {
             transaction.setPaymentStatus("ERROR");
         }
-
-        cartItems.clear();
         return new ModelAndView("redirect:/index");
+    }
+
+    @Transactional(readOnly = true)
+    @RequestMapping(value = "success", method = RequestMethod.GET)
+    public ModelAndView checkoutPaymentSuccessGet(final HttpSession httpSession, @RequestParam("transactionId") final Long transactionId) {
+        final Map<Long, Integer> sessionCartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
+        final Transaction transaction = transactionRepo.findOne(transactionId);
+        final List<id.co.veritrans.mdk.v1.sample.db.model.TransactionItem> transactionItems = transactionItemRepo.findByTransaction(transaction);
+
+        final List<CartItem> cartItems = new ArrayList<CartItem>(transactionItems.size());
+        for (final id.co.veritrans.mdk.v1.sample.db.model.TransactionItem transactionItem : transactionItems) {
+            cartItems.add(new CartItem(transactionItem.getProduct(), transactionItem.getAmount()));
+        }
+        final int itemsInCartCount = sessionCartItems.size();
+
+        long totalPrice = 0;
+        for (final CartItem cartItem : cartItems) {
+            totalPrice += cartItem.getTotalPrice().longValue();
+        }
+
+        final Map<String, Object> viewModel = new LinkedHashMap<String, Object>();
+        viewModel.put("cartItems", cartItems);
+        viewModel.put("itemsInCartCount", itemsInCartCount);
+        viewModel.put("totalPrice", totalPrice);
+        viewModel.put("transaction", transaction);
+
+        return new ModelAndView("checkout/success", viewModel);
     }
 
     @RequestMapping(method = RequestMethod.GET)

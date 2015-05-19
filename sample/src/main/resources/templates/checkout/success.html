@@ -1,0 +1,128 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="layout::html-head" />
+
+    <body>
+        <div th:replace="layout::header" />
+        <div class='container component'>
+            <div class='row-fluid' id='notif-app'>
+                <div class='span12'>
+                </div>
+            </div>
+            <div class='row-fluid'>
+                <div class='span12'>
+                    <!-- .well -->
+                    <div class='row-fluid'>
+                        <div class='span6'>
+                            <h3 class='no-bold'>Order #339</h3>
+                        </div>
+                        <div class='span6'>
+                            <h4 class='text-right'>
+                                Status :
+                                <span class='btn btn-success disabled' id='order-status'>Paid</span>
+                            </h4>
+                        </div>
+                    </div>
+                    <hr class='top-off'/>
+                    <h4 class='no-bold'>Order Summary</h4>
+                    <table class='table table-stripped table-condensed current_cart'>
+                        <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Qty</th>
+                            <th>
+                                Price
+                            </th>
+                            <th>
+                                <div class='text-right'>
+                                    Total
+                                </div>
+                            </th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="cartItem : ${cartItems}">
+                            <td class="span6">
+                                <div class="cart-item-image">
+                                    <span class="product-name" th:text="${cartItem.product.shortName}" />
+                                </div>
+                            </td>
+                            <td>
+                                <span class="qty" th:text="${cartItem.count}" />
+                            </td>
+                            <td>
+                                <span class="price_per_unit" th:text="|Rp. ${cartItem.product.priceIdr}|" />
+                            </td>
+                            <td>
+                                <div class="text-right">
+                                    <span class="price_total_per_unit" th:text="|Rp. ${cartItem.totalPrice}|" />
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="3">
+                                <div class="text-right">Total :</div>
+                            </td>
+                            <td>
+                                <div class="text-right">
+                                    <b th:text="|Rp. ${totalPrice}|" />
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class='row-fluid'>
+                        <div class='span6'>
+                            <h4 class='no-bold'>Billing Info</h4>
+                            <table class='table table-condensed table-stripped'>
+                                <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td th:text="|${transaction.billingFirstName} ${transaction.billingLastName}|"></td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td>
+                                        <span th:text="${transaction.billingAddress}"/>
+                                        <br/>
+                                        <span th:text="${transaction.billingCity}"/> - <span th:text="${transaction.billingPostalCode}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Phone</td>
+                                    <td th:text="${transaction.billingPhone}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class='span6'>
+                            <h4 class='no-bold'>Shipping Info</h4>
+                            <table class='table table-condensed table-stripped'>
+                                <tbody>
+                                <tr>
+                                    <td>Name</td>
+                                    <td th:text="|${transaction.billingFirstName} ${transaction.billingLastName}|"></td>
+                                </tr>
+                                <tr>
+                                    <td>Address</td>
+                                    <td>
+                                        <span th:text="${transaction.shippingAddress}"/>
+                                        <br/>
+                                        <span th:text="${transaction.shippingCity}"/> - <span th:text="${transaction.shippingPostalCode}"/>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Phone</td>
+                                    <td th:text="${transaction.shippingPhone}"></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:replace="layout::footer" />
+    </body>
+</html>
