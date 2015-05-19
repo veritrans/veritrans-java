@@ -64,8 +64,10 @@
             <div class="row-fluid">
                 <div class="span12">
                     <div class="text-right">
-                        <a class="button back-button" href="/index">Back</a>
-                        <a class="button checkout-button" data-method="get" href="/checkout/choose_payment" rel="nofollow">Checkout</a>
+                        <form method="post">
+                            <button class='button btn-vt-web' id='vtweb' name='paymentMethod' type='submit' value='vtweb'></button>
+                            <button class='button btn-vt-direct' id='vtdirect' name='paymentMethod' type='submit' value='creditCard'></button>
+                        </form>
                     </div>
                 </div>
             </div>

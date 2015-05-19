@@ -37,15 +37,30 @@ public class CheckoutPageController {
         vtDirect = vtPaymentManager.getVtGatewayFactory().vtDirect();
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public String checkoutPost(
-            final HttpSession httpSession,
-            final CheckoutForm checkoutForm) {
-
+    @RequestMapping(value = "choose_payment", method = RequestMethod.GET)
+    public ModelAndView checkoutChoosePaymentGet(final HttpSession httpSession) {
         final Map<Long, Long> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Long>());
-        cartItems.clear();
+        final int itemsInCartCount = cartItems.size();
 
-        return "redirect:/checkout";
+        final List<CartItem> cartItemList = new LinkedList<CartItem>();
+        for (final Map.Entry<Long, Long> entry : cartItems.entrySet()) {
+            final Long productId = entry.getKey();
+            final Long count = entry.getValue();
+
+            cartItemList.add(new CartItem(productRepo.getOne(productId), count));
+        }
+
+        long totalPrice = 0;
+        for (final CartItem cartItem : cartItemList) {
+            totalPrice += cartItem.getTotalPrice().longValue();
+        }
+
+        final Map<String, Object> modelValue = new LinkedHashMap<String, Object>();
+        modelValue.put("cartItems", cartItemList);
+        modelValue.put("itemsInCartCount", itemsInCartCount);
+        modelValue.put("totalPrice", totalPrice);
+
+        return new ModelAndView("checkout/choose_payment", modelValue);
     }
 
     @RequestMapping(method = RequestMethod.GET)
