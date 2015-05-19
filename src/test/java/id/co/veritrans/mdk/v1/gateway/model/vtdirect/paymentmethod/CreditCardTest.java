@@ -61,6 +61,6 @@ public class CreditCardTest {
 
         String errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray(new ConstraintViolation[0]));
         assertTrue(errorMessage.contains("cardToken"));
-        assertTrue(errorMessage.contains("acquirerBank"));
+        assertFalse(errorMessage.contains("acquirerBank"));
     }
 }

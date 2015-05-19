@@ -14,7 +14,6 @@ public class CreditCard {
     @NotNull
     @JsonProperty("token_id")
     private String cardToken;
-    @NotNull
     @JsonProperty("bank")
     private Bank acquirerBank;
     private Integer installmentTerm;
