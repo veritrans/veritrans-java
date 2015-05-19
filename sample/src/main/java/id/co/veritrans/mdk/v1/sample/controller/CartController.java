@@ -24,14 +24,14 @@ public class CartController {
 
     @RequestMapping(value = "/cart_add", method = RequestMethod.GET)
     private String cartAdd(final HttpSession httpSession, final @RequestParam(value = "product_id") Long productId) {
-        final Map<Long, Long> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Long>());
+        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
         final Product product = productRepo.findOne(productId);
 
         if (product != null) {
             if (cartItems.containsKey(productId)) {
-                cartItems.put(productId, cartItems.get(productId).longValue() + 1);
+                cartItems.put(productId, cartItems.get(productId).intValue() + 1);
             } else {
-                cartItems.put(productId, 1l);
+                cartItems.put(productId, 1);
             }
         }
 

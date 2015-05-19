@@ -1,6 +1,14 @@
 package id.co.veritrans.mdk.v1.sample.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
+import id.co.veritrans.mdk.v1.gateway.model.Address;
+import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
+import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
+import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import id.co.veritrans.mdk.v1.sample.db.model.Product;
 import id.co.veritrans.mdk.v1.sample.db.repo.ProductRepo;
 import id.co.veritrans.mdk.v1.sample.manager.VtPaymentManager;
@@ -9,15 +17,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
-import java.math.BigDecimal;
-import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by gde on 5/18/15.
@@ -39,13 +44,13 @@ public class CheckoutPageController {
 
     @RequestMapping(value = "choose_payment", method = RequestMethod.GET)
     public ModelAndView checkoutChoosePaymentGet(final HttpSession httpSession) {
-        final Map<Long, Long> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Long>());
+        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
         final int itemsInCartCount = cartItems.size();
 
         final List<CartItem> cartItemList = new LinkedList<CartItem>();
-        for (final Map.Entry<Long, Long> entry : cartItems.entrySet()) {
+        for (final Map.Entry<Long, Integer> entry : cartItems.entrySet()) {
             final Long productId = entry.getKey();
-            final Long count = entry.getValue();
+            final Integer count = entry.getValue();
 
             cartItemList.add(new CartItem(productRepo.getOne(productId), count));
         }
@@ -65,6 +70,7 @@ public class CheckoutPageController {
 
     @RequestMapping(value = "choose_payment", method = RequestMethod.POST)
     public ModelAndView checkoutChoosePaymentPost(final HttpSession httpSession, final CheckoutForm checkoutForm) {
+        httpSession.setAttribute("checkoutForm", checkoutForm);
         if (checkoutForm.getPaymentMethod().equals("creditCard")) {
             return new ModelAndView("redirect:/checkout/credit_card");
         }
@@ -73,13 +79,13 @@ public class CheckoutPageController {
 
     @RequestMapping(value = "credit_card", method = RequestMethod.GET)
     public ModelAndView checkoutCreditCardGet(final HttpSession httpSession) {
-        final Map<Long, Long> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Long>());
+        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
         final int itemsInCartCount = cartItems.size();
 
         final List<CartItem> cartItemList = new LinkedList<CartItem>();
-        for (final Map.Entry<Long, Long> entry : cartItems.entrySet()) {
+        for (final Map.Entry<Long, Integer> entry : cartItems.entrySet()) {
             final Long productId = entry.getKey();
-            final Long count = entry.getValue();
+            final Integer count = entry.getValue();
 
             cartItemList.add(new CartItem(productRepo.getOne(productId), count));
         }
@@ -98,21 +104,35 @@ public class CheckoutPageController {
     }
 
     @RequestMapping(value = "credit_card", method = RequestMethod.POST)
-    public ModelAndView checkoutCreditCardPost(final HttpSession httpSession) {
-        final Map<Long, Long> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Long>());
+    public ModelAndView checkoutCreditCardPost(final HttpSession httpSession, @RequestParam("vt_token") final String vtToken) throws JsonProcessingException {
+        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
+        final CheckoutForm checkoutForm = SessionUtil.getAttribute(httpSession, "checkoutForm", null);
+
+        final List<CartItem> cartItemList = new LinkedList<CartItem>();
+        for (final Map.Entry<Long, Integer> entry : cartItems.entrySet()) {
+            final Long productId = entry.getKey();
+            final Integer count = entry.getValue();
+
+            cartItemList.add(new CartItem(productRepo.getOne(productId), count));
+        }
+
+        final CreditCardRequest creditCardRequest = createCreditCardRequest(vtToken, checkoutForm, cartItemList);
+        final ObjectMapper om = new ObjectMapper();
+        System.out.println("creditCardRequest: " + om.writeValueAsString(creditCardRequest));
+
         cartItems.clear();
         return new ModelAndView("redirect:/index");
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView checkoutGet(final HttpSession httpSession) {
-        final Map<Long, Long> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Long>());
+        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
         final int itemsInCartCount = cartItems.size();
 
         final List<CartItem> cartItemList = new LinkedList<CartItem>();
-        for (final Map.Entry<Long, Long> entry : cartItems.entrySet()) {
+        for (final Map.Entry<Long, Integer> entry : cartItems.entrySet()) {
             final Long productId = entry.getKey();
-            final Long count = entry.getValue();
+            final Integer count = entry.getValue();
 
             cartItemList.add(new CartItem(productRepo.getOne(productId), count));
         }
@@ -128,6 +148,61 @@ public class CheckoutPageController {
         modelValue.put("totalPrice", totalPrice);
 
         return new ModelAndView("checkout", modelValue);
+    }
+
+    private CreditCardRequest createCreditCardRequest(final String vtToken, final CheckoutForm checkoutForm, final List<CartItem> cartItems) {
+        final CreditCardRequest ret = new CreditCardRequest();
+        ret.setCreditCard(new CreditCard());
+        ret.getCreditCard().setCardToken(vtToken);
+
+        ret.setCustomerDetails(toCustomerDetails(checkoutForm));
+
+        ret.setTransactionDetails(new TransactionDetails());
+        ret.setItemDetails(new ArrayList<TransactionItem>(cartItems.size()));
+
+        ret.getTransactionDetails().setGrossAmount(0l);
+        ret.getTransactionDetails().setOrderId(UUID.randomUUID().toString());
+        for (final CartItem cartItem : cartItems) {
+            ret.getTransactionDetails().setGrossAmount(ret.getTransactionDetails().getGrossAmount().longValue() + cartItem.getTotalPrice().longValue());
+
+            final Product product = cartItem.getProduct();
+            ret.getItemDetails().add(new TransactionItem(
+                    product.getId().toString(),
+                    product.getShortName(),
+                    product.getPriceIdr().longValue(),
+                    cartItem.getCount()
+            ));
+        }
+
+        return ret;
+    }
+
+    private CustomerDetails toCustomerDetails(CheckoutForm checkoutForm) {
+        final CustomerDetails ret = new CustomerDetails();
+        ret.setFirstName(checkoutForm.getBillingFirstName());
+        ret.setLastName(checkoutForm.getBillingLastName());
+        ret.setEmail(checkoutForm.getEmail());
+        ret.setPhone(checkoutForm.getBillingPhone());
+
+        ret.setBillingAddress(new Address());
+        ret.getBillingAddress().setAddress(checkoutForm.getBillingAddress1() +"\n" +checkoutForm.getBillingAddress2());
+        ret.getBillingAddress().setCity(checkoutForm.getBillingCity());
+        ret.getBillingAddress().setCountryCode("IDN");
+        ret.getBillingAddress().setFirstName(checkoutForm.getBillingFirstName());
+        ret.getBillingAddress().setLastName(checkoutForm.getBillingLastName());
+        ret.getBillingAddress().setPhone(checkoutForm.getBillingPhone());
+        ret.getBillingAddress().setPostalCode(checkoutForm.getBillingPostalCode());
+
+        ret.setShippingAddress(new Address());
+        ret.getShippingAddress().setAddress(checkoutForm.getShippingAddress1() +"\n" +checkoutForm.getShippingAddress2());
+        ret.getShippingAddress().setCity(checkoutForm.getShippingCity());
+        ret.getShippingAddress().setCountryCode("IDN");
+        ret.getShippingAddress().setFirstName(checkoutForm.getShippingFirstName());
+        ret.getShippingAddress().setLastName(checkoutForm.getShippingLastName());
+        ret.getShippingAddress().setPhone(checkoutForm.getShippingPhone());
+        ret.getShippingAddress().setPostalCode(checkoutForm.getShippingPostalCode());
+
+        return ret;
     }
 
     public static class CheckoutForm {
@@ -281,13 +356,13 @@ public class CheckoutPageController {
     public static class CartItem {
 
         private Product product;
-        private Long count;
-        private BigDecimal totalPrice;
+        private Integer count;
+        private Long totalPrice;
 
-        public CartItem(final Product product, final Long count) {
+        public CartItem(final Product product, final Integer count) {
             this.product = product;
             this.count = count;
-            this.totalPrice = new BigDecimal(count.longValue() * product.getPriceIdr().longValue());
+            this.totalPrice = new Long(count.longValue() * product.getPriceIdr().longValue());
         }
 
         public Product getProduct() {
@@ -298,19 +373,19 @@ public class CheckoutPageController {
             this.product = product;
         }
 
-        public Long getCount() {
+        public Integer getCount() {
             return count;
         }
 
-        public void setCount(final Long count) {
+        public void setCount(final Integer count) {
             this.count = count;
         }
 
-        public BigDecimal getTotalPrice() {
+        public Long getTotalPrice() {
             return totalPrice;
         }
 
-        public void setTotalPrice(final BigDecimal totalPrice) {
+        public void setTotalPrice(final Long totalPrice) {
             this.totalPrice = totalPrice;
         }
     }

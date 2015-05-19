@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1.sample.db.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 /**
  * Created by gde on 5/18/15.
@@ -25,7 +24,7 @@ public class Product {
     private String thumbnailFilePath;
 
     @Column(name = "price_idr", nullable = false)
-    private BigDecimal priceIdr;
+    private Long priceIdr;
 
     public Long getId() {
         return id;
@@ -59,11 +58,11 @@ public class Product {
         this.thumbnailFilePath = thumbnailFilePath;
     }
 
-    public BigDecimal getPriceIdr() {
+    public Long getPriceIdr() {
         return priceIdr;
     }
 
-    public void setPriceIdr(final BigDecimal priceIdr) {
+    public void setPriceIdr(final Long priceIdr) {
         this.priceIdr = priceIdr;
     }
 

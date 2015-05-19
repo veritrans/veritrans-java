@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1.sample.db.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 /**
  * Created by gde on 5/18/15.
@@ -27,10 +26,10 @@ public class TransactionItem {
     private Long amount;
 
     @Column(name = "price_each_idr", nullable = false)
-    private BigDecimal priceEachIdr;
+    private Long priceEachIdr;
 
     @Column(name = "total_price_idr", nullable = false)
-    private BigDecimal totalPriceIdr;
+    private Long totalPriceIdr;
 
     public Long getId() {
         return id;
@@ -64,19 +63,19 @@ public class TransactionItem {
         this.amount = amount;
     }
 
-    public BigDecimal getPriceEachIdr() {
+    public Long getPriceEachIdr() {
         return priceEachIdr;
     }
 
-    public void setPriceEachIdr(final BigDecimal priceEachIdr) {
+    public void setPriceEachIdr(final Long priceEachIdr) {
         this.priceEachIdr = priceEachIdr;
     }
 
-    public BigDecimal getTotalPriceIdr() {
+    public Long getTotalPriceIdr() {
         return totalPriceIdr;
     }
 
-    public void setTotalPriceIdr(final BigDecimal totalPriceIdr) {
+    public void setTotalPriceIdr(final Long totalPriceIdr) {
         this.totalPriceIdr = totalPriceIdr;
     }
 

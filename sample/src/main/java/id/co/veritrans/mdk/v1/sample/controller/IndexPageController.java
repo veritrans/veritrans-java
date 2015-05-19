@@ -25,7 +25,7 @@ public class IndexPageController {
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index(final HttpSession httpSession) {
-        final Map<Long, Long> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Long>());
+        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
 
         final List<Product> products = productRepo.findAll();
         final int itemsInCartCount = cartItems.size();

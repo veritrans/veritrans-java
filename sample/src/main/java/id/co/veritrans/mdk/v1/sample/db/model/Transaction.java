@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1.sample.db.model;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 
 /**
  * Created by gde on 5/18/15.
@@ -69,14 +68,23 @@ public class Transaction {
     @Column(name = "shipping_country_code", length = 3, nullable = true)
     private String shippingCountryCode;
 
+    @Column(name = "payment_order_id", length = 50, nullable = false)
+    private String paymentOrderId;
+
+    @Column(name = "payment_transaction_id", length = 100, nullable = false)
+    private String paymentTransactionId;
+
     @Column(name = "total_price_idr", nullable = false)
-    private BigDecimal totalPriceIdr;
+    private Long totalPriceIdr;
 
     @Column(name = "payment_method", length = 20, nullable = false)
     private String paymentMethod;
 
     @Column(name = "payment_status", length = 20, nullable = false)
     private String paymentStatus;
+
+    @Column(name = "payment_fds_status", length = 20, nullable = false)
+    private String paymentFdsStatus;
 
     public Long getId() {
         return id;
@@ -230,11 +238,27 @@ public class Transaction {
         this.shippingCountryCode = shippingCountryCode;
     }
 
-    public BigDecimal getTotalPriceIdr() {
+    public String getPaymentOrderId() {
+        return paymentOrderId;
+    }
+
+    public void setPaymentOrderId(final String paymentOrderId) {
+        this.paymentOrderId = paymentOrderId;
+    }
+
+    public String getPaymentTransactionId() {
+        return paymentTransactionId;
+    }
+
+    public void setPaymentTransactionId(final String paymentTransactionId) {
+        this.paymentTransactionId = paymentTransactionId;
+    }
+
+    public Long getTotalPriceIdr() {
         return totalPriceIdr;
     }
 
-    public void setTotalPriceIdr(final BigDecimal totalPriceIdr) {
+    public void setTotalPriceIdr(final Long totalPriceIdr) {
         this.totalPriceIdr = totalPriceIdr;
     }
 
@@ -252,6 +276,14 @@ public class Transaction {
 
     public void setPaymentStatus(final String paymentStatus) {
         this.paymentStatus = paymentStatus;
+    }
+
+    public String getPaymentFdsStatus() {
+        return paymentFdsStatus;
+    }
+
+    public void setPaymentFdsStatus(final String paymentFdsStatus) {
+        this.paymentFdsStatus = paymentFdsStatus;
     }
 
     @Override
