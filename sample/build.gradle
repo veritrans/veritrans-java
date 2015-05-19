@@ -26,14 +26,11 @@ targetCompatibility = 1.6
 
 repositories {
     mavenCentral()
-
-    maven {
-        url('https://dl.bintray.com/gde-vt/maven/')
-    }
+    jcenter()
 }
 
 dependencies {
-    compile("id.co.veritrans:vt-java-client")
+    compile("id.co.veritrans:vt-java-client:1.0.0-release")
     compile("org.springframework.boot:spring-boot-starter-actuator")
     compile("org.springframework.boot:spring-boot-starter-aop")
     compile("org.springframework.boot:spring-boot-starter-data-jpa")
