@@ -141,7 +141,7 @@ This method will make a charge request to Veritrans Payment API and return a VtR
 
 See [VtDirectChargeRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/VtDirectChargeRequest.html)  
 See [VtResponse](javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html)  
-Visit [http://docs.veritrans.co.id/sandbox/charge.html](http://docs.veritrans.co.id/sandbox/charge.html) for more information.
+Visit [http://docs.veritrans.co.id/sandbox/charge.html ](http://docs.veritrans.co.id/sandbox/charge.html)for more information.
 
 #### VtDirectChargeRequest
 VtDirectChargeRequest has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:  
