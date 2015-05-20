@@ -382,6 +382,7 @@ if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
 
     //handle successful  BCA Klikpay charge request
+    //check the redirectUrl value in the vtResponse (redirect the customer to the redirectUrl to continue the payment process)
 } else {
     //handle denied / unexpected response
 }
@@ -404,6 +405,7 @@ if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
 
     //handle successful  BCA Klikpay charge request
+    //show instruction to customer on how to pay with klikbca
 } else {
     //handle denied / unexpected response
 }
