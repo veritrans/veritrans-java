@@ -117,16 +117,7 @@
                                             <div class='span3'>
                                                 <label for="order_payment_card_exp_year">Card exp year</label>
                                                 <select class="span12" id="order_payment_card_exp_year" name="">
-                                                    <option value="2015">2015</option>
-                                                    <option selected="selected" value="2016">2016</option>
-                                                    <option value="2017">2017</option>
-                                                    <option value="2018">2018</option>
-                                                    <option value="2019">2019</option>
-                                                    <option value="2020">2020</option>
-                                                    <option value="2021">2021</option>
-                                                    <option value="2022">2022</option>
-                                                    <option value="2023">2023</option>
-                                                    <option value="2024">2024</option>
+                                                    <option th:each="year,iter : ${years}" th:selected="${iter.first}" th:text="${year}"/>
                                                 </select>
                                             </div>
                                         </div>

@@ -4,14 +4,18 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.model.*;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
-import id.co.veritrans.mdk.v1.sample.db.model.*;
+import id.co.veritrans.mdk.v1.sample.db.model.Product;
+import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.db.repo.ProductRepo;
 import id.co.veritrans.mdk.v1.sample.db.repo.TransactionItemRepo;
 import id.co.veritrans.mdk.v1.sample.db.repo.TransactionRepo;
+import id.co.veritrans.mdk.v1.sample.manager.CartManager;
+import id.co.veritrans.mdk.v1.sample.manager.SessionManager;
+import id.co.veritrans.mdk.v1.sample.manager.SessionManagerFactory;
 import id.co.veritrans.mdk.v1.sample.manager.VtPaymentManager;
+import id.co.veritrans.mdk.v1.sample.manager.model.CartItem;
 import id.co.veritrans.mdk.v1.sample.util.SessionUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -34,6 +38,8 @@ import java.util.*;
 public class CheckoutPageController {
 
     @Autowired
+    private SessionManagerFactory sessionManagerFactory;
+    @Autowired
     private VtPaymentManager vtPaymentManager;
     @Autowired
     private ProductRepo productRepo;
@@ -48,30 +54,26 @@ public class CheckoutPageController {
         vtDirect = vtPaymentManager.getVtGatewayFactory().vtDirect();
     }
 
+    private Map<String, Object> buildCartViewModel(final SessionManager sessionManager) {
+        final CartManager cartManager = sessionManager.cartManager();
+        final Map<String, Object> ret = new LinkedHashMap<String, Object>();
+
+        final List<ViewCartItem> cartItemList = new LinkedList<ViewCartItem>();
+        for (final CartItem cartItem : sessionManager.cartManager().getCartItems()) {
+            cartItemList.add(new ViewCartItem(cartItem.getProduct(), cartItem.getAmount()));
+        }
+
+        ret.put("cartItems", cartItemList);
+        ret.put("cartSize", cartManager.getCartSize());
+        ret.put("totalPrice", cartManager.calcTotalPrice());
+
+        return ret;
+    }
+
     @RequestMapping(value = "choose_payment", method = RequestMethod.GET)
     public ModelAndView checkoutChoosePaymentGet(final HttpSession httpSession) {
-        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
-        final int itemsInCartCount = cartItems.size();
-
-        final List<CartItem> cartItemList = new LinkedList<CartItem>();
-        for (final Map.Entry<Long, Integer> entry : cartItems.entrySet()) {
-            final Long productId = entry.getKey();
-            final Integer count = entry.getValue();
-
-            cartItemList.add(new CartItem(productRepo.getOne(productId), count));
-        }
-
-        long totalPrice = 0;
-        for (final CartItem cartItem : cartItemList) {
-            totalPrice += cartItem.getTotalPrice().longValue();
-        }
-
-        final Map<String, Object> modelValue = new LinkedHashMap<String, Object>();
-        modelValue.put("cartItems", cartItemList);
-        modelValue.put("itemsInCartCount", itemsInCartCount);
-        modelValue.put("totalPrice", totalPrice);
-
-        return new ModelAndView("checkout/choose_payment", modelValue);
+        final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
+        return new ModelAndView("checkout/choose_payment", buildCartViewModel(sessionManager));
     }
 
     @RequestMapping(value = "choose_payment", method = RequestMethod.POST)
@@ -85,46 +87,32 @@ public class CheckoutPageController {
 
     @RequestMapping(value = "credit_card", method = RequestMethod.GET)
     public ModelAndView checkoutCreditCardGet(final HttpSession httpSession) {
-        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
-        final int itemsInCartCount = cartItems.size();
+        final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
+        final Map<String, Object> viewModel = buildCartViewModel(sessionManager);
 
-        final List<CartItem> cartItemList = new LinkedList<CartItem>();
-        for (final Map.Entry<Long, Integer> entry : cartItems.entrySet()) {
-            final Long productId = entry.getKey();
-            final Integer count = entry.getValue();
-
-            cartItemList.add(new CartItem(productRepo.getOne(productId), count));
+        final int[] years = new int[10];
+        final int currentYear = GregorianCalendar.getInstance().get(Calendar.YEAR);
+        for (int i = 0; i < years.length; i++) {
+            years[i] = currentYear + i;
         }
+        viewModel.put("years", years);
 
-        long totalPrice = 0;
-        for (final CartItem cartItem : cartItemList) {
-            totalPrice += cartItem.getTotalPrice().longValue();
-        }
-
-        final Map<String, Object> modelValue = new LinkedHashMap<String, Object>();
-        modelValue.put("cartItems", cartItemList);
-        modelValue.put("itemsInCartCount", itemsInCartCount);
-        modelValue.put("totalPrice", totalPrice);
-
-        return new ModelAndView("checkout/credit_card", modelValue);
+        return new ModelAndView("checkout/credit_card", viewModel);
     }
 
     @Transactional
     @RequestMapping(value = "credit_card", method = RequestMethod.POST)
     public ModelAndView checkoutCreditCardPost(final HttpSession httpSession, @RequestParam("vt_token") final String vtToken, final RedirectAttributes redirectAttributes) throws JsonProcessingException {
-        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
+        final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
+        final CartManager cartManager = sessionManager.cartManager();
+
         final CheckoutForm checkoutForm = SessionUtil.getAttribute(httpSession, "checkoutForm", null);
-
-        final List<CartItem> cartItemList = new LinkedList<CartItem>();
-        for (final Map.Entry<Long, Integer> entry : cartItems.entrySet()) {
-            final Long productId = entry.getKey();
-            final Integer count = entry.getValue();
-
-            cartItemList.add(new CartItem(productRepo.getOne(productId), count));
+        if (checkoutForm == null) {
+            return new ModelAndView("redirect:/checkout/choose_payment");
         }
 
-        final CreditCardRequest creditCardRequest = createCreditCardRequest(vtToken, checkoutForm, cartItemList);
-        final Transaction transaction = saveTransaction(creditCardRequest, cartItemList);
+        final CreditCardRequest creditCardRequest = createCreditCardRequest(vtToken, checkoutForm, cartManager);
+        final Transaction transaction = saveTransaction(creditCardRequest, cartManager);
 
         try {
             final VtResponse vtResponse = vtDirect.charge(creditCardRequest);
@@ -133,11 +121,13 @@ public class CheckoutPageController {
             transaction.setPaymentStatus(vtResponse.getTransactionStatus() == null ? null : vtResponse.getTransactionStatus().name());
 
             if (vtResponse.getStatusCode().equals("200")) {
-                cartItems.clear();
+                cartManager.clear();
                 httpSession.removeAttribute("checkoutForm");
 
                 redirectAttributes.addAttribute("transactionId", transaction.getId());
                 return new ModelAndView("redirect:/checkout/success");
+            } else {
+                return new ModelAndView("redirect:/checkout");
             }
         } catch (RestClientException e) {
             transaction.setPaymentStatus("ERROR");
@@ -148,24 +138,24 @@ public class CheckoutPageController {
     @Transactional(readOnly = true)
     @RequestMapping(value = "success", method = RequestMethod.GET)
     public ModelAndView checkoutPaymentSuccessGet(final HttpSession httpSession, @RequestParam("transactionId") final Long transactionId) {
-        final Map<Long, Integer> sessionCartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
+        final Map<Long, Integer> sessionCartItems = SessionUtil.getAttribute(httpSession, "cartItems", new LinkedHashMap<Long, Integer>());
         final Transaction transaction = transactionRepo.findOne(transactionId);
         final List<id.co.veritrans.mdk.v1.sample.db.model.TransactionItem> transactionItems = transactionItemRepo.findByTransaction(transaction);
 
-        final List<CartItem> cartItems = new ArrayList<CartItem>(transactionItems.size());
+        final List<ViewCartItem> cartItems = new ArrayList<ViewCartItem>(transactionItems.size());
         for (final id.co.veritrans.mdk.v1.sample.db.model.TransactionItem transactionItem : transactionItems) {
-            cartItems.add(new CartItem(transactionItem.getProduct(), transactionItem.getAmount()));
+            cartItems.add(new ViewCartItem(transactionItem.getProduct(), transactionItem.getAmount()));
         }
-        final int itemsInCartCount = sessionCartItems.size();
+        final int cartSize = sessionCartItems.size();
 
         long totalPrice = 0;
-        for (final CartItem cartItem : cartItems) {
-            totalPrice += cartItem.getTotalPrice().longValue();
+        for (final ViewCartItem cartItem : cartItems) {
+            totalPrice += cartItem.getTotalPrice();
         }
 
         final Map<String, Object> viewModel = new LinkedHashMap<String, Object>();
         viewModel.put("cartItems", cartItems);
-        viewModel.put("itemsInCartCount", itemsInCartCount);
+        viewModel.put("cartSize", cartSize);
         viewModel.put("totalPrice", totalPrice);
         viewModel.put("transaction", transaction);
 
@@ -174,31 +164,11 @@ public class CheckoutPageController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView checkoutGet(final HttpSession httpSession) {
-        final Map<Long, Integer> cartItems = SessionUtil.getAttribute(httpSession, "cart_items", new LinkedHashMap<Long, Integer>());
-        final int itemsInCartCount = cartItems.size();
-
-        final List<CartItem> cartItemList = new LinkedList<CartItem>();
-        for (final Map.Entry<Long, Integer> entry : cartItems.entrySet()) {
-            final Long productId = entry.getKey();
-            final Integer count = entry.getValue();
-
-            cartItemList.add(new CartItem(productRepo.getOne(productId), count));
-        }
-
-        long totalPrice = 0;
-        for (final CartItem cartItem : cartItemList) {
-            totalPrice += cartItem.getTotalPrice().longValue();
-        }
-
-        final Map<String, Object> modelValue = new LinkedHashMap<String, Object>();
-        modelValue.put("cartItems", cartItemList);
-        modelValue.put("itemsInCartCount", itemsInCartCount);
-        modelValue.put("totalPrice", totalPrice);
-
-        return new ModelAndView("checkout", modelValue);
+        final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
+        return new ModelAndView("checkout", buildCartViewModel(sessionManager));
     }
 
-    private Transaction saveTransaction(final CreditCardRequest creditCardRequest, final List<CartItem> cartItems) {
+    private Transaction saveTransaction(final CreditCardRequest creditCardRequest, final CartManager cartManager) {
         final Transaction ret = new Transaction();
         ret.setBillingAddress(creditCardRequest.getCustomerDetails().getBillingAddress().getAddress());
         ret.setBillingCity(creditCardRequest.getCustomerDetails().getBillingAddress().getCity());
@@ -230,19 +200,19 @@ public class CheckoutPageController {
         ret.setTotalPriceIdr(creditCardRequest.getTransactionDetails().getGrossAmount());
 
         final Transaction managedTransaction = transactionRepo.save(ret);
-        for (final CartItem cartItem : cartItems) {
+        for (final CartItem cartItem : cartManager.getCartItems()) {
             final id.co.veritrans.mdk.v1.sample.db.model.TransactionItem transactionItem = new id.co.veritrans.mdk.v1.sample.db.model.TransactionItem();
             transactionItem.setProduct(cartItem.getProduct());
             transactionItem.setTransaction(managedTransaction);
-            transactionItem.setAmount(cartItem.getCount());
+            transactionItem.setAmount(cartItem.getAmount());
             transactionItem.setPriceEachIdr(cartItem.getProduct().getPriceIdr());
-            transactionItem.setTotalPriceIdr(cartItem.getTotalPrice());
+            transactionItem.setTotalPriceIdr(cartItem.calcTotalPrice());
             transactionItemRepo.save(transactionItem);
         }
         return managedTransaction;
     }
 
-    private CreditCardRequest createCreditCardRequest(final String vtToken, final CheckoutForm checkoutForm, final List<CartItem> cartItems) {
+    private CreditCardRequest createCreditCardRequest(final String vtToken, final CheckoutForm checkoutForm, final CartManager cartManager) {
         final CreditCardRequest ret = new CreditCardRequest();
         ret.setCreditCard(new CreditCard());
         ret.getCreditCard().setCardToken(vtToken);
@@ -250,22 +220,20 @@ public class CheckoutPageController {
         ret.setCustomerDetails(toCustomerDetails(checkoutForm));
 
         ret.setTransactionDetails(new TransactionDetails());
-        ret.setItemDetails(new ArrayList<TransactionItem>(cartItems.size()));
+        ret.setItemDetails(new ArrayList<TransactionItem>(cartManager.getCartSize()));
 
-        ret.getTransactionDetails().setGrossAmount(0l);
+        ret.getTransactionDetails().setGrossAmount(cartManager.calcTotalPrice());
         ret.getTransactionDetails().setOrderId(UUID.randomUUID().toString());
-        for (final CartItem cartItem : cartItems) {
-            ret.getTransactionDetails().setGrossAmount(ret.getTransactionDetails().getGrossAmount().longValue() + cartItem.getTotalPrice().longValue());
 
+        for (final CartItem cartItem : cartManager.getCartItems()) {
             final Product product = cartItem.getProduct();
             ret.getItemDetails().add(new TransactionItem(
                     product.getId().toString(),
                     product.getShortName(),
-                    product.getPriceIdr().longValue(),
-                    cartItem.getCount()
+                    product.getPriceIdr(),
+                    cartItem.getAmount()
             ));
         }
-
         return ret;
     }
 
@@ -445,13 +413,13 @@ public class CheckoutPageController {
         }
     }
 
-    public static class CartItem {
+    private static class ViewCartItem {
 
         private Product product;
         private Integer count;
         private Long totalPrice;
 
-        public CartItem(final Product product, final Integer count) {
+        public ViewCartItem(final Product product, final Integer count) {
             this.product = product;
             this.count = count;
             this.totalPrice = new Long(count.longValue() * product.getPriceIdr().longValue());

@@ -51,10 +51,10 @@
     <table width="100%">
         <tr>
             <td align="left">
-                <span>Items in Cart: </span><span th:text="${itemsInCartCount}" />
+                <span>Items in Cart: </span><span th:text="${cartSize}" />
             </td>
             <td align="right">
-                <a href="/checkout">Checkout (<span th:text="${itemsInCartCount}"/>)</a>
+                <a href="/checkout">Checkout (<span th:text="${cartSize}"/>)</a>
             </td>
         </tr>
     </table>
@@ -79,7 +79,7 @@
                 <div class="compact">
                     <p class="text-right">
                         <i class="icon icon-shopping-cart"></i>
-                        <a href="/checkout" th:text="|you have ${itemsInCartCount} item(s)|"></a>
+                        <a href="/checkout" th:text="|you have ${cartSize} item(s)|"></a>
                     </p>
                 </div>
                 <div class="complete"></div>

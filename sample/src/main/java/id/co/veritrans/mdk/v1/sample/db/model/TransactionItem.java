@@ -19,7 +19,7 @@ public class TransactionItem {
     private Transaction transaction;
 
     @ManyToOne
-    @JoinColumn(name = "product_id", nullable = false)
+    @JoinColumn(name = "productId", nullable = false)
     private Product product;
 
     @Column(name = "amount", nullable = false)
