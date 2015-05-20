@@ -224,7 +224,7 @@ if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
 
     //handle successful Bank Transfer charge request
-    //check the redirectUrl value in the vtResponse
+    //check the redirectUrl value in the vtResponse (redirect the customer to the redirectUrl to continue the payment process)
 } else {
     //handle denied / unexpected response
 }
@@ -246,7 +246,7 @@ if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {
 
     //handle successful Cimb Clicks charge request
-    //check the redirectUrl value in the vtResponse
+    //check the redirectUrl value in the vtResponse (redirect the customer to the redirectUrl to continue the payment process)
 } else {
     //handle denied / unexpected response
 }
