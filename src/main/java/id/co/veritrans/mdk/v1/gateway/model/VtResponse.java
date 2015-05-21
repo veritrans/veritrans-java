@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.veritrans.mdk.v1.exception.JsonDeserializeException;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.helper.JsonUtil;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -21,7 +22,7 @@ public class VtResponse {
     private String orderId;
     private BigDecimal grossAmount;
     @JsonProperty("payment_type")
-    private PaymentMethod paymentMethod;
+    private String paymentMethod;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+07")
     private Date transactionTime;
     private TransactionStatus transactionStatus;
@@ -64,7 +65,7 @@ public class VtResponse {
      * @throws id.co.veritrans.mdk.v1.exception.JsonDeserializeException when a failure is occured during deserializing the JSON.
      */
     public static id.co.veritrans.mdk.v1.gateway.model.VtResponse deserializeJson(String json) throws JsonDeserializeException {
-        return null;
+        return JsonUtil.fromJson(json, VtResponse.class);
     }
 
     /**
@@ -75,7 +76,7 @@ public class VtResponse {
      * @throws id.co.veritrans.mdk.v1.exception.JsonDeserializeException when a failure is occured during deserializing the JSON.
      */
     public static id.co.veritrans.mdk.v1.gateway.model.VtResponse deserializeJson(InputStream inputStream) throws JsonDeserializeException {
-        return null;
+        return JsonUtil.fromJson(inputStream, VtResponse.class);
     }
 
     /**
@@ -137,7 +138,7 @@ public class VtResponse {
      *
      * @return Transaction payment method
      */
-    public PaymentMethod getPaymentMethod() {
+    public String getPaymentMethod() {
         return paymentMethod;
     }
 
@@ -146,7 +147,7 @@ public class VtResponse {
      *
      * @param paymentMethod Transaction payment method
      */
-    public void setPaymentMethod(final PaymentMethod paymentMethod) {
+    public void setPaymentMethod(final String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 

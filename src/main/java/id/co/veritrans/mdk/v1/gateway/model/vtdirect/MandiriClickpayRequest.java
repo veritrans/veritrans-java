@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.MandiriClickpay;
@@ -40,11 +39,11 @@ public class MandiriClickpayRequest extends VtDirectChargeRequest {
 
     /**
      * Get mandiri clickpay payment method
-     * @return {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#MANDIRI_CLICKPAY Mandiri clickpay payment method}
+     * @return Mandiri Clickpay String (mandiri_clickpay)
      */
     @Override
-    public PaymentMethod getPaymentMethod() {
-        return PaymentMethod.MANDIRI_CLICKPAY;
+    public String getPaymentMethod() {
+        return "mandiri_clickpay";
     }
 
     /**

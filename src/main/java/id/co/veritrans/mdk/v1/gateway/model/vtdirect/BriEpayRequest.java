@@ -1,7 +1,5 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
-import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
-
 /**
  * Bri Epay request
  */
@@ -9,10 +7,10 @@ public class BriEpayRequest extends VtDirectChargeRequest {
 
     /**
      * Get Bri Epay payment method
-     * @return Bri epay {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#BRI_EPAY payment method}
+     * @return Bri Epay String (bri_epay)
      */
     @Override
-    public PaymentMethod getPaymentMethod() {
-        return PaymentMethod.BRI_EPAY;
+    public String getPaymentMethod() {
+        return "bri_epay";
     }
 }
