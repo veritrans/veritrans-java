@@ -81,6 +81,7 @@ public class CartManager {
     }
 
     public CartManager clear() {
+        sessionCartItemMap.clear();
         cartItemMap.clear();
         return this;
     }
