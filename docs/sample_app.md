@@ -5,7 +5,7 @@ Veritrans java-client sample store application
 ## Source code
 <!-- TODO: change repository url -->
 You can get sample store source code from [Veritrans Java Client](https://github.com/gde-vt/veritrans-java/) repository on `~/veritrans-java/sample` directory.  
-Sample store application using [**Spring Boot Framework**](http://projects.spring.io/spring-boot/)
+This sample store application use [***Spring Boot Framework***](http://projects.spring.io/spring-boot/)
 
 ### Code structure
 #### Model
@@ -31,7 +31,7 @@ src
 ```
 
 This sample store store model data on 3 java class.  
-**Work in progress**
+***Work in progress***
 
 #### View
 ```
@@ -49,10 +49,7 @@ src
 ```
 
 Veritrans sample store using [Thymeleaf](http://www.thymeleaf.org/) templating engine for view part.  
-**Work in progress**
-
-##### Javascript
-**Work in progress**
+***Work in progress***
 
 #### Controller
 ```
@@ -71,14 +68,14 @@ src
 │   │                           │   └── IndexPageController.java
 ```
 
-**Work in progress**
+***Work in progress***
 
 ***
 ## How to build and run
 
 Veritrans sample store use gradle build tools for compile, build, and running the application.  
-Before build and run sample application, you need to setup several config first such as merchant `server-key` and `client-key`
-which can be obtained on [Veritrans Merchant Admin Portal](https://my.sandbox.veritrans.co.id/login).  
+Before build and run sample store application, you need to setup several config first such as merchant `server-key` and `client-key`
+which can be obtained from [Veritrans Merchant Admin Portal](https://my.sandbox.veritrans.co.id/login).  
 <br/>
 
 You need to setup config on these file:  
@@ -87,14 +84,83 @@ You need to setup config on these file:
 * `~/veritrans-java/sample/src/main/resources/static/assets/vtdirect.js` -> `client-key`  
 <br/>
 
-To run the apps, you can just simply run this command on sample project directory [`~/veritrans-java/sample`] :
+To run the apps, you can just simply run this command on sample store project directory `~/veritrans-java/sample` :
 ```shell
 ./gradlew bootRun
 ```
 
-After gradle task build and run the apps, you can go to [`http://localhost:8080/index`](http://localhost:8080/index) on your browser and tried out the sample store. On the webpage, you can try to make a transaction. After that you can check your transaction status on [Veritrans Merchant Admin Portal](https://my.sandbox.veritrans.co.id/login).  
+or if you have gradle installed on you machine, you can use this command :
+```shell
+gradle bootRun
+```
+
+After gradle task build and run the apps, you can go to [http://localhost:8080/index](http://localhost:8080/index) on your browser and try out the sample store application. On the sample store, you can try to make a transaction. After that you can check your transaction status on [Veritrans Merchant Admin Portal](https://my.sandbox.veritrans.co.id/login).  
 
 ***
-## Veritrans java client
-<!-- TODO : show sample usage of veritrans java client -->
-**Work in progress**
+## Veritrans java client usage
+Veritrans java-client library usage example can be shown on `VtPaymentManager.java` class. `VtPaymentManager.java` class is spring singleton beans which is use to hold `VtGatewayFactory` parameter so you can get the factory easily. You need to construct `VtGatewayFactory` object using several merchant config. In sample store case, merchant config was store on `application.yml` and loaded by `VtPaymentConfig.java` class.  
+<br />
+***VtGatewayFactory example :***
+```java
+@PostConstruct
+public void setup() {
+    vtGatewayFactory = new VtGatewayFactory(new VtGatewayConfigBuilder()
+            .setClientKey(vtPaymentConfig.getClientKey())
+            .setServerKey(vtPaymentConfig.getServerKey())
+            .setEnvironmentType(EnvironmentType.valueOf(vtPaymentConfig.getEnvironment()))
+            .setMaxConnectionPoolSize(vtPaymentConfig.getConnectionPoolSize())
+            .createVtGatewayConfig()
+    );
+}
+```
+<br />
+
+After that, you can get `VtDirect` object which will be use to trigger the transaction. Before charge a transaction, you need to construct request message that will be used as `VtDirect` charge parameter. For example, sample store application use `CreditCardRequest` as charge parameter.
+> an **`important note for credit card transaction`**, you need to convert **`customer card data`** into **`token`** first before you can charge the transaction. This part will be explained more detail on [javascript part](#veritrans-javascript-credit-card) below
+<br />
+
+***VtDirect example :***
+```java
+private VtDirect vtDirect;
+
+@PostConstruct
+public void setup() {
+    vtDirect = vtPaymentManager.getVtGatewayFactory().vtDirect();
+}
+```
+<br />
+***CreditCardRequest and charging example :***
+```java
+public ModelAndView checkoutCreditCardPost(/* Parameter */) {
+
+    /* Construct creit card request */
+    final CreditCardRequest creditCardRequest = createCreditCardRequest(/* Parameter */);
+
+    /* Charge transaction using credit card request */
+    try {
+        final VtResponse vtResponse = vtDirect.charge(creditCardRequest);
+        // ...
+        if (vtResponse.getStatusCode().equals("200")) {
+            // ...
+        }
+    } catch (RestClientException e) {
+        // ...
+    }
+}
+```
+<br />
+
+When you call `vtDirect.charge(creditCardRequest)` method, it will send request to Veritrans Payment API and return the response into `VtResponse` object. You can check whether transaction was success or not from `VtResponse` object.
+> For transaction with `fraudStatus` is `challenge`, you need to `approve` the transaction manually using method call `vtDirect.approve(order_id)`. If you not approve challenged transaction until settlement time, transaction will be canceled automatically by system.
+
+<br />
+### Veritrans javascript (credit card)
+Credit card transaction have special handling compare than another payment type. For security reason, merchant `will not recieve any customer card data` and will be replaced with `veritrans card token`.
+<br />
+
+Veritrans card token can be obtained using javascript library that you need to setup on merchant web page. You can see detail overview about this javascript library on [Veritrans credit card documentation](http://docs.veritrans.co.id/en/vtdirect/integration_cc.html). For example on sample store application, there is two javascript file need to setup on merchant web page (see `layout.html` on `footer-vtdirect-creditcard` part) :
+
+1. `https://api.sandbox.veritrans.co.id/v2/assets/js/veritrans.min.js`
+2. `/assets/vtdirect.js`
+
+***Work in progress***
