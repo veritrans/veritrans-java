@@ -1,0 +1,10 @@
+ensure no compilation errors.
+ensure test and integration test passed.
+ensure javadoc generation succeed.
+
+start a git flow release.
+bump library version in build.gradle.
+finish the git flow release.
+
+push the master & develop branch, including the tags.
+run gradle bintrayUpload task.

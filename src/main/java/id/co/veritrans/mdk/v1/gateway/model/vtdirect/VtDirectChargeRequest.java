@@ -45,7 +45,7 @@ public abstract class VtDirectChargeRequest extends AbstractVtRequest {
 
     /**
      * Get transaction payment method
-     * @return Transaction {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod payment method}
+     * @return the payment method String representation.
      */
     @JsonProperty("payment_type")
     public abstract String getPaymentMethod();
