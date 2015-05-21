@@ -10,7 +10,6 @@ import java.util.List;
 
 /**
  * VtWeb charge request parameter used to make a VtWeb charge request.
- * <p/>
  * Created by gde on 5/20/15.
  */
 public class VtWebChargeRequest extends AbstractVtRequest {

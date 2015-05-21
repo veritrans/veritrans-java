@@ -5,7 +5,6 @@ import java.util.List;
 /**
  * Installment option can be configured using an instance of this class and provided to the
  * {@link id.co.veritrans.mdk.v1.gateway.model.vtweb.PaymentOption} instance.
- * <p/>
  * Created by gde on 5/20/15.
  */
 public class Installment {
