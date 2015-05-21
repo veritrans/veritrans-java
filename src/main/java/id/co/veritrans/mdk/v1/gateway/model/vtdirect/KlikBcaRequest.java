@@ -2,7 +2,6 @@ package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.KlikBca;
@@ -50,11 +49,11 @@ public class KlikBcaRequest extends VtDirectChargeRequest {
 
     /**
      * Get klik BCA payment method
-     * @return {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#KLIK_BCA Klik BCA} payment method
+     * @return Klik Bca String (klik_bca)
      */
     @Override
-    public PaymentMethod getPaymentMethod() {
-        return PaymentMethod.KLIK_BCA;
+    public String getPaymentMethod() {
+        return "bca_klikbca";
     }
 
     /**

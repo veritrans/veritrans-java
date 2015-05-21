@@ -21,7 +21,7 @@ public class VtResponse {
     private String orderId;
     private BigDecimal grossAmount;
     @JsonProperty("payment_type")
-    private PaymentMethod paymentMethod;
+    private String paymentMethod;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+07")
     private Date transactionTime;
     private TransactionStatus transactionStatus;
@@ -137,7 +137,7 @@ public class VtResponse {
      *
      * @return Transaction payment method
      */
-    public PaymentMethod getPaymentMethod() {
+    public String getPaymentMethod() {
         return paymentMethod;
     }
 
@@ -146,7 +146,7 @@ public class VtResponse {
      *
      * @param paymentMethod Transaction payment method
      */
-    public void setPaymentMethod(final PaymentMethod paymentMethod) {
+    public void setPaymentMethod(final String paymentMethod) {
         this.paymentMethod = paymentMethod;
     }
 

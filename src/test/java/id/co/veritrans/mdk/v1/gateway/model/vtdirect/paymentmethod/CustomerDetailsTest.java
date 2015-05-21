@@ -54,6 +54,10 @@ public class CustomerDetailsTest {
         customerDetails.setPhone("+6231");
 
         constraintViolations = ValidationUtil.getValidator().validate(customerDetails);
+        assertTrue(constraintViolations.isEmpty());
+
+        customerDetails.setPhone(null);
+        constraintViolations = ValidationUtil.getValidator().validate(customerDetails);
         assertFalse(constraintViolations.isEmpty());
 
         errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray(new ConstraintViolation[0]));

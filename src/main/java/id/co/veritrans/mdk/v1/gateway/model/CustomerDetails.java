@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1.gateway.model;
 
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 /**
  * Transaction customer detail
@@ -14,7 +13,6 @@ public class CustomerDetails {
     @NotNull
     private String email;
     @NotNull
-    @Pattern(regexp = "^\\+?[0-9\\-]{5,}$")
     private String phone;
     private Address billingAddress;
     private Address shippingAddress;

@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.BcaKlikpay;
@@ -17,11 +16,11 @@ public class BcaKlikpayRequest extends VtDirectChargeRequest {
 
     /**
      * Get Bca klikpay payment method
-     * @return {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#BCA_KLIKPAY Bca klikpay} payment method
+     * @return Bca Klikpay String ("bca_klikpay)
      */
     @Override
-    public PaymentMethod getPaymentMethod() {
-        return PaymentMethod.BCA_KLIKPAY;
+    public String getPaymentMethod() {
+        return "bca_klikpay";
     }
 
     /**
