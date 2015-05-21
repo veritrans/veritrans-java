@@ -24,16 +24,34 @@ public class VtWebChargeRequest extends AbstractVtRequest {
      * request.
      */
     private VtWebParam vtWeb;
-    /**
-     * Details regarding with the customer information. (Optional).
-     */
-    private CustomerDetails customerDetails;
 
+    /**
+     * VtWebChargeRequest default constructor.
+     */
     public VtWebChargeRequest() {
     }
 
-    public VtWebChargeRequest(final TransactionDetails transactionDetails, final List<TransactionItem> itemDetails, final VtWebParam vtWeb) {
-        super(transactionDetails, itemDetails);
+    /**
+     * VtWebChargeRequest constructor.
+     *
+     * @param transactionDetails {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}.
+     * @param vtWeb              VtWeb parameter.
+     */
+    public VtWebChargeRequest(final TransactionDetails transactionDetails, final VtWebParam vtWeb) {
+        super(transactionDetails);
+        this.vtWeb = vtWeb;
+    }
+
+    /**
+     * VtWebChargeRequest constructor.
+     *
+     * @param transactionDetails {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}.
+     * @param itemDetails        List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}.
+     * @param customerDetails    Transaction {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails customer details}.
+     * @param vtWeb              VtWeb parameter.
+     */
+    public VtWebChargeRequest(final TransactionDetails transactionDetails, final List<TransactionItem> itemDetails, final CustomerDetails customerDetails, final VtWebParam vtWeb) {
+        super(transactionDetails, itemDetails, customerDetails);
         this.vtWeb = vtWeb;
     }
 
@@ -45,14 +63,6 @@ public class VtWebChargeRequest extends AbstractVtRequest {
         this.vtWeb = vtWeb;
     }
 
-    public CustomerDetails getCustomerDetails() {
-        return customerDetails;
-    }
-
-    public void setCustomerDetails(final CustomerDetails customerDetails) {
-        this.customerDetails = customerDetails;
-    }
-
     @Override
     public boolean equals(final Object o) {
         if (this == o) return true;
@@ -61,6 +71,7 @@ public class VtWebChargeRequest extends AbstractVtRequest {
 
         final VtWebChargeRequest that = (VtWebChargeRequest) o;
 
+        if (paymentType != null ? !paymentType.equals(that.paymentType) : that.paymentType != null) return false;
         if (vtWeb != null ? !vtWeb.equals(that.vtWeb) : that.vtWeb != null) return false;
 
         return true;
@@ -69,6 +80,7 @@ public class VtWebChargeRequest extends AbstractVtRequest {
     @Override
     public int hashCode() {
         int result = super.hashCode();
+        result = 31 * result + (paymentType != null ? paymentType.hashCode() : 0);
         result = 31 * result + (vtWeb != null ? vtWeb.hashCode() : 0);
         return result;
     }
