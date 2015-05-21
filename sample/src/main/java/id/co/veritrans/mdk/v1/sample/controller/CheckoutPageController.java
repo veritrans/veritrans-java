@@ -3,11 +3,14 @@ package id.co.veritrans.mdk.v1.sample.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
+import id.co.veritrans.mdk.v1.gateway.VtWeb;
 import id.co.veritrans.mdk.v1.gateway.model.*;
+import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
-import id.co.veritrans.mdk.v1.sample.db.model.Product;
-import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
+import id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebChargeRequest;
+import id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebParam;
+import id.co.veritrans.mdk.v1.sample.db.model.*;
 import id.co.veritrans.mdk.v1.sample.db.repo.ProductRepo;
 import id.co.veritrans.mdk.v1.sample.db.repo.TransactionItemRepo;
 import id.co.veritrans.mdk.v1.sample.db.repo.TransactionRepo;
@@ -81,8 +84,27 @@ public class CheckoutPageController {
         httpSession.setAttribute("checkoutForm", checkoutForm);
         if (checkoutForm.getPaymentMethod().equals("creditCard")) {
             return new ModelAndView("redirect:/checkout/credit_card");
+        } else if (checkoutForm.getPaymentMethod().equals("vtweb")) {
+            return new ModelAndView("redirect:/checkout/vtweb");
         }
         return new ModelAndView("redirect:/checkout");
+    }
+
+    @RequestMapping(value = "vtweb", method = RequestMethod.GET)
+    public String checkoutVtWebGet(final HttpSession httpSession) throws RestClientException {
+        final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
+        final CheckoutForm checkoutForm = SessionUtil.getAttribute(httpSession, "checkoutForm", null);
+
+        final VtWebChargeRequest vtWebChargeRequest = createVtWebChargeRequest(checkoutForm, sessionManager.cartManager());
+        final Transaction transaction = saveTransaction(vtWebChargeRequest, sessionManager.cartManager());
+
+        final VtWeb vtWeb = vtPaymentManager.getVtGatewayFactory().vtWeb();
+        final VtResponse vtResponse = vtWeb.charge(vtWebChargeRequest);
+
+        if (vtResponse.getStatusCode().equals("201")) {
+            return "redirect:" + vtResponse.getRedirectUrl();
+        }
+        return "redirect:/checkout";
     }
 
     @RequestMapping(value = "credit_card", method = RequestMethod.GET)
@@ -168,6 +190,50 @@ public class CheckoutPageController {
         return new ModelAndView("checkout", buildCartViewModel(sessionManager));
     }
 
+    private Transaction saveTransaction(final VtWebChargeRequest vtWebChargeRequest, final CartManager cartManager) {
+        final Transaction ret = new Transaction();
+        ret.setBillingAddress(vtWebChargeRequest.getCustomerDetails().getBillingAddress().getAddress());
+        ret.setBillingCity(vtWebChargeRequest.getCustomerDetails().getBillingAddress().getCity());
+        ret.setBillingCountryCode(vtWebChargeRequest.getCustomerDetails().getBillingAddress().getCountryCode());
+        ret.setBillingFirstName(vtWebChargeRequest.getCustomerDetails().getBillingAddress().getFirstName());
+        ret.setBillingLastName(vtWebChargeRequest.getCustomerDetails().getBillingAddress().getLastName());
+        ret.setBillingPhone(vtWebChargeRequest.getCustomerDetails().getBillingAddress().getPhone());
+        ret.setBillingPostalCode(vtWebChargeRequest.getCustomerDetails().getBillingAddress().getPostalCode());
+
+        ret.setCustomerEmail(vtWebChargeRequest.getCustomerDetails().getEmail());
+        ret.setCustomerFirstName(vtWebChargeRequest.getCustomerDetails().getFirstName());
+        ret.setCustomerLastName(vtWebChargeRequest.getCustomerDetails().getLastName());
+        ret.setCustomerPhone(vtWebChargeRequest.getCustomerDetails().getPhone());
+
+        ret.setShippingAddress(vtWebChargeRequest.getCustomerDetails().getShippingAddress().getAddress());
+        ret.setShippingCity(vtWebChargeRequest.getCustomerDetails().getShippingAddress().getCity());
+        ret.setShippingCountryCode(vtWebChargeRequest.getCustomerDetails().getShippingAddress().getCountryCode());
+        ret.setShippingFirstName(vtWebChargeRequest.getCustomerDetails().getShippingAddress().getFirstName());
+        ret.setShippingLastName(vtWebChargeRequest.getCustomerDetails().getShippingAddress().getLastName());
+        ret.setShippingPhone(vtWebChargeRequest.getCustomerDetails().getShippingAddress().getPhone());
+        ret.setShippingPostalCode(vtWebChargeRequest.getCustomerDetails().getShippingAddress().getPostalCode());
+
+        ret.setPaymentFdsStatus(null);
+        ret.setPaymentMethod("vtweb");
+        ret.setPaymentOrderId(vtWebChargeRequest.getTransactionDetails().getOrderId());
+        ret.setPaymentStatus(null);
+        ret.setPaymentTransactionId(null);
+
+        ret.setTotalPriceIdr(vtWebChargeRequest.getTransactionDetails().getGrossAmount());
+
+        final Transaction managedTransaction = transactionRepo.save(ret);
+        for (final CartItem cartItem : cartManager.getCartItems()) {
+            final id.co.veritrans.mdk.v1.sample.db.model.TransactionItem transactionItem = new id.co.veritrans.mdk.v1.sample.db.model.TransactionItem();
+            transactionItem.setProduct(cartItem.getProduct());
+            transactionItem.setTransaction(managedTransaction);
+            transactionItem.setAmount(cartItem.getAmount());
+            transactionItem.setPriceEachIdr(cartItem.getProduct().getPriceIdr());
+            transactionItem.setTotalPriceIdr(cartItem.calcTotalPrice());
+            transactionItemRepo.save(transactionItem);
+        }
+        return managedTransaction;
+    }
+
     private Transaction saveTransaction(final CreditCardRequest creditCardRequest, final CartManager cartManager) {
         final Transaction ret = new Transaction();
         ret.setBillingAddress(creditCardRequest.getCustomerDetails().getBillingAddress().getAddress());
@@ -192,7 +258,7 @@ public class CheckoutPageController {
         ret.setShippingPostalCode(creditCardRequest.getCustomerDetails().getShippingAddress().getPostalCode());
 
         ret.setPaymentFdsStatus(null);
-        ret.setPaymentMethod(PaymentMethod.CREDIT_CARD.name());
+        ret.setPaymentMethod(creditCardRequest.getPaymentMethod());
         ret.setPaymentOrderId(creditCardRequest.getTransactionDetails().getOrderId());
         ret.setPaymentStatus(null);
         ret.setPaymentTransactionId(null);
@@ -212,6 +278,18 @@ public class CheckoutPageController {
         return managedTransaction;
     }
 
+    private VtWebChargeRequest createVtWebChargeRequest(final CheckoutForm checkoutForm, final CartManager cartManager) {
+        final VtWebChargeRequest ret = new VtWebChargeRequest();
+        ret.setVtWeb(new VtWebParam());
+        ret.getVtWeb().setCreditCardUse3dSecure(true);
+
+        ret.setCustomerDetails(toCustomerDetails(checkoutForm));
+
+        ret.setTransactionDetails(toTransactionDetails(cartManager));
+        ret.setItemDetails(toTransactionItems(cartManager));
+        return ret;
+    }
+
     private CreditCardRequest createCreditCardRequest(final String vtToken, final CheckoutForm checkoutForm, final CartManager cartManager) {
         final CreditCardRequest ret = new CreditCardRequest();
         ret.setCreditCard(new CreditCard());
@@ -219,15 +297,26 @@ public class CheckoutPageController {
 
         ret.setCustomerDetails(toCustomerDetails(checkoutForm));
 
-        ret.setTransactionDetails(new TransactionDetails());
-        ret.setItemDetails(new ArrayList<TransactionItem>(cartManager.getCartSize()));
+        ret.setTransactionDetails(toTransactionDetails(cartManager));
+        ret.setItemDetails(toTransactionItems(cartManager));
 
-        ret.getTransactionDetails().setGrossAmount(cartManager.calcTotalPrice());
-        ret.getTransactionDetails().setOrderId(UUID.randomUUID().toString());
+        return ret;
+    }
 
+    private TransactionDetails toTransactionDetails(final CartManager cartManager) {
+        final TransactionDetails ret = new TransactionDetails();
+
+        ret.setGrossAmount(cartManager.calcTotalPrice());
+        ret.setOrderId(UUID.randomUUID().toString());
+
+        return ret;
+    }
+
+    private List<TransactionItem> toTransactionItems(final CartManager cartManager) {
+        final List<TransactionItem> ret = new ArrayList<TransactionItem>(cartManager.getCartSize());
         for (final CartItem cartItem : cartManager.getCartItems()) {
             final Product product = cartItem.getProduct();
-            ret.getItemDetails().add(new TransactionItem(
+            ret.add(new TransactionItem(
                     product.getId().toString(),
                     product.getShortName(),
                     product.getPriceIdr(),
@@ -237,7 +326,7 @@ public class CheckoutPageController {
         return ret;
     }
 
-    private CustomerDetails toCustomerDetails(CheckoutForm checkoutForm) {
+    private CustomerDetails toCustomerDetails(final CheckoutForm checkoutForm) {
         final CustomerDetails ret = new CustomerDetails();
         ret.setFirstName(checkoutForm.getBillingFirstName());
         ret.setLastName(checkoutForm.getBillingLastName());

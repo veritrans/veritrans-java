@@ -3,6 +3,7 @@ package id.co.veritrans.mdk.v1.sample.controller;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.veritrans.mdk.v1.exception.JsonDeserializeException;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
+import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,10 @@ public class PaymentCallbackController {
     @ResponseBody
     public Object paymentNotificationPost(final HttpServletRequest servletRequest) throws IOException, JsonDeserializeException {
         final VtResponse vtResponse = VtResponse.deserializeJson(servletRequest.getInputStream());
-        LOGGER.info("paymentNotificationPost got vtResponse: {}", vtResponse);
+        /**
+         * Should do something here such as: marking the transaction status by inspecting the vtResponse.
+         */
+        LOGGER.info("paymentNotificationPost got vtResponse: {}", JsonUtil.toJson(vtResponse));
         return new Object() {
             @JsonProperty
             public String status = "OK";
