@@ -20,7 +20,7 @@ def gitUrl = 'https://github.com/gde-vt/veritrans-java.git'
 def gitIssuesUrl = 'https://github.com/gde-vt/veritrans-java/issues'
 
 group = 'id.co.veritrans'
-version = '2.0.1-release'
+version = '1.0.0'
 
 sourceCompatibility = '1.5'
 targetCompatibility = '1.5'
