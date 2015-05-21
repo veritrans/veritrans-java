@@ -1,6 +1,5 @@
 package id.co.veritrans.mdk.v1.helper;
 
-import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionStatus;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
@@ -51,7 +50,7 @@ public class JsonUtilTest {
         Assert.assertEquals(response.getGrossAmount().toString(), "10000.00");
         Assert.assertEquals(response.getMaskedCardNumber(), "411111-1111");
         Assert.assertEquals(response.getOrderId(), "1431316976886113000");
-        Assert.assertEquals(response.getPaymentMethod(), PaymentMethod.MANDIRI_CLICKPAY);
+        Assert.assertEquals(response.getPaymentMethod(), "mandiri_clickpay");
         Assert.assertEquals(response.getStatusCode(), "200");
         Assert.assertEquals(response.getStatusMessage(), "Success, Mandiri Clickpay transaction is successful");
         Assert.assertEquals(response.getTransactionId(), "af319f6e-b1fc-4fef-8a11-c60fa59fd483");

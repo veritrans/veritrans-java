@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CimbClicks;
@@ -39,11 +38,11 @@ public class CimbClicksRequest extends VtDirectChargeRequest {
 
     /**
      * Get CIMB clicks payment method
-     * @return CIMB clicks {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#CIMB_CLICKS payment method}
+     * @return CIMB Clicks String (cimb_clicks)
      */
     @Override
-    public PaymentMethod getPaymentMethod() {
-        return PaymentMethod.CIMB_CLICKS;
+    public String getPaymentMethod() {
+        return "cimb_clicks";
     }
 
     /**

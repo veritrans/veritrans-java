@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
@@ -39,11 +38,11 @@ public class CreditCardRequest extends VtDirectChargeRequest {
 
     /**
      * Get credit card payment method
-     * @return Credit card {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#CREDIT_CARD payment method}
+     * @return Credit Card String (credit_card)
      */
     @Override
-    public PaymentMethod getPaymentMethod() {
-        return PaymentMethod.CREDIT_CARD;
+    public String getPaymentMethod() {
+        return "credit_card";
     }
 
     /**

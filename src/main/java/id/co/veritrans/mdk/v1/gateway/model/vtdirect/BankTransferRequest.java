@@ -1,7 +1,6 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.BankTransfer;
@@ -40,11 +39,11 @@ public class BankTransferRequest extends VtDirectChargeRequest {
 
     /**
      * Get bank transfer payment method
-     * @return Bank transfer {@link id.co.veritrans.mdk.v1.gateway.model.PaymentMethod#BANK_TRANSFER payment method}
+     * @return Bank Transfer String (bank_transfer)
      */
     @Override
-    public PaymentMethod getPaymentMethod() {
-        return PaymentMethod.BANK_TRANSFER;
+    public String getPaymentMethod() {
+        return "bank_transfer";
     }
 
     /**
