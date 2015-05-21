@@ -4,7 +4,8 @@ ensure javadoc generation succeed.
 
 start a git flow release.
 bump library version in build.gradle.
+make neccessary commits if any.
+run gradle bintrayUpload task (add clean task to ensure previous build files is removed).
 finish the git flow release.
 
 push the master & develop branch, including the tags.
-run gradle bintrayUpload task.
