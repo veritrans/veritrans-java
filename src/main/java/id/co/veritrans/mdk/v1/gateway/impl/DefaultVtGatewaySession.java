@@ -7,7 +7,6 @@ import id.co.veritrans.mdk.v1.gateway.VtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.model.VtRequest;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.helper.JsonUtil;
-import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import id.co.veritrans.mdk.v1.net.VtRestClient;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
@@ -129,7 +128,6 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
 
     @Override
     public VtResponse post(final String path, final VtRequest vtRequest) throws RestClientException {
-        validate(vtRequest);
         try {
             final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
             final HttpPost httpPost = new HttpPost(url);
@@ -141,9 +139,5 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
         } catch (Exception e) {
             throw new RestClientException(e);
         }
-    }
-
-    private void validate(final VtRequest vtRequest) {
-        ValidationUtil.validateThrowException(validator, vtRequest);
     }
 }
