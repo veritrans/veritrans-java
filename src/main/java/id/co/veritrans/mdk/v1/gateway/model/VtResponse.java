@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import id.co.veritrans.mdk.v1.exception.JsonDeserializeException;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.helper.JsonUtil;
 
 import java.io.InputStream;
 import java.math.BigDecimal;
@@ -64,7 +65,7 @@ public class VtResponse {
      * @throws id.co.veritrans.mdk.v1.exception.JsonDeserializeException when a failure is occured during deserializing the JSON.
      */
     public static id.co.veritrans.mdk.v1.gateway.model.VtResponse deserializeJson(String json) throws JsonDeserializeException {
-        return null;
+        return JsonUtil.fromJson(json, VtResponse.class);
     }
 
     /**
@@ -75,7 +76,7 @@ public class VtResponse {
      * @throws id.co.veritrans.mdk.v1.exception.JsonDeserializeException when a failure is occured during deserializing the JSON.
      */
     public static id.co.veritrans.mdk.v1.gateway.model.VtResponse deserializeJson(InputStream inputStream) throws JsonDeserializeException {
-        return null;
+        return JsonUtil.fromJson(inputStream, VtResponse.class);
     }
 
     /**
