@@ -4,8 +4,8 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CimbClicksRequest;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CimbClicks;
 import id.co.veritrans.mdk.v1.sample.controller.AbstractCheckoutPaymentMethodController;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
@@ -19,7 +19,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -30,11 +29,11 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 
 /**
- * Created by gde on 5/21/15.
+ * Created by andes on 5/22/15.
  */
 @Controller
-@RequestMapping("/checkout/credit_card")
-public class CreditCardController extends AbstractCheckoutPaymentMethodController {
+@RequestMapping("/checkout/cimb_clicks")
+public class CimbClicksController extends AbstractCheckoutPaymentMethodController {
 
     @Autowired
     private SessionManagerFactory sessionManagerFactory;
@@ -59,12 +58,12 @@ public class CreditCardController extends AbstractCheckoutPaymentMethodControlle
         }
         viewModel.put("years", years);
 
-        return new ModelAndView("checkout/credit_card", viewModel);
+        return new ModelAndView("checkout/cimb_clicks", viewModel);
     }
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView checkoutCreditCardPost(final HttpSession httpSession, @RequestParam("vt_token") final String vtToken, final RedirectAttributes redirectAttributes) throws JsonProcessingException {
+    public ModelAndView checkoutCimbClicksPost(final HttpSession httpSession, final RedirectAttributes redirectAttributes) throws JsonProcessingException {
         final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
         final CartManager cartManager = sessionManager.cartManager();
 
@@ -73,21 +72,21 @@ public class CreditCardController extends AbstractCheckoutPaymentMethodControlle
             return new ModelAndView("redirect:/checkout/choose_payment");
         }
 
-        final CreditCardRequest creditCardRequest = createCreditCardRequest(vtToken, checkoutForm, cartManager);
-        final Transaction transaction = saveTransaction(creditCardRequest, cartManager, creditCardRequest.getPaymentMethod());
+        final CimbClicksRequest cimbClicksRequest = createCimbClicksRequest(checkoutForm, cartManager);
+        final Transaction transaction = saveTransaction(cimbClicksRequest, cartManager, cimbClicksRequest.getPaymentMethod());
 
         try {
-            final VtResponse vtResponse = vtDirect.charge(creditCardRequest);
+            final VtResponse vtResponse = vtDirect.charge(cimbClicksRequest);
             transaction.setPaymentTransactionId(vtResponse.getTransactionId());
             transaction.setPaymentFdsStatus(vtResponse.getFraudStatus() == null ? null : vtResponse.getFraudStatus().name());
             transaction.setPaymentStatus(vtResponse.getTransactionStatus() == null ? null : vtResponse.getTransactionStatus().name());
 
-            if (vtResponse.getStatusCode().equals("200")) {
+            if (vtResponse.getStatusCode().equals("201")) {
                 cartManager.clear();
                 httpSession.removeAttribute("checkoutForm");
 
                 redirectAttributes.addAttribute("transactionId", transaction.getId());
-                return new ModelAndView("redirect:/checkout/success");
+                return new ModelAndView("redirect:" + vtResponse.getRedirectUrl());
             } else {
                 return new ModelAndView("redirect:/checkout");
             }
@@ -97,10 +96,10 @@ public class CreditCardController extends AbstractCheckoutPaymentMethodControlle
         return new ModelAndView("redirect:/index");
     }
 
-    protected CreditCardRequest createCreditCardRequest(final String vtToken, final CheckoutForm checkoutForm, final CartManager cartManager) {
-        final CreditCardRequest ret = new CreditCardRequest();
-        ret.setCreditCard(new CreditCard());
-        ret.getCreditCard().setCardToken(vtToken);
+    private CimbClicksRequest createCimbClicksRequest(CheckoutForm checkoutForm, CartManager cartManager) {
+        final CimbClicksRequest ret = new CimbClicksRequest();
+        ret.setCimbClicks(new CimbClicks());
+        ret.getCimbClicks().setDescription("Test transaction description");
 
         ret.setCustomerDetails(toCustomerDetails(checkoutForm));
 
@@ -109,4 +108,5 @@ public class CreditCardController extends AbstractCheckoutPaymentMethodControlle
 
         return ret;
     }
+
 }
