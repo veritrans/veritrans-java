@@ -7,51 +7,8 @@
     <div class="container component">
         <div class="row-fluid">
             <div class="span12">
-                <!-- .well -->
-                <h2 class="no-bold">Carts</h2>
-                <hr class="top-off" />
-                <table class="table table-stripped table-condensed current_cart">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>
-                                <div class="text-right">Total</div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="cartItem : ${cartItems}">
-                            <td class="span6">
-                                <div class="cart-item-image">
-                                    <span class="product-name" th:text="${cartItem.product.shortName}" />
-                                </div>
-                            </td>
-                            <td>
-                                <span class="qty" th:text="${cartItem.count}" />
-                            </td>
-                            <td>
-                                <span class="price_per_unit" th:text="|Rp. ${cartItem.product.priceIdr}|" />
-                            </td>
-                            <td>
-                                <div class="text-right">
-                                    <span class="price_total_per_unit" th:text="|Rp. ${cartItem.totalPrice}|" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <div class="text-right">Total :</div>
-                            </td>
-                            <td>
-                                <div class="text-right">
-                                    <b th:text="|Rp. ${totalPrice}|" />
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <!-- .well --> 
+                <div th:replace="layout::item_details" />
                 <hr class="top-off" />
                 <div class="row-fluid">
                     <div class="span12">
@@ -83,7 +40,7 @@
                                         </div>
                                     </div>
                                     <form accept-charset="UTF-8" class="new_order_payment" id="new_order_payment" method="post">
-                                        <input id="gross_amount" name="" type="hidden" th:value="${totalPrice}"/>
+                                        <input id="gross_amount" name="" type="hidden" th:value="${totalPrice}" />
                                         <input id="order_payment_vt_token" name="vt_token" type="hidden" />
                                         <div class='row-fluid'>
                                             <div class='span6'>
@@ -117,7 +74,7 @@
                                             <div class='span3'>
                                                 <label for="order_payment_card_exp_year">Card exp year</label>
                                                 <select class="span12" id="order_payment_card_exp_year" name="">
-                                                    <option th:each="year,iter : ${years}" th:selected="${iter.first}" th:text="${year}"/>
+                                                    <option th:each="year,iter : ${years}" th:selected="${iter.first}" th:text="${year}" />
                                                 </select>
                                             </div>
                                         </div>

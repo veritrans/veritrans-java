@@ -2,6 +2,7 @@ package id.co.veritrans.mdk.v1.sample.controller.checkout;
 
 import id.co.veritrans.mdk.v1.gateway.model.*;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
+import id.co.veritrans.mdk.v1.sample.controller.model.ViewCartItem;
 import id.co.veritrans.mdk.v1.sample.db.model.Product;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.db.repo.TransactionItemRepo;
@@ -9,13 +10,12 @@ import id.co.veritrans.mdk.v1.sample.db.repo.TransactionRepo;
 import id.co.veritrans.mdk.v1.sample.manager.CartManager;
 import id.co.veritrans.mdk.v1.sample.manager.SessionManagerFactory;
 import id.co.veritrans.mdk.v1.sample.manager.VtPaymentManager;
+import id.co.veritrans.mdk.v1.sample.manager.SessionManager;
 import id.co.veritrans.mdk.v1.sample.manager.model.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by gde on 5/21/15.
@@ -123,6 +123,22 @@ public class AbstractCheckoutPaymentMethodController {
         ret.getShippingAddress().setLastName(checkoutForm.getShippingLastName());
         ret.getShippingAddress().setPhone(checkoutForm.getShippingPhone());
         ret.getShippingAddress().setPostalCode(checkoutForm.getShippingPostalCode());
+
+        return ret;
+    }
+
+    protected Map<String, Object> buildCartViewModel(final SessionManager sessionManager) {
+        final CartManager cartManager = sessionManager.cartManager();
+        final Map<String, Object> ret = new LinkedHashMap<String, Object>();
+
+        final List<ViewCartItem> cartItemList = new LinkedList<ViewCartItem>();
+        for (final CartItem cartItem : sessionManager.cartManager().getCartItems()) {
+            cartItemList.add(new ViewCartItem(cartItem.getProduct(), cartItem.getAmount()));
+        }
+
+        ret.put("cartItems", cartItemList);
+        ret.put("cartSize", cartManager.getCartSize());
+        ret.put("totalPrice", cartManager.calcTotalPrice());
 
         return ret;
     }

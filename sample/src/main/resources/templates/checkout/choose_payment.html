@@ -8,50 +8,7 @@
         <div class="row-fluid">
             <div class="span12">
                 <!-- .well -->
-                <h2 class="no-bold">Carts</h2>
-                <hr class="top-off" />
-                <table class="table table-stripped table-condensed current_cart">
-                    <thead>
-                        <tr>
-                            <th>Product</th>
-                            <th>Qty</th>
-                            <th>Price</th>
-                            <th>
-                                <div class="text-right">Total</div>
-                            </th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr th:each="cartItem : ${cartItems}">
-                            <td class="span6">
-                                <div class="cart-item-image">
-                                    <span class="product-name" th:text="${cartItem.product.shortName}" />
-                                </div>
-                            </td>
-                            <td>
-                                <span class="qty" th:text="${cartItem.count}" />
-                            </td>
-                            <td>
-                                <span class="price_per_unit" th:text="|Rp. ${cartItem.product.priceIdr}|" />
-                            </td>
-                            <td>
-                                <div class="text-right">
-                                    <span class="price_total_per_unit" th:text="|Rp. ${cartItem.totalPrice}|" />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colspan="3">
-                                <div class="text-right">Total :</div>
-                            </td>
-                            <td>
-                                <div class="text-right">
-                                    <b th:text="|Rp. ${totalPrice}|" />
-                                </div>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div th:replace="layout::item_details" />
                 <form accept-charset="UTF-8" class="edit_order_record" id="edit_order_record_323" method="post">
                     <div class='row-fluid'>
                         <div class='span12'>
