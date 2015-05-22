@@ -1,4 +1,4 @@
-package id.co.veritrans.mdk.v1.sample.controller;
+package id.co.veritrans.mdk.v1.sample.controller.checkout;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
@@ -6,6 +6,7 @@ import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.sample.controller.AbstractCheckoutPaymentMethodController;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
 import id.co.veritrans.mdk.v1.sample.controller.model.ViewCartItem;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
@@ -33,7 +34,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/checkout/credit_card")
-public class CheckoutCreditCardController extends AbstractCheckoutPaymentMethodController {
+public class CreditCardController extends AbstractCheckoutPaymentMethodController {
 
     @Autowired
     private SessionManagerFactory sessionManagerFactory;

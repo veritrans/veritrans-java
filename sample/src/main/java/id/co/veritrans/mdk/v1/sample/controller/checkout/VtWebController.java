@@ -1,10 +1,11 @@
-package id.co.veritrans.mdk.v1.sample.controller;
+package id.co.veritrans.mdk.v1.sample.controller.checkout;
 
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.VtWeb;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebChargeRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebParam;
+import id.co.veritrans.mdk.v1.sample.controller.AbstractCheckoutPaymentMethodController;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.manager.CartManager;
@@ -25,7 +26,7 @@ import javax.servlet.http.HttpSession;
  */
 @Controller
 @RequestMapping("/checkout/vtweb")
-public class CheckoutVtWebController extends AbstractCheckoutPaymentMethodController {
+public class VtWebController extends AbstractCheckoutPaymentMethodController {
 
     @Autowired
     private SessionManagerFactory sessionManagerFactory;

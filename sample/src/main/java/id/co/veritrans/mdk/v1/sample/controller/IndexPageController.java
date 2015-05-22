@@ -19,6 +19,7 @@ import java.util.Map;
  * Created by gde on 5/14/15.
  */
 @Controller
+@RequestMapping(value = "/")
 public class IndexPageController {
 
     @Autowired
@@ -26,7 +27,12 @@ public class IndexPageController {
     @Autowired
     private ProductRepo productRepo;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
+    public String root() {
+        return "redirect:/index";
+    }
+
+    @RequestMapping(value = "index", method = RequestMethod.GET)
     public ModelAndView index(final HttpSession httpSession) {
         final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
         final List<Product> products = productRepo.findAll();

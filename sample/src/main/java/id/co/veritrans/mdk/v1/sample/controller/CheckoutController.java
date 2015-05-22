@@ -30,7 +30,7 @@ import java.util.*;
  */
 @Controller
 @RequestMapping("/checkout")
-public class CheckoutPageController {
+public class CheckoutController {
 
     @Autowired
     private SessionManagerFactory sessionManagerFactory;
