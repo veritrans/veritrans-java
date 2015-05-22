@@ -74,12 +74,35 @@ public class CheckoutController {
     @RequestMapping(value = "choose_payment", method = RequestMethod.POST)
     public ModelAndView checkoutChoosePaymentPost(final HttpSession httpSession, final CheckoutForm checkoutForm) {
         httpSession.setAttribute("checkoutForm", checkoutForm);
-        if (checkoutForm.getPaymentMethod().equals("creditCard")) {
-            return new ModelAndView("redirect:/checkout/credit_card");
+        if (checkoutForm.getPaymentMethod().equals("vtdirect")) {
+            return new ModelAndView("redirect:/checkout/vtdirect");
         } else if (checkoutForm.getPaymentMethod().equals("vtweb")) {
             return new ModelAndView("redirect:/checkout/vtweb");
         }
         return new ModelAndView("redirect:/checkout");
+    }
+
+    @RequestMapping(value = "vtdirect", method = RequestMethod.GET)
+    public ModelAndView checkoutChoosePaymentVtDirectGet(final HttpSession httpSession, final CheckoutForm checkoutForm) {
+        final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
+        return new ModelAndView("checkout/vtdirect", buildCartViewModel(sessionManager));
+    }
+
+    @RequestMapping(value = "vtdirect", method = RequestMethod.POST)
+    public ModelAndView checkoutChoosePaymentVtDirectPost(final HttpSession httpSession, @RequestParam("paymentMethod") final String paymentMethod) {
+        if (paymentMethod.equals("creditCard")) {
+            return new ModelAndView("redirect:/checkout/credit_card");
+        } else if (paymentMethod.equals("cimbClicks")) {
+            return new ModelAndView("redirect:/checkout/cimb_clicks");
+        } else if (paymentMethod.equals("mandiriClickpay")) {
+            return new ModelAndView("redirect:/checkout/mandiri_clickpay");
+        } else if (paymentMethod.equals("bcaKlikpay")) {
+            return new ModelAndView("redirect:/checkout/bca_klikpay");
+        } else if (paymentMethod.equals("klikBca")) {
+            return new ModelAndView("redirect:/checkout/klik_bca");
+        } else {
+            return new ModelAndView("redirect:/checkout/vtdirect");
+        }
     }
 
     @Transactional(readOnly = true)

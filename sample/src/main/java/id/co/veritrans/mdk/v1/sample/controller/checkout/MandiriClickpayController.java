@@ -39,7 +39,7 @@ public class MandiriClickpayController extends AbstractVtDirectController {
     }
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView checkoutCreditCardGet(final HttpSession httpSession) {
+    public ModelAndView get(final HttpSession httpSession) {
         final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
         final Map<String, Object> viewModel = buildCartViewModel(sessionManager);
 
@@ -56,7 +56,7 @@ public class MandiriClickpayController extends AbstractVtDirectController {
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView checkoutCreditCardPost(
+    public ModelAndView post(
             final HttpSession httpSession,
             @RequestParam("cardNumber") final String cardNumber,
             @RequestParam("mandiriToken") final String mandiriToken,

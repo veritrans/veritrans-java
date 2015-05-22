@@ -3,8 +3,8 @@ package id.co.veritrans.mdk.v1.sample.controller.checkout;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CimbClicksRequest;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CimbClicks;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.KlikBcaRequest;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.KlikBca;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.manager.CartManager;
@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,11 +24,11 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 
 /**
- * Created by andes on 5/22/15.
+ * Created by gde on 5/22/15.
  */
 @Controller
-@RequestMapping("/checkout/cimb_clicks")
-public class CimbClicksController extends AbstractVtDirectController {
+@RequestMapping("/checkout/klik_bca")
+public class KlikBcaController extends AbstractVtDirectController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView get(final HttpSession httpSession) {
@@ -41,12 +42,12 @@ public class CimbClicksController extends AbstractVtDirectController {
         }
         viewModel.put("years", years);
 
-        return new ModelAndView("checkout/cimb_clicks", viewModel);
+        return new ModelAndView("checkout/klik_bca", viewModel);
     }
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView post(final HttpSession httpSession, final RedirectAttributes redirectAttributes) throws JsonProcessingException {
+    public ModelAndView post(final HttpSession httpSession, @RequestParam("userId") final String userId, final RedirectAttributes redirectAttributes) throws JsonProcessingException {
         final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
         final CartManager cartManager = sessionManager.cartManager();
 
@@ -55,7 +56,7 @@ public class CimbClicksController extends AbstractVtDirectController {
             return new ModelAndView("redirect:/checkout/choose_payment");
         }
 
-        final CimbClicksRequest request = createCimbClicksRequest(checkoutForm, cartManager);
+        final KlikBcaRequest request = createKlikBcaRequest(userId, checkoutForm, cartManager);
         final Transaction transaction = saveTransaction(request, cartManager, request.getPaymentMethod());
 
         try {
@@ -79,12 +80,13 @@ public class CimbClicksController extends AbstractVtDirectController {
         return new ModelAndView("redirect:/index");
     }
 
-    private CimbClicksRequest createCimbClicksRequest(CheckoutForm checkoutForm, CartManager cartManager) {
-        final CimbClicksRequest ret = new CimbClicksRequest();
+    private KlikBcaRequest createKlikBcaRequest(String userId, CheckoutForm checkoutForm, CartManager cartManager) {
+        final KlikBcaRequest ret = new KlikBcaRequest();
         setVtRequestParam(ret, checkoutForm, cartManager);
 
-        ret.setCimbClicks(new CimbClicks());
-        ret.getCimbClicks().setDescription("Test transaction description");
+        ret.setKlikBca(new KlikBca());
+        ret.getKlikBca().setUserId(userId);
+        ret.getKlikBca().setDescription("Payment for userId: " + userId);
         return ret;
     }
 }

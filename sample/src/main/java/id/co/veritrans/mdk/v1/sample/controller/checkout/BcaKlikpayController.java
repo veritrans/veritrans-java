@@ -3,8 +3,8 @@ package id.co.veritrans.mdk.v1.sample.controller.checkout;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CimbClicksRequest;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CimbClicks;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.BcaKlikpayRequest;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.BcaKlikpay;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.manager.CartManager;
@@ -23,11 +23,11 @@ import java.util.GregorianCalendar;
 import java.util.Map;
 
 /**
- * Created by andes on 5/22/15.
+ * Created by gde on 5/22/15.
  */
 @Controller
-@RequestMapping("/checkout/cimb_clicks")
-public class CimbClicksController extends AbstractVtDirectController {
+@RequestMapping("/checkout/bca_klikpay")
+public class BcaKlikpayController extends AbstractVtDirectController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView get(final HttpSession httpSession) {
@@ -41,7 +41,7 @@ public class CimbClicksController extends AbstractVtDirectController {
         }
         viewModel.put("years", years);
 
-        return new ModelAndView("checkout/cimb_clicks", viewModel);
+        return new ModelAndView("checkout/bca_klikpay", viewModel);
     }
 
     @Transactional
@@ -55,7 +55,7 @@ public class CimbClicksController extends AbstractVtDirectController {
             return new ModelAndView("redirect:/checkout/choose_payment");
         }
 
-        final CimbClicksRequest request = createCimbClicksRequest(checkoutForm, cartManager);
+        final BcaKlikpayRequest request = createBcaKlikpayRequest(checkoutForm, cartManager);
         final Transaction transaction = saveTransaction(request, cartManager, request.getPaymentMethod());
 
         try {
@@ -79,12 +79,14 @@ public class CimbClicksController extends AbstractVtDirectController {
         return new ModelAndView("redirect:/index");
     }
 
-    private CimbClicksRequest createCimbClicksRequest(CheckoutForm checkoutForm, CartManager cartManager) {
-        final CimbClicksRequest ret = new CimbClicksRequest();
+    private BcaKlikpayRequest createBcaKlikpayRequest(CheckoutForm checkoutForm, CartManager cartManager) {
+        final BcaKlikpayRequest ret = new BcaKlikpayRequest();
         setVtRequestParam(ret, checkoutForm, cartManager);
 
-        ret.setCimbClicks(new CimbClicks());
-        ret.getCimbClicks().setDescription("Test transaction description");
+        ret.setBcaKlikpay(new BcaKlikpay());
+        ret.getBcaKlikpay().setType(1);
+        ret.getBcaKlikpay().setMiscFee(0);
+        ret.getBcaKlikpay().setDescription("BCA Klikpay without additional fee");
         return ret;
     }
 }
