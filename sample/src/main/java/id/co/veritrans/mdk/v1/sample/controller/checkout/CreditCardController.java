@@ -2,21 +2,14 @@ package id.co.veritrans.mdk.v1.sample.controller.checkout;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
-import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
-import id.co.veritrans.mdk.v1.sample.controller.AbstractCheckoutPaymentMethodController;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
-import id.co.veritrans.mdk.v1.sample.controller.model.ViewCartItem;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.manager.CartManager;
 import id.co.veritrans.mdk.v1.sample.manager.SessionManager;
-import id.co.veritrans.mdk.v1.sample.manager.SessionManagerFactory;
-import id.co.veritrans.mdk.v1.sample.manager.VtPaymentManager;
-import id.co.veritrans.mdk.v1.sample.manager.model.CartItem;
 import id.co.veritrans.mdk.v1.sample.util.SessionUtil;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,27 +18,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpSession;
-import java.util.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Map;
 
 /**
  * Created by gde on 5/21/15.
  */
 @Controller
 @RequestMapping("/checkout/credit_card")
-public class CreditCardController extends AbstractCheckoutPaymentMethodController {
-
-    @Autowired
-    private SessionManagerFactory sessionManagerFactory;
-    @Autowired
-    private VtPaymentManager vtPaymentManager;
-    private VtDirect vtDirect;
-
-    @PostConstruct
-    public void setup() {
-        vtDirect = vtPaymentManager.getVtGatewayFactory().vtDirect();
-    }
+public class CreditCardController extends AbstractVtDirectController {
 
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView checkoutCreditCardGet(final HttpSession httpSession) {
@@ -64,7 +47,11 @@ public class CreditCardController extends AbstractCheckoutPaymentMethodControlle
 
     @Transactional
     @RequestMapping(method = RequestMethod.POST)
-    public ModelAndView checkoutCreditCardPost(final HttpSession httpSession, @RequestParam("vt_token") final String vtToken, final RedirectAttributes redirectAttributes) throws JsonProcessingException {
+    public ModelAndView checkoutCreditCardPost(
+            final HttpSession httpSession,
+            @RequestParam("vt_token") final String vtToken,
+            final RedirectAttributes redirectAttributes) throws JsonProcessingException {
+
         final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
         final CartManager cartManager = sessionManager.cartManager();
 
@@ -73,11 +60,11 @@ public class CreditCardController extends AbstractCheckoutPaymentMethodControlle
             return new ModelAndView("redirect:/checkout/choose_payment");
         }
 
-        final CreditCardRequest creditCardRequest = createCreditCardRequest(vtToken, checkoutForm, cartManager);
-        final Transaction transaction = saveTransaction(creditCardRequest, cartManager, creditCardRequest.getPaymentMethod());
+        final CreditCardRequest request = createCreditCardRequest(vtToken, checkoutForm, cartManager);
+        final Transaction transaction = saveTransaction(request, cartManager, request.getPaymentMethod());
 
         try {
-            final VtResponse vtResponse = vtDirect.charge(creditCardRequest);
+            final VtResponse vtResponse = vtDirect.charge(request);
             transaction.setPaymentTransactionId(vtResponse.getTransactionId());
             transaction.setPaymentFdsStatus(vtResponse.getFraudStatus() == null ? null : vtResponse.getFraudStatus().name());
             transaction.setPaymentStatus(vtResponse.getTransactionStatus() == null ? null : vtResponse.getTransactionStatus().name());
@@ -99,30 +86,10 @@ public class CreditCardController extends AbstractCheckoutPaymentMethodControlle
 
     protected CreditCardRequest createCreditCardRequest(final String vtToken, final CheckoutForm checkoutForm, final CartManager cartManager) {
         final CreditCardRequest ret = new CreditCardRequest();
+        setVtRequestParam(ret, checkoutForm, cartManager);
+
         ret.setCreditCard(new CreditCard());
         ret.getCreditCard().setCardToken(vtToken);
-
-        ret.setCustomerDetails(toCustomerDetails(checkoutForm));
-
-        ret.setTransactionDetails(toTransactionDetails(cartManager));
-        ret.setItemDetails(toTransactionItems(cartManager));
-
-        return ret;
-    }
-
-    private Map<String, Object> buildCartViewModel(final SessionManager sessionManager) {
-        final CartManager cartManager = sessionManager.cartManager();
-        final Map<String, Object> ret = new LinkedHashMap<String, Object>();
-
-        final List<ViewCartItem> cartItemList = new LinkedList<ViewCartItem>();
-        for (final CartItem cartItem : sessionManager.cartManager().getCartItems()) {
-            cartItemList.add(new ViewCartItem(cartItem.getProduct(), cartItem.getAmount()));
-        }
-
-        ret.put("cartItems", cartItemList);
-        ret.put("cartSize", cartManager.getCartSize());
-        ret.put("totalPrice", cartManager.calcTotalPrice());
-
         return ret;
     }
 }

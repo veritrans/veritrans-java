@@ -1,14 +1,14 @@
-package id.co.veritrans.mdk.v1.sample.controller;
+package id.co.veritrans.mdk.v1.sample.controller.checkout;
 
 import id.co.veritrans.mdk.v1.gateway.model.*;
-import id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebChargeRequest;
-import id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebParam;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
 import id.co.veritrans.mdk.v1.sample.db.model.Product;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.db.repo.TransactionItemRepo;
 import id.co.veritrans.mdk.v1.sample.db.repo.TransactionRepo;
 import id.co.veritrans.mdk.v1.sample.manager.CartManager;
+import id.co.veritrans.mdk.v1.sample.manager.SessionManagerFactory;
+import id.co.veritrans.mdk.v1.sample.manager.VtPaymentManager;
 import id.co.veritrans.mdk.v1.sample.manager.model.CartItem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,9 +24,13 @@ import java.util.UUID;
 public class AbstractCheckoutPaymentMethodController {
 
     @Autowired
-    private TransactionRepo transactionRepo;
+    protected TransactionRepo transactionRepo;
     @Autowired
-    private TransactionItemRepo transactionItemRepo;
+    protected TransactionItemRepo transactionItemRepo;
+    @Autowired
+    protected SessionManagerFactory sessionManagerFactory;
+    @Autowired
+    protected VtPaymentManager vtPaymentManager;
 
     protected Transaction saveTransaction(final AbstractVtRequest vtRequest, final CartManager cartManager, final String paymentMethod) {
         final Transaction ret = new Transaction();
