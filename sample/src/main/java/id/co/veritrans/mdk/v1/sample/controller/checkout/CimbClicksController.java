@@ -6,7 +6,6 @@ import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CimbClicksRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CimbClicks;
-import id.co.veritrans.mdk.v1.sample.controller.AbstractCheckoutPaymentMethodController;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.manager.CartManager;
