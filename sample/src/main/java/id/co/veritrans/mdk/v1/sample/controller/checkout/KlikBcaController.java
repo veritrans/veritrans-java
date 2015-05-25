@@ -70,7 +70,7 @@ public class KlikBcaController extends AbstractVtDirectController {
                 httpSession.removeAttribute("checkoutForm");
 
                 redirectAttributes.addAttribute("transactionId", transaction.getId());
-                return new ModelAndView("redirect:" + vtResponse.getRedirectUrl());
+                return new ModelAndView("redirect:/checkout/klik_bca/success");
             } else {
                 return new ModelAndView("redirect:/checkout");
             }
@@ -80,13 +80,21 @@ public class KlikBcaController extends AbstractVtDirectController {
         return new ModelAndView("redirect:/index");
     }
 
+    @RequestMapping(method = RequestMethod.GET, value = "/success")
+    public ModelAndView finish(final HttpSession httpSession) {
+        final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
+        final Map<String, Object> viewModel = buildCartViewModel(sessionManager);
+
+        return new ModelAndView("checkout/klik_bca_success", viewModel);
+    }
+
     private KlikBcaRequest createKlikBcaRequest(String userId, CheckoutForm checkoutForm, CartManager cartManager) {
         final KlikBcaRequest ret = new KlikBcaRequest();
         setVtRequestParam(ret, checkoutForm, cartManager);
 
         ret.setKlikBca(new KlikBca());
         ret.getKlikBca().setUserId(userId);
-        ret.getKlikBca().setDescription("Payment for userId: " + userId);
+        ret.getKlikBca().setDescription("Payment for userId " + userId);
         return ret;
     }
 }

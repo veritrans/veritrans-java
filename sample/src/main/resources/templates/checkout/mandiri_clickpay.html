@@ -1,0 +1,112 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- .well -->
+                <div th:replace="layout::item_details" />
+                <hr class="top-off" />
+                <div class="vt-wrapper">
+                    <div id="mandiri-clickpay-error" class="error hide"></div>
+                    <form accept-charset="UTF-8" action="/v2/pay_with_mandiri_clickpay" id="mandiri-clickpay-form" method="post">
+                        <div style="display:none">
+                            <input name="utf8" type="hidden" value="✓" />
+                            <input name="authenticity_token" type="hidden" value="B4mToHXjWK9T4wsCr4XxbeDY4aiHlex9cHiQaJqZFRw=" />
+                        </div>
+                        <div class="content-head">
+                            <h2>Mandiri Clickpay</h2>
+                            <span class="badge m-clickpay"></span>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <td width="200"><strong>Mandiri Debit Card Number</strong></td>
+                                        <td>
+                                            <input id="mandiri-card-num" name="mandiri_card_no" data-credit-card="false" data-validate-length="19" maxlength="19" type="tel" size="19" autocomplete="off" required="" />
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <h2>Input Mandiri Token</h2>
+                        <div class="main content-body">
+                            <div class="span7">
+                                <table class="mcp">
+                                    <tbody>
+                                        <tr>
+                                            <input id="transaction_id" name="transaction_id" type="hidden" value="32769a8f-59ac-45a1-a27b-00417c26287a" />
+                                            <td><strong>APPLI</strong></td>
+                                            <td>: <strong>3</strong></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Input 1</strong></td>
+                                            <td>: <strong><label id="last10"></label></strong></td>
+                                        </tr>
+                                        <tr class="desc">
+                                            <td><span><small>Last 10 digits of your Card</small></span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Input 2</strong></td>
+                                            <td>: <strong><label>30000</label></strong></td>
+                                        </tr>
+                                        <tr class="desc">
+                                            <td><span>Total amount</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Input 3</strong></td>
+                                            <td>: <strong><label>47380</label></strong></td>
+                                            <td>
+                                                <input id="input3" name="input3" type="hidden" value="47380" />
+                                            </td>
+                                        </tr>
+                                        <tr class="desc">
+                                            <td><span>Token request number</span></td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Challenge Token</strong></td>
+                                            <td>
+                                                <input id="token_response" name="token_response" type="password" maxlength="6" size="6" data-validate-length="6" autocomplete="off" required="" style="background-image: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAASCAYAAABSO15qAAAABmJLR0QA/wD/AP+gvaeTAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAB3RJTUUH3QsPDiMeA//jHgAAAdRJREFUOMvNkz9oU1EUxn/nvkeSokgV2oIoNbVUi5Qgj+ogomAWB3GQEtFZUdE1COG+/IMEHLp2kI7FRdCCgxCQdhJFsSKCtIUMDoU42EEMvORxHPIiNSb+mzzbxz33+873nXvhv6tsNnvAWjvbxdbak9bamUH9Ziew1t5OJBIfRGQREEBEZEFE3vi+X+lH4PbgQER2ATPW2oyqtkXkOICqbvQjkF7s+/6qiJwG1lU1FJFp4FmxWDw3kCCXy40bY/a0Wq2m67qHjDFPRcSJlEPgkqo2RGR3u93+VKlU1n6w4LruXeBGPB7/WaFD9FikM6zruveB670hmn/dmkTpe6o6oqrbIjLqOM4jwHRVf0uws/L5fA1Iq+o7Y0y0/xip9AVOTO7j69YGteUVGlG/0/MOLotINoJ3RGQOIJm+RubUBHGFkfEpZqeHeP5qk7CP9ymgrarvS6XSw676kWNj0FyjOj/Pk3oAY/sZ7hdeuVwuBUGQCsPwFqDR2+LFgwWq95YZ9S5yPhkjqK9/t/DLlAqFgnanOHv1Jmcmh9neXGVxaYUvf7M+L9O53Pz4mtrLBodTSWID/kKf2svRiY7joYMec1c8COtsva3T+DOCzyxViwNPvwEMIZXdCan/PwAAAABJRU5ErkJggg==); background-attachment: scroll; background-position: 100% 50%; background-repeat: no-repeat;" />
+                                                <br />
+                                                <small>Please input the response from the Mandiri Token</small>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="span5">
+                                <strong>INSTRUCTIONS:</strong>
+                                <ol class="m-list">
+                                    <li>
+                                        Activate your Mandiri Token by pressing
+                                        <span class="clickpay-btn"></span>
+                                    </li>
+                                    <li>Enter your Mandiri Token password</li>
+                                    <li>Press '3' when it displays 'APPLI'</li>
+                                    <li>
+                                        Enter 'Input 1' and press
+                                        <span class="clickpay-btn"></span> for 3 seconds</li>
+                                    <li>
+                                        Enter 'Input 2' and press
+                                        <span class="clickpay-btn"></span> for 3 seconds</li>
+                                    <li>
+                                        Enter 'Input 3' and press
+                                        <span class="clickpay-btn"></span> for 3 seconds</li>
+                                    <li>Put the response code on your Mandiri Token into the 'Challenge Token' field</li>
+                                </ol>
+                            </div>
+                            <!-- closing .span3 .right -->
+                        </div>
+                        <!-- Closing  .content-body  -->
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="layout::footer-vtdirect-creditcard" />
+    <script src="//d37bcvegor7kqy.cloudfront.net/assets/mandiri_clickpay-30746cee032e61c219c8b71406bb446c.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- .well -->
+                <div th:replace="layout::item_details" />
+                <hr class="top-off" />
+                <div>
+                    <h2>KlikBCA</h2>
+                    <ol>
+                        <li>Please make sure that the UserID is active and registered at BCA.</li>
+                        <li>Please continue the payment through KlikBCA by opening www.klikbca.com on a separate window or tab, using the same User ID that you entered below.</li>
+                        <li>Transaction will be cancelled if payment is not completed within 2 hours.</li>
+                    </ol>
+                </div>
+                <div>
+                    <dl class="dl-horizontal">
+                        <dt>KlikBca User ID:</dt>
+                        <dd>
+                            <form accept-charset="UTF-8" action="/checkout/klik_bca" data-remote="true" id="klikbca-form" method="post" enctype="application/x-www-form-urlencoded" _lpchecked="1">
+                                <input id="userId" name="userId" maxlength="12" size="12" autocomplete="off" required="" data-validate-required="true" type="text" />
+                                <br />
+                                <div class="span11">
+                                    <div class="text-right">
+                                        <a class="button back-button" href="/checkout/vtdirect">Back</a>
+                                        <input class="button checkout-button" type="submit" rel="nofollow" value="Confirm Payment" />
+                                    </div>
+                                </div>
+                            </form>
+                        </dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="layout::footer" />
+</body>
+
+</html>
