@@ -80,7 +80,7 @@ public class MandiriClickpayController extends AbstractVtDirectController {
         final String input3 = challengeCode;
 
         final MandiriClickpayRequest request = createMandiriClickpayRequest(
-                cardNumber,
+                cardNumber.replaceAll("\\s",""),
                 input2,
                 input3,
                 mandiriToken,
