@@ -3,8 +3,7 @@ package id.co.veritrans.mdk.v1.sample.controller.checkout;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CimbClicksRequest;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CimbClicks;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.BriEpayRequest;
 import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.manager.CartManager;
@@ -55,7 +54,7 @@ public class BriEpayController extends AbstractVtDirectController {
             return new ModelAndView("redirect:/checkout/choose_payment");
         }
 
-        final CimbClicksRequest request = createCimbClicksRequest(checkoutForm, cartManager);
+        final BriEpayRequest request = createBriEpayRequest(checkoutForm, cartManager);
         final Transaction transaction = saveTransaction(request, cartManager, request.getPaymentMethod());
 
         try {
@@ -79,12 +78,10 @@ public class BriEpayController extends AbstractVtDirectController {
         return new ModelAndView("redirect:/index");
     }
 
-    private CimbClicksRequest createCimbClicksRequest(CheckoutForm checkoutForm, CartManager cartManager) {
-        final CimbClicksRequest ret = new CimbClicksRequest();
+    private BriEpayRequest createBriEpayRequest(CheckoutForm checkoutForm, CartManager cartManager) {
+        final BriEpayRequest ret = new BriEpayRequest();
         setVtRequestParam(ret, checkoutForm, cartManager);
 
-        ret.setCimbClicks(new CimbClicks());
-        ret.getCimbClicks().setDescription("Test transaction description");
         return ret;
     }
 }
