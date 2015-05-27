@@ -102,6 +102,8 @@ public class CheckoutController {
             return new ModelAndView("redirect:/checkout/klik_bca");
         } else if (paymentMethod.equals("bankTransfer")) {
             return new ModelAndView("redirect:/checkout/bank_transfer");
+        } else if (paymentMethod.equals("briEpay")) {
+            return new ModelAndView("redirect:/checkout/bri_epay");
         } else {
             return new ModelAndView("redirect:/checkout/vtdirect");
         }

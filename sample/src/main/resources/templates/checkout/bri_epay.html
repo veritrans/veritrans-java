@@ -10,20 +10,22 @@
                 <!-- .well -->
                 <div th:replace="layout::item_details" />
                 <hr class="top-off" />
-                <div>
-                    <h2>CIMB Clicks</h2>
+                <div style="position:relative;">
+                    <h2>e-Pay BRI</h2>
+                    <span class="badge epay-bri"></span>
                     <ol>
-                        <li>Please make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</li>
-                        <li>Payment via CIMB Clicks will be processed online and your CIMB bank account balance will be deducted automatically based on your total amount.</li>
-                        <li>Transaction will be cancelled if payment is not completed within 2 hours.</li>
-                        <li>Please make sure that there is no pop-up blocker on your browser.</li>
+                        <li>Please make sure that you have a User ID for BRI e-Pay and have registered for mTOKEN before going through with the payment.</li>
+                        <li>To obtain a User ID for BRI e-Pay, please register at the nearest BRI ATM.</li>
+                        <li>Please visit the nearest BRI branch office to register the mTOKEN.</li>
+                        <li>Payment via BRI e-Pay will be processed online and your BRI bank account balance will be deducted automatically based on your total amount.</li>
+                        <li>Your transaction will be cancelled if payment is not completed within 2 hours.</li>
                     </ol>
                 </div>
                 <div class="row-fluid">
                     <div class="span12">
                         <div class="text-right">
                             <a class="button back-button" href="/index">Back</a>
-                            <a class="button checkout-button" data-method="post" href="/checkout/cimb_clicks" rel="nofollow">Confirm Payment</a>
+                            <a class="button checkout-button" data-method="post" href="/checkout/bri_epay" rel="nofollow">Confirm Payment</a>
                         </div>
                     </div>
                 </div>
