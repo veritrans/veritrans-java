@@ -100,6 +100,8 @@ public class CheckoutController {
             return new ModelAndView("redirect:/checkout/bca_klikpay");
         } else if (paymentMethod.equals("klikBca")) {
             return new ModelAndView("redirect:/checkout/klik_bca");
+        } else if (paymentMethod.equals("bankTransfer")) {
+            return new ModelAndView("redirect:/checkout/bank_transfer");
         } else {
             return new ModelAndView("redirect:/checkout/vtdirect");
         }
