@@ -70,7 +70,7 @@ public class KlikBcaController extends AbstractVtDirectController {
                 httpSession.removeAttribute("checkoutForm");
 
                 redirectAttributes.addAttribute("transactionId", transaction.getId());
-                return new ModelAndView("redirect:/checkout/klik_bca/success");
+                return finish(httpSession);
             } else {
                 return new ModelAndView("redirect:/checkout");
             }

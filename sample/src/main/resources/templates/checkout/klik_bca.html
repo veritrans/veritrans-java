@@ -22,13 +22,13 @@
                     <dl class="dl-horizontal">
                         <dt>KlikBca User ID:</dt>
                         <dd>
-                            <form accept-charset="UTF-8" action="/checkout/klik_bca" data-remote="true" id="klikbca-form" method="post" enctype="application/x-www-form-urlencoded" _lpchecked="1">
+                            <form accept-charset="UTF-8" action="/checkout/klik_bca" id="klikbca-form" method="post" enctype="application/x-www-form-urlencoded" _lpchecked="1">
                                 <input id="userId" name="userId" maxlength="12" size="12" autocomplete="off" required="" data-validate-required="true" type="text" />
                                 <br />
                                 <div class="span11">
                                     <div class="text-right">
                                         <a class="button back-button" href="/checkout/vtdirect">Back</a>
-                                        <input class="button checkout-button" type="submit" rel="nofollow" value="Confirm Payment" />
+                                        <input class="button checkout-button" data-method="post" href="/checkout/klik_bca" type="submit" rel="nofollow" value="Confirm Payment" />
                                     </div>
                                 </div>
                             </form>
