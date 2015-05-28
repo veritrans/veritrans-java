@@ -413,7 +413,7 @@ if (vtResponse.getStatusCode().equals("200") &&
 
 <br/>
 ## VtWeb
-VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but **VtWeb doesn't has VtDirect's `charge` functionality**, instead it has a method to get a redirection URL which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  
+VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but **VtWeb `charge` functionality will be responsed with redirect url** which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  
 
 See [VtWeb Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/VtWeb.html).  
 Example code to obtain reference to VtWeb instance:
@@ -423,11 +423,19 @@ VtWeb vtWeb = vtGatewayFactory.vtWeb();
 
 <br/>
 ### Charging a transaction
-WIP
+```java
+VtWebChargeRequest vtWebChargeRequest = new VtWebChargeRequest();
+setVtWebChargeRequestValues(vtWebChargeRequest);
+vtWebChargeRequest.setVtWeb(new VtWebParam());
+vtWebChargeRequest.getVtWeb().setCreditCardUse3dSecure(true);
 
-<br/>
-#### VtWebChargeParam
-WIP
+VtResponse vtResponse = vtWeb.charge(vtWebChargeRequest);
+if (vtResponse.getStatusCode().equals("201")) {
+    // Redirect user to redirecturl param [vtResponse.getRedirectUrl()]
+} else {
+    // Handle denied / unexpected response
+}
+```
 
 <br/>
 ## Other Features

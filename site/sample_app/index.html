@@ -100,8 +100,6 @@
     
         <li class="main active"><a href="#sample-store-application">Sample Store Application</a></li>
         
-            <li><a href="#source-code">Source code</a></li>
-        
             <li><a href="#how-to-build-and-run">How to build and run</a></li>
         
             <li><a href="#veritrans-java-client-usage">Veritrans java client usage</a></li>
@@ -114,69 +112,10 @@
 <h1 id="sample-store-application">Sample Store Application</h1>
 <p>Veritrans java-client sample store application</p>
 <hr />
-<h2 id="source-code">Source code</h2>
-<p><!-- TODO: change repository url -->
-You can get sample store source code from <a href="https://github.com/gde-vt/veritrans-java/">Veritrans Java Client</a> repository on <code>~/veritrans-java/sample</code> directory.<br />
-This sample store application use <a href="http://projects.spring.io/spring-boot/"><strong><em>Spring Boot Framework</em></strong></a></p>
-<h3 id="code-structure">Code structure</h3>
-<h4 id="model">Model</h4>
-<pre><code>src
-├── main
-│   ├── java
-│   │   └── id
-│   │       └── co
-│   │           └── veritrans
-│   │               └── mdk
-│   │                   └── v1
-│   │                       └── sample
-│   │                           ├── db
-│   │                           │   ├── model
-│   │                           │   │   ├── Product.java
-│   │                           │   │   ├── Transaction.java
-│   │                           │   │   └── TransactionItem.java
-│   │                           │   └── repo
-│   │                           │       ├── ProductRepo.java
-│   │                           │       ├── TransactionItemRepo.java
-│   │                           │       └── TransactionRepo.java
-</code></pre>
-
-<p>This sample store store model data on 3 java class.<br />
-<strong><em>Work in progress</em></strong></p>
-<h4 id="view">View</h4>
-<pre><code>src
-├── main
-│   └── resources
-│       └── templates
-│           ├── checkout
-│           │   ├── choose_payment.html
-│           │   ├── credit_card.html
-│           │   └── success.html
-│           ├── checkout.html
-│           ├── index.html
-│           └── layout.html
-</code></pre>
-
-<p>Veritrans sample store using <a href="http://www.thymeleaf.org/">Thymeleaf</a> templating engine for view part.<br />
-<strong><em>Work in progress</em></strong></p>
-<h4 id="controller">Controller</h4>
-<pre><code>src
-├── main
-│   ├── java
-│   │   └── id
-│   │       └── co
-│   │           └── veritrans
-│   │               └── mdk
-│   │                   └── v1
-│   │                       └── sample
-│   │                           ├── controller
-│   │                           │   ├── CartController.java
-│   │                           │   ├── CheckoutPageController.java
-│   │                           │   └── IndexPageController.java
-</code></pre>
-
-<p><strong><em>Work in progress</em></strong></p>
-<hr />
 <h2 id="how-to-build-and-run">How to build and run</h2>
+<p>You can get sample store source code from <a href="https://github.com/gde-vt/veritrans-java/">Veritrans Java Client</a> repository on <code>~/veritrans-java/sample</code> directory.<br />
+This sample store application use <a href="http://projects.spring.io/spring-boot/"><strong><em>Spring Boot Framework</em></strong></a>
+<br /></p>
 <p>Veritrans sample store use gradle build tools for compile, build, and running the application.<br />
 Before build and run sample store application, you need to setup several config first such as merchant <code>server-key</code> and <code>client-key</code>
 which can be obtained from <a href="https://my.sandbox.veritrans.co.id/login">Veritrans Merchant Admin Portal</a>.<br />
@@ -199,8 +138,8 @@ which can be obtained from <a href="https://my.sandbox.veritrans.co.id/login">Ve
 <hr />
 <h2 id="veritrans-java-client-usage">Veritrans java client usage</h2>
 <p>Veritrans java-client library usage example can be shown on <code>VtPaymentManager.java</code> class. <code>VtPaymentManager.java</code> class is spring singleton beans which is use to hold <code>VtGatewayFactory</code> parameter so you can get the factory easily. You need to construct <code>VtGatewayFactory</code> object using several merchant config. In sample store case, merchant config was store on <code>application.yml</code> and loaded by <code>VtPaymentConfig.java</code> class.<br />
-<br />
-<strong><em>VtGatewayFactory example :</em></strong></p>
+<br /></p>
+<p><strong><em><code>VtPaymentManager.java</code> - VtGatewayFactory example:</em></strong></p>
 <pre><code class="java">@PostConstruct
 public void setup() {
     vtGatewayFactory = new VtGatewayFactory(new VtGatewayConfigBuilder()
@@ -216,10 +155,10 @@ public void setup() {
 <p><br /></p>
 <p>After that, you can get <code>VtDirect</code> object which will be use to trigger the transaction. Before charge a transaction, you need to construct request message that will be used as <code>VtDirect</code> charge parameter. For example, sample store application use <code>CreditCardRequest</code> as charge parameter.</p>
 <blockquote>
-<p>an <strong><code>important note for credit card transaction</code></strong>, you need to convert <strong><code>customer card data</code></strong> into <strong><code>token</code></strong> first before you can charge the transaction. This part will be explained more detail on <a href="#veritrans-javascript-credit-card">javascript part</a> below
+<p>an <strong><code>important note for credit card transaction</code></strong>, you need to convert <strong><code>customer card credentials</code></strong> into <strong><code>token</code></strong> first before you can charge the transaction. This part will be explained more detail on <a href="#veritrans-javascript-credit-card">javascript part</a> below
 <br /></p>
 </blockquote>
-<p><strong><em>VtDirect example :</em></strong></p>
+<p><strong><em><code>AbstractVtDirectController.java</code> - VtDirect example:</em></strong></p>
 <pre><code class="java">private VtDirect vtDirect;
 
 @PostConstruct
@@ -229,11 +168,11 @@ public void setup() {
 </code></pre>
 
 <p><br />
-<strong><em>CreditCardRequest and charging example :</em></strong></p>
+<strong><em><code>CreditCardController.java</code> - CreditCardRequest and charging example:</em></strong></p>
 <pre><code class="java">public ModelAndView checkoutCreditCardPost(/* Parameter */) {
 
     /* Construct creit card request */
-    final CreditCardRequest creditCardRequest = createCreditCardRequest(/* Parameter */);
+    final CreditCardRequest request = createCreditCardRequest(/* Parameter */);
 
     /* Charge transaction using credit card request */
     try {
@@ -255,14 +194,15 @@ public void setup() {
 </blockquote>
 <p><br /></p>
 <h3 id="veritrans-javascript-credit-card">Veritrans javascript (credit card)</h3>
-<p>Credit card transaction have special handling compare than another payment type. For security reason, merchant <code>will not recieve any customer card data</code> and will be replaced with <code>veritrans card token</code>.
+<p>Credit card transaction have special handling compare than another payment type. For security reason, merchant <code>will not recieve any customer card credentials</code> and will be replaced with <code>veritrans card token</code>.
 <br /></p>
 <p>Veritrans card token can be obtained using javascript library that you need to setup on merchant web page. You can see detail overview about this javascript library on <a href="http://docs.veritrans.co.id/en/vtdirect/integration_cc.html">Veritrans credit card documentation</a>. For example on sample store application, there is two javascript file need to setup on merchant web page (see <code>layout.html</code> on <code>footer-vtdirect-creditcard</code> part) :</p>
 <ol>
 <li><code>https://api.sandbox.veritrans.co.id/v2/assets/js/veritrans.min.js</code></li>
 <li><code>/assets/vtdirect.js</code></li>
 </ol>
-<p><strong><em>Work in progress</em></strong></p></div>
+<p>The first file was used to trigger <code>get_token</code> transaction request to veritrans payment api. This request will translate customer card credentials into veritrans token that can be use to charge a credit card transaction.
+<br /></p></div>
         </div>
 
         
