@@ -107,6 +107,8 @@
         
             <li><a href="#gradle">Gradle</a></li>
         
+            <li><a href="#jar-library">Jar Library</a></li>
+        
     
         <li class="main "><a href="#usage">Usage</a></li>
         
@@ -147,6 +149,8 @@
 <pre><code class="groovy">compile 'id.co.veritrans:vt-java-client:1.0.0-release'
 </code></pre>
 
+<h2 id="jar-library">Jar Library</h2>
+<p>If you want to download directly veritrans-java client jar file, you can download it <strong><a href="https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.0/vt-java-client-1.0.0.jar">here</a></strong>.</p>
 <hr />
 <h1 id="usage">Usage</h1>
 <h2 id="vtgatewayconfig">VtGatewayConfig</h2>
@@ -505,7 +509,7 @@ if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
 
 <p><br/></p>
 <h2 id="vtweb">VtWeb</h2>
-<p>VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but <strong>VtWeb <code>charge</code> functionality will be responsed with redirect url</strong> which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  </p>
+<p>VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but <strong>VtWeb <code>charge</code> functionality will be responded with redirect url</strong> which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  </p>
 <p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/VtWeb.html">VtWeb Javadoc</a>.<br />
 Example code to obtain reference to VtWeb instance:</p>
 <pre><code class="java">VtWeb vtWeb = vtGatewayFactory.vtWeb();

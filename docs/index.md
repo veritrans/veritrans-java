@@ -24,6 +24,8 @@ If you're using Gradle as the build tools for your project, please add **[jcente
 compile 'id.co.veritrans:vt-java-client:1.0.0-release'
 ```
 
+## Jar Library
+If you want to download directly veritrans-java client jar file, you can download it **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.0/vt-java-client-1.0.0.jar)**.
 ***
 
 # Usage
@@ -413,7 +415,7 @@ if (vtResponse.getStatusCode().equals("200") &&
 
 <br/>
 ## VtWeb
-VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but **VtWeb `charge` functionality will be responsed with redirect url** which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  
+VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but **VtWeb `charge` functionality will be responded with redirect url** which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  
 
 See [VtWeb Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/VtWeb.html).  
 Example code to obtain reference to VtWeb instance:
