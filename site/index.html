@@ -77,7 +77,6 @@
 
             <!-- Search, Navigation and Repo links -->
             <ul class="nav navbar-nav navbar-right">
-                
                 <li class="disabled">
                     <a rel="next" >
                         <i class="fa fa-arrow-left"></i> Previous
@@ -107,8 +106,6 @@
         
             <li><a href="#gradle">Gradle</a></li>
         
-            <li><a href="#jar-library">Jar Library</a></li>
-        
     
         <li class="main "><a href="#usage">Usage</a></li>
         
@@ -137,21 +134,36 @@
 <h1 id="installation">Installation</h1>
 <h2 id="maven">Maven</h2>
 <p>If you're using Maven as the build tools for your project, please add <strong><a href="https://bintray.com/bintray/jcenter">jcenter</a></strong> repository to your build definition, then add the following dependency to your project's build definition (pom.xml):</p>
-<pre><code class="xml">&lt;dependency&gt;
-    &lt;groupId&gt;id.co.veritrans&lt;/groupId&gt;
-    &lt;artifactId&gt;vt-java-client&lt;/artifactId&gt;
-    &lt;version&gt;1.0.0-release&lt;/version&gt;
-&lt;/dependency&gt;
+<pre><code class="xml">&lt;repositories&gt;
+    &lt;repository&gt;
+        &lt;id&gt;jcenter&lt;/id&gt;
+        &lt;name&gt;bintray&lt;/name&gt;
+        &lt;url&gt;http://jcenter.bintray.com&lt;/url&gt;
+    &lt;/repository&gt;
+&lt;/repositories&gt;
+
+&lt;dependencies&gt;
+    &lt;dependency&gt;
+        &lt;groupId&gt;id.co.veritrans&lt;/groupId&gt;
+        &lt;artifactId&gt;vt-java-client&lt;/artifactId&gt;
+        &lt;version&gt;1.0.0&lt;/version&gt;
+    &lt;/dependency&gt;
+&lt;/dependencies&gt;
 </code></pre>
 
 <h2 id="gradle">Gradle</h2>
 <p>If you're using Gradle as the build tools for your project, please add <strong><a href="https://bintray.com/bintray/jcenter">jcenter</a></strong> repository to your build script then add the following dependency to your project's build definition (build.gradle):</p>
-<pre><code class="groovy">compile 'id.co.veritrans:vt-java-client:1.0.0-release'
+<pre><code class="groovy">repositories {
+    maven {
+        url  &quot;http://jcenter.bintray.com&quot; 
+    }
+}
+
+dependencies {
+    compile 'id.co.veritrans:vt-java-client:1.0.0'
+}
 </code></pre>
 
-<h2 id="jar-library">Jar Library</h2>
-<p>If you want to download directly veritrans-java client jar file, you can download it <strong><a href="https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.0/vt-java-client-1.0.0.jar">here</a></strong>.</p>
-<hr />
 <h1 id="usage">Usage</h1>
 <h2 id="vtgatewayconfig">VtGatewayConfig</h2>
 <p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.
@@ -170,19 +182,10 @@ vtGatewayConfigBuilder.setClientKey(&quot;Your Client Key&quot;);
 <p>You can choose to use Sandbox or Production environment. During development &amp; testing, you might want to set it to Sandbox and use the Production environment when you're ready to go live.  </p>
 <p>See <a href="./javadoc/id/co/veritrans/mdk/v1/config/EnvironmentType.html">EnvironmentType Javadoc</a>.</p>
 <pre><code class="java">// config for sandbox environment
-vtGatewayConfigBuilder.setEnvironment(EnvironmentType.SANDBOX);
+vtGatewayConfigBuilder.setEnvironmentType(EnvironmentType.SANDBOX);
 
 // config for production environment
-vtGatewayConfigBuilder.setEnvironment(EnvironmentType.PRODUCTION);
-</code></pre>
-
-<p><br/></p>
-<h3 id="http-configuration">HTTP Configuration</h3>
-<p>HTTP Configuration holds various values which is used during executing HTTP Request.<br />
-See <a href="./javadoc/id/co/veritrans/mdk/v1/config/HttpConfig.html">HttpConfig Javadoc</a>.<br />
-See <a href="./javadoc/id/co/veritrans/mdk/v1/config/HttpConfigBuilder.html">HttpConfigBuilder Javadoc</a>.</p>
-<pre><code class="java">HttpConfigBuilder httpConfigBuilder = new HttpConfigBuilder();
-vtGatewayConfigBuilder.setHttpConfig(httpConfigBuilder.createHttpConfig());
+vtGatewayConfigBuilder.setEnvironmentType(EnvironmentType.PRODUCTION);
 </code></pre>
 
 <p><br/></p>
@@ -252,7 +255,7 @@ Example code to obtain reference to VtDirect instance:</p>
 This method will make a charge request to Veritrans Payment API and return a VtResponse as a result, which can be used to determine the status of the transaction.  </p>
 <p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/VtDirectChargeRequest.html">VtDirectChargeRequest</a><br />
 See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html">VtResponse</a><br />
-Visit <a href="http://docs.veritrans.co.id/sandbox/charge.html">http://docs.veritrans.co.id/sandbox/charge.html </a>for more information.</p>
+Visit <a href="http://docs.veritrans.co.id/en/api/methods.html#Charge">http://docs.veritrans.co.id/en/api/methods.html#Charge </a>for more information.</p>
 <h4 id="vtdirectchargerequest">VtDirectChargeRequest</h4>
 <p>VtDirectChargeRequest has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:<br />
 - <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BankTransferRequest.html">BankTransferRequest</a><br />
@@ -303,7 +306,6 @@ See <a href="./sequence_diagram/index.html#process-flow-for-charging-via-bank-tr
 setVtDirectChargeRequestValues(vtDirectChargeRequest);
 vtDirectChargeRequest.setBankTransfer(new BankTransfer());
 
-vtDirectChargeRequest.getBankTransfer().setDescription(&quot;Payment for Merchant XYZ&quot;);
 vtDirectChargeRequest.getBankTransfer().setBank(BankTransfer.Bank.PERMATA);
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
@@ -607,7 +609,7 @@ if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
 It is invoked by Veritrans Payment API through HTTP POST by sending a JSON Message in the request body.
 The structure of the JSON Message is identical with the JSON Response when invoking the Veritrans Payment API.  </p>
 <p>There is a static method provided by VtResponse to help you deserializing the JSON Message into a VtResponse instance.
-This method accepts <a href="file:///Users/gde/Documents/dev/maverick/veritrans-java/site/javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html#deserializeJson-java.lang.String-">JSON String</a> or a <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html#deserializeJson-java.io.InputStream-">Raw Input Stream</a>.
+This method accepts <code>JSON String</code> or a <code>Raw Input Stream</code>.
 <strong>Do remember that it is still the caller responsibility to close the InputStream</strong>.</p>
 <p>Below is an example code to handle Notification URL using Java Servlet API:</p>
 <pre><code class="java">...
@@ -636,7 +638,11 @@ void doPost(HttpServletRequest req, HttpServletResponse resp) {
 </code></pre></div>
         </div>
 
-        
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
 
         <script src="./js/jquery-1.10.2.min.js"></script>
         <script src="./js/bootstrap-3.0.3.min.js"></script>

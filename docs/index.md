@@ -11,17 +11,35 @@ Please visit [https://www.veritrans.co.id](https://www.veritrans.co.id) for more
 ## Maven
 If you're using Maven as the build tools for your project, please add **[jcenter](https://bintray.com/bintray/jcenter)** repository to your build definition, then add the following dependency to your project's build definition (pom.xml):
 ```xml
-<dependency>
-    <groupId>id.co.veritrans</groupId>
-    <artifactId>vt-java-client</artifactId>
-    <version>1.0.0</version>
-</dependency>
+<repositories>
+    <repository>
+        <id>jcenter</id>
+        <name>bintray</name>
+        <url>http://jcenter.bintray.com</url>
+    </repository>
+</repositories>
+
+<dependencies>
+    <dependency>
+        <groupId>id.co.veritrans</groupId>
+        <artifactId>vt-java-client</artifactId>
+        <version>1.0.0</version>
+    </dependency>
+</dependencies>
 ```
 
 ## Gradle
 If you're using Gradle as the build tools for your project, please add **[jcenter](https://bintray.com/bintray/jcenter)** repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```groovy
-compile 'id.co.veritrans:vt-java-client:1.0.0'
+repositories {
+    maven {
+        url  "http://jcenter.bintray.com" 
+    }
+}
+
+dependencies {
+    compile 'id.co.veritrans:vt-java-client:1.0.0'
+}
 ```
 
 # Usage
@@ -48,10 +66,10 @@ You can choose to use Sandbox or Production environment. During development & te
 See [EnvironmentType Javadoc](javadoc/id/co/veritrans/mdk/v1/config/EnvironmentType.html).
 ```java
 // config for sandbox environment
-vtGatewayConfigBuilder.setEnvironment(EnvironmentType.SANDBOX);
+vtGatewayConfigBuilder.setEnvironmentType(EnvironmentType.SANDBOX);
 
 // config for production environment
-vtGatewayConfigBuilder.setEnvironment(EnvironmentType.PRODUCTION);
+vtGatewayConfigBuilder.setEnvironmentType(EnvironmentType.PRODUCTION);
 ```
 
 <br/>
@@ -129,7 +147,7 @@ This method will make a charge request to Veritrans Payment API and return a VtR
 
 See [VtDirectChargeRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/VtDirectChargeRequest.html)  
 See [VtResponse](javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html)  
-Visit [http://docs.veritrans.co.id/sandbox/charge.html ](http://docs.veritrans.co.id/sandbox/charge.html)for more information.
+Visit [http://docs.veritrans.co.id/en/api/methods.html#Charge ](http://docs.veritrans.co.id/en/api/methods.html#Charge)for more information.
 
 #### VtDirectChargeRequest
 VtDirectChargeRequest has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:  
@@ -185,7 +203,6 @@ BankTransferRequest vtDirectChargeRequest = new BankTransferRequest();
 setVtDirectChargeRequestValues(vtDirectChargeRequest);
 vtDirectChargeRequest.setBankTransfer(new BankTransfer());
 
-vtDirectChargeRequest.getBankTransfer().setDescription("Payment for Merchant XYZ");
 vtDirectChargeRequest.getBankTransfer().setBank(BankTransfer.Bank.PERMATA);
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
@@ -507,7 +524,7 @@ It is invoked by Veritrans Payment API through HTTP POST by sending a JSON Messa
 The structure of the JSON Message is identical with the JSON Response when invoking the Veritrans Payment API.  
   
 There is a static method provided by VtResponse to help you deserializing the JSON Message into a VtResponse instance.
-This method accepts [JSON String](file:///Users/gde/Documents/dev/maverick/veritrans-java/site/javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html#deserializeJson-java.lang.String-) or a [Raw Input Stream](javadoc/id/co/veritrans/mdk/v1/gateway/model/VtResponse.html#deserializeJson-java.io.InputStream-).
+This method accepts `JSON String` or a `Raw Input Stream`.
 **Do remember that it is still the caller responsibility to close the InputStream**.
 
 Below is an example code to handle Notification URL using Java Servlet API:
