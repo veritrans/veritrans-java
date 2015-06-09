@@ -14,19 +14,15 @@ If you're using Maven as the build tools for your project, please add **[jcenter
 <dependency>
     <groupId>id.co.veritrans</groupId>
     <artifactId>vt-java-client</artifactId>
-    <version>1.0.0-release</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 
 ## Gradle
 If you're using Gradle as the build tools for your project, please add **[jcenter](https://bintray.com/bintray/jcenter)** repository to your build script then add the following dependency to your project's build definition (build.gradle):
 ```groovy
-compile 'id.co.veritrans:vt-java-client:1.0.0-release'
+compile 'id.co.veritrans:vt-java-client:1.0.0'
 ```
-
-## Jar Library
-If you want to download directly veritrans-java client jar file, you can download it **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.0/vt-java-client-1.0.0.jar)**.
-***
 
 # Usage
 
@@ -56,16 +52,6 @@ vtGatewayConfigBuilder.setEnvironment(EnvironmentType.SANDBOX);
 
 // config for production environment
 vtGatewayConfigBuilder.setEnvironment(EnvironmentType.PRODUCTION);
-```
-
-<br/>
-### HTTP Configuration
-HTTP Configuration holds various values which is used during executing HTTP Request.  
-See [HttpConfig Javadoc](javadoc/id/co/veritrans/mdk/v1/config/HttpConfig.html).  
-See [HttpConfigBuilder Javadoc](javadoc/id/co/veritrans/mdk/v1/config/HttpConfigBuilder.html).
-```java
-HttpConfigBuilder httpConfigBuilder = new HttpConfigBuilder();
-vtGatewayConfigBuilder.setHttpConfig(httpConfigBuilder.createHttpConfig());
 ```
 
 <br/>
