@@ -1,0 +1,27 @@
+payment.config.vt:
+  clientKey: VT-client-L0ixAGIFOyskZpAi
+  serverKey: VT-server-O49fyFz6BWRkAfyQuyBWj3U4
+  environment: SANDBOX
+  connectionPoolSize: 16
+
+#spring.thymeleaf.prefix: classpath*:/templates/
+
+---
+spring:
+    profiles: development
+
+payment.config.vt:
+  clientKey: VT-client-L0ixAGIFOyskZpAi
+  serverKey: VT-server-O49fyFz6BWRkAfyQuyBWj3U4
+  environment: SANDBOX
+  connectionPoolSize: 16
+
+---
+spring:
+    profiles: production
+
+payment.config.vt:
+  clientKey: VT-client-L0ixAGIFOyskZpAi
+  serverKey: VT-server-O49fyFz6BWRkAfyQuyBWj3U4
+  environment: SANDBOX
+  connectionPoolSize: 16

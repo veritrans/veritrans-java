@@ -1,0 +1,48 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- .well -->
+                <h2>Bank Transfer</h2>
+                <div class="vt-wrapper">
+                    <div id="permata-error" class="error hide"></div>
+                    <div class="jumbotron">
+                        <h4>Account Number</h4>
+                        <h1 th:text="${permataVaNumber}" />
+                        <h3 th:text="|Rp. ${totalPrice}|" />
+                    </div>
+                    <div class="tab-page fade active in" id="tab-page-prima-2">
+                        <h4>How to pay via ATM BCA/ PRIMA network:</h4>
+                        <ol>
+                            <li>Enter your PIN.</li>
+                            <li>On the main menu, choose 'Other Transaction'.</li>
+                            <li>Choose 'Transfer'.</li>
+                            <li>Choose 'Other Bank Account'.</li>
+                            <li>Enter '<strong>013</strong>' for Bank Permata then press 'Correct'.</li>
+                            <li>Enter the amount to be paid, then choose 'Correct'. <strong>Note,</strong> if the amount entered is not the same as the invoiced amount, the transaction will be denied.</li>
+                            <li>Enter <strong class="permata-va-num" th:text="${permataVaNumber}" /> (the 16 digit account number) then press 'Correct'.</li>
+                            <li>Amount to be paid &amp; account number will appear on the payment confirmation page. If the information is correct, press 'Correct'.</li>
+                            <li>Transaction Success.</li>
+                        </ol>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="text-right">
+                                <a class="button back-button" href="/index">Back</a>
+                                <a class="button checkout-button" onclick="window.print()" rel="nofollow">Print</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="layout::footer-vtdirect-creditcard" />
+</body>
+
+</html>

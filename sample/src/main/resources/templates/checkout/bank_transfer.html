@@ -1,0 +1,55 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- .well -->
+                <div th:replace="layout::item_details" />
+                <hr class="top-off" />
+                <h2>Bank Transfer</h2>
+                <div class="vt-wrapper">
+                    <div id="permata-error" class="error hide"></div>
+                    <div class="jumbotron">
+                        <h4>Transfer Amount</h4>
+                        <h1 th:text="|Rp. ${totalPrice}|" />
+                    </div>
+                    <div class="content-head">
+                        <h4>ATM Transfer Step-by-step</h4>
+                        <ol>
+                            <li>Click the <strong>Confirm Payment</strong> button </li>
+                            <li>You will receive a unique account number and instructions on how to pay (you can receive instructions via email if you input your mail address below)</li>
+                            <li>Please complete payment through the Prima(BCA), ATM Bersama(Mandiri), or Alto(Permata) ATM network</li>
+                            <li>Once payment is complete, you will receive a confirmation email</li>
+                        </ol>
+                    </div>
+                    <div class="wrapper-email">
+                        <form accept-charset="UTF-8" action="/v2/pay_with_permata" data-remote="true" id="permata-form" method="post">
+                            <div style="display:none">
+                                <input name="utf8" type="hidden" value="✓" />
+                                <input name="authenticity_token" type="hidden" value="CiZOGJOyBNsOCbBrS3KVxZBwGu60Hlkpy2DcXPAV2dQ=" />
+                            </div>
+                            <br />
+                            <small>Send instructions to my email</small>
+                            <input data-validate-email="true" id="permata-email" name="email_address" type="email" value="vt-testing@veritrans.co.id"  autocomplete="off" />
+                        </form>
+                    </div>
+                    <div class="row-fluid">
+                        <div class="span12">
+                            <div class="text-right">
+                                <a class="button back-button" href="/checkout/vtdirect">Back</a>
+                                <a class="button checkout-button" data-method="post" href="/checkout/bank_transfer" rel="nofollow">Confirm Payment</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="layout::footer-vtdirect-creditcard" />
+</body>
+
+</html>

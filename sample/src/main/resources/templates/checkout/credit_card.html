@@ -1,0 +1,120 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- .well --> 
+                <div th:replace="layout::item_details" />
+                <hr class="top-off" />
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="text-right">
+                            <div class='row-fluid'>
+                                <div class='span10 offset1'>
+                                    <div class='alert alert-success'>
+                                        <div class='row-fluid'>
+                                            <div class='span1'>
+                                                <h1>
+                                                <i class='icon icon-info-sign'></i>
+                                            </h1>
+                                            </div>
+                                            <div class='span11'>
+                                                <small>
+                                                Please use one of this dummy Credit Card number,
+                                                <br/>
+                                                <b>4811111111111114</b>
+                                                (Visa) or
+                                                <b>5211111111111117</b>
+                                                (MasterCard),
+                                                <br/>
+                                                and for
+                                                <b>CVV</b>
+                                                just insert any three digits number.
+                                                this is just for testing purpose, nothing will be charged.
+                                            </small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <form accept-charset="UTF-8" class="new_order_payment" id="new_order_payment" method="post">
+                                        <input id="gross_amount" name="" type="hidden" th:value="${totalPrice}" />
+                                        <input id="order_payment_vt_token" name="vt_token" type="hidden" />
+                                        <div class='row-fluid'>
+                                            <div class='span6'>
+                                                <div class='row-fluid'>
+                                                    <div class='span6' style='min-height: 0px;'>
+                                                        <label for="order_payment_card_number">Card number</label>
+                                                    </div>
+                                                </div>
+                                                <div class='inner-addon right-addon control-group'>
+                                                    <i class='icn visa' id='cc-icon'></i>
+                                                    <input class="span12" data-credit-card="true" id="order_payment_card_number" maxlength="22" name="" size="22" type="text" value="4811 1111 1111 1114" />
+                                                </div>
+                                            </div>
+                                            <div class='span3'>
+                                                <label for="order_payment_card_exp_month">Card exp month</label>
+                                                <select class="span12" id="order_payment_card_exp_month" name="">
+                                                    <option value="01">01 - Jan</option>
+                                                    <option value="02">02 - Feb</option>
+                                                    <option value="03">03 - Mar</option>
+                                                    <option value="04">04 - Apr</option>
+                                                    <option selected="selected" value="05">05 - Mei</option>
+                                                    <option value="06">06 - Jun</option>
+                                                    <option value="07">07 - Jul</option>
+                                                    <option value="08">08 - Agu</option>
+                                                    <option value="09">09 - Sep</option>
+                                                    <option value="10">10 - Okt</option>
+                                                    <option value="11">11 - Nov</option>
+                                                    <option value="12">12 - Des</option>
+                                                </select>
+                                            </div>
+                                            <div class='span3'>
+                                                <label for="order_payment_card_exp_year">Card exp year</label>
+                                                <select class="span12" id="order_payment_card_exp_year" name="">
+                                                    <option th:each="year,iter : ${years}" th:selected="${iter.first}" th:text="${year}" />
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class='row-fluid'>
+                                            <div class='span6'>
+                                                <label>Name on Card</label>
+                                                <input class='span12' name='' type='text' value='John Doe' />
+                                            </div>
+                                            <div class='span2'>
+                                                <div class='row-fluid'>
+                                                    <div class='span10 no-height'>
+                                                        <label for="order_payment_card_cvv">Card CVV</label>
+                                                    </div>
+                                                    <div class='span2 no-height'>
+                                                        <a id='show-cvv-info'>
+                                                            <div class='relative-me'>
+                                                                <div id='cvv-info'>
+                                                                    <img alt="Cvv" src="/assets/cvv.png" />
+                                                                </div>
+                                                            </div>
+                                                            <i class='icon icon-question-sign show-cvv'></i>
+                                                        </a>
+                                                    </div>
+                                                </div>
+                                                <input class="span12" id="order_payment_card_cvv" maxlength="3" name="card_cvv" size="3" type="password" value="123" />
+                                            </div>
+                                            <div class='span4'>
+                                                <button class="button button-pay" id="submit-button" name="button" style="margin-top: 24px;" type="submit">Pay Now</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="layout::footer-vtdirect-creditcard" />
+</body>
+
+</html>

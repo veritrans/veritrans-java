@@ -1,0 +1,32 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- .well -->
+                <div th:replace="layout::item_details" />
+                <div class="text-left">
+                    <form accept-charset="UTF-8" method="post">
+                        <select name="paymentMethod" style="margin-right: 10px">
+                            <option value="creditCard">Credit Card</option>
+                            <option value="cimbClicks">Cimb Clicks</option>
+                            <option value="mandiriClickpay">Mandiri Clickpay</option>
+                            <option value="bcaKlikpay">BCA Klikpay</option>
+                            <option value="klikBca">Klik BCA</option>
+                            <option value="bankTransfer">Bank Transfer</option>
+                            <option value="briEpay">Bri E-pay</option>
+                        </select>
+                        <button class='button checkout-button' type='submit'>Pay</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="layout::footer" />
+</body>
+
+</html>

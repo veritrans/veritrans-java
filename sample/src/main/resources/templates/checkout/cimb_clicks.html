@@ -1,0 +1,36 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- .well -->
+                <div th:replace="layout::item_details" />
+                <hr class="top-off" />
+                <div>
+                    <h2>CIMB Clicks</h2>
+                    <ol>
+                        <li>Please make sure that you have a User ID for CIMB Clicks and have registered your mPIN before going through with the payment.</li>
+                        <li>Payment via CIMB Clicks will be processed online and your CIMB bank account balance will be deducted automatically based on your total amount.</li>
+                        <li>Transaction will be cancelled if payment is not completed within 2 hours.</li>
+                        <li>Please make sure that there is no pop-up blocker on your browser.</li>
+                    </ol>
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="text-right">
+                            <a class="button back-button" href="/checkout/vtdirect">Back</a>
+                            <a class="button checkout-button" data-method="post" href="/checkout/cimb_clicks" rel="nofollow">Confirm Payment</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="layout::footer-vtdirect-creditcard" />
+</body>
+
+</html>

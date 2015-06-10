@@ -1,0 +1,35 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid">
+            <div class="span12">
+                <div class="alert alert-success">
+                    <p>Your transaction is registered successfully</p>
+                </div>
+            </div>
+            <div class="span12">
+                <!-- .well -->
+                <div class="vt-wrapper">
+                    <h2>KlikBCA</h2>
+                    <p style="margin-top:0">
+                        Please continue the payment process via KlikBCA by opening <a href="https://api.sandbox.veritrans.co.id:7676/bca/klikbca/index"> www.klikbca.com </a>on a separate window or tab.
+                        <br /> Transaction will be cancelled if payment is not completed within 2 hours.
+                    </p>
+                    <br />
+                </div>
+                <div class="span11">
+                    <div class="text-right">
+                        <a class="button back-button" href="/index">Back</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="layout::footer" />
+</body>
+
+</html>

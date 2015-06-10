@@ -1,0 +1,43 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body class="statics__index">
+<div th:replace="layout::header" />
+<div class="container component">
+    <div class="row-fluid" id="notif-app">
+        <div class="span12">
+        </div>
+    </div>
+    <div class="row-fluid">
+        <div class="span12">
+            <!-- .well -->
+            <div class="new-arrival-list">
+                <div class="product-sneak-peek" th:each="product : ${products}">
+                    <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 inner">
+                        <div class="name">
+                            <h4 th:text="${product.shortName}" />
+                            <div class="price" th:text="|Rp. ${product.priceIdr}|" />
+                        </div>
+                        <div class="image">
+                            <img th:alt="${product.shortName}" th:src="${product.thumbnailFilePath}" />
+                        </div>
+                        <div class="form-buy">
+                            <form accept-charset="UTF-8" action="/cart_add" method="get">
+                                <input name="productId" type="hidden" th:value="${product.id}" />
+                                <button class="button buy-button">
+                                    Buy
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div th:replace="layout::footer" />
+</body>
+
+</html>
