@@ -4,7 +4,7 @@ Veritrans java-client sample store application
 
 ## How to build and run
 
-You can get sample store source code from [Veritrans Java Client](https://github.com/gde-vt/veritrans-java/) repository on `~/veritrans-java/sample` directory.  
+You can get sample store source code from [Veritrans Java Client](https://github.com/veritrans/veritrans-java) repository on `~/veritrans-java/sample` directory.  
 This sample store application use [***Spring Boot Framework***](http://projects.spring.io/spring-boot/)
 <br />
 
