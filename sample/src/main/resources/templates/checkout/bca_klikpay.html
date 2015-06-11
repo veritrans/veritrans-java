@@ -1,0 +1,36 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout::html-head" />
+
+<body>
+    <div th:replace="layout::header" />
+    <div class="container component">
+        <div class="row-fluid">
+            <div class="span12">
+                <!-- .well -->
+                <div th:replace="layout::item_details" />
+                <hr class="top-off" />
+                <div>
+                    <h2>BCA KlikPay</h2>
+                    <ol>
+                        <li>You will be redirected to complete the payment with BCA Klikpay once you click pay.</li>
+                        <li>For payment, you can choose to use KlikBCA Individu or BCA Card.</li>
+                        <li>For more information about BCA KlikPay please contact Halo BCA at 500888 or (021) 500888 from your cell phone or visit www.bca.co.id</li>
+                    </ol>
+                    <input id="transaction_id" name="transaction_id" type="hidden" value="96df816c-57bd-449a-a81d-d16b5ef1c013" />
+                </div>
+                <div class="row-fluid">
+                    <div class="span12">
+                        <div class="text-right">
+                            <a class="button back-button" href="/checkout/vtdirect">Back</a>
+                            <a class="button checkout-button" data-method="post" href="/checkout/bca_klikpay" rel="nofollow">Checkout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div th:replace="layout::footer-vtdirect-creditcard" />
+</body>
+
+</html>
