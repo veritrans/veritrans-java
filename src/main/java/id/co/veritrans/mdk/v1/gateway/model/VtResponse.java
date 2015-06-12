@@ -7,7 +7,6 @@ import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import id.co.veritrans.mdk.v1.helper.JsonUtil;
 
 import java.io.InputStream;
-import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Date;
 
@@ -16,22 +15,12 @@ import java.util.Date;
  * Generally one must check the <b>statusCode</b> property to reliably determine the result of a request, do not ever
  * rely on the HTTP status code.
  */
-public class VtResponse {
+public class VtResponse extends OrderStatus {
 
-    private String transactionId;
-    private String orderId;
-    private BigDecimal grossAmount;
-    @JsonProperty("payment_type")
-    private String paymentMethod;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+07")
-    private Date transactionTime;
-    private TransactionStatus transactionStatus;
     private FraudStatus fraudStatus;
     @JsonProperty("masked_card")
     private String maskedCardNumber;
-    private String statusCode;
     private String statusMessage;
-    private String approvalCode;
     private String permataVaNumber;
     private String signatureKey;
     @JsonProperty("token_id")
@@ -50,6 +39,12 @@ public class VtResponse {
     private String redirectUrl;
     private String eci;
     private String[] validationMessages;
+    private Integer page;
+    private Integer totalPage;
+    private Integer totalRecord;
+    @JsonProperty("transactions")
+    private OrderStatus[] listTransactionStatus;
+
 
     /**
      * Veritrans transaction response constructor
@@ -77,114 +72,6 @@ public class VtResponse {
      */
     public static id.co.veritrans.mdk.v1.gateway.model.VtResponse deserializeJson(InputStream inputStream) throws JsonDeserializeException {
         return JsonUtil.fromJson(inputStream, VtResponse.class);
-    }
-
-    /**
-     * Get transaction identifier
-     *
-     * @return Transaction identifier
-     */
-    public String getTransactionId() {
-        return transactionId;
-    }
-
-    /**
-     * Set transaction identifier
-     *
-     * @param transactionId Transaction identifier
-     */
-    public void setTransactionId(final String transactionId) {
-        this.transactionId = transactionId;
-    }
-
-    /**
-     * Get transaction order identifier
-     *
-     * @return Transaction order identifier
-     */
-    public String getOrderId() {
-        return orderId;
-    }
-
-    /**
-     * Set transaction order identifier
-     *
-     * @param orderId Transaction order identifier
-     */
-    public void setOrderId(final String orderId) {
-        this.orderId = orderId;
-    }
-
-    /**
-     * Get transaction total gross amount
-     *
-     * @return Transaction total gross amount
-     */
-    public BigDecimal getGrossAmount() {
-        return grossAmount;
-    }
-
-    /**
-     * Set transaction total gross amount
-     *
-     * @param grossAmount Transaction total gross amount
-     */
-    public void setGrossAmount(final BigDecimal grossAmount) {
-        this.grossAmount = grossAmount;
-    }
-
-    /**
-     * Get transaction payment method
-     *
-     * @return Transaction payment method
-     */
-    public String getPaymentMethod() {
-        return paymentMethod;
-    }
-
-    /**
-     * Set transaction payment method
-     *
-     * @param paymentMethod Transaction payment method
-     */
-    public void setPaymentMethod(final String paymentMethod) {
-        this.paymentMethod = paymentMethod;
-    }
-
-    /**
-     * Get transaction time
-     *
-     * @return Transaction time
-     */
-    public Date getTransactionTime() {
-        return transactionTime;
-    }
-
-    /**
-     * Set transaction time
-     *
-     * @param transactionTime Transaction time
-     */
-    public void setTransactionTime(final Date transactionTime) {
-        this.transactionTime = transactionTime;
-    }
-
-    /**
-     * Get transaction status
-     *
-     * @return {@link id.co.veritrans.mdk.v1.gateway.model.TransactionStatus Transaction status}
-     */
-    public TransactionStatus getTransactionStatus() {
-        return transactionStatus;
-    }
-
-    /**
-     * Set transaction status
-     *
-     * @param transactionStatus {@link id.co.veritrans.mdk.v1.gateway.model.TransactionStatus Transaction status}
-     */
-    public void setTransactionStatus(final TransactionStatus transactionStatus) {
-        this.transactionStatus = transactionStatus;
     }
 
     /**
@@ -224,24 +111,6 @@ public class VtResponse {
     }
 
     /**
-     * Get transaction status code
-     *
-     * @return <a href="http://docs.veritrans.co.id/sandbox/status_code.html">Transaction status code</a>
-     */
-    public String getStatusCode() {
-        return statusCode;
-    }
-
-    /**
-     * Set transaction status code
-     *
-     * @param statusCode <a href="http://docs.veritrans.co.id/sandbox/status_code.html">Transaction status code</a>
-     */
-    public void setStatusCode(final String statusCode) {
-        this.statusCode = statusCode;
-    }
-
-    /**
      * Get transaction status message
      *
      * @return Transaction status message
@@ -257,24 +126,6 @@ public class VtResponse {
      */
     public void setStatusMessage(final String statusMessage) {
         this.statusMessage = statusMessage;
-    }
-
-    /**
-     * Get transaction approval code
-     *
-     * @return Transaction approval code
-     */
-    public String getApprovalCode() {
-        return approvalCode;
-    }
-
-    /**
-     * Set transaction approval code
-     *
-     * @param approvalCode Transaction approval code
-     */
-    public void setApprovalCode(final String approvalCode) {
-        this.approvalCode = approvalCode;
     }
 
     /**
@@ -313,140 +164,332 @@ public class VtResponse {
         this.signatureKey = signatureKey;
     }
 
+    /**
+     * Get card token
+     *
+     * @return Card token
+     */
     public String getCardToken() {
         return cardToken;
     }
 
+    /**
+     * Set card token
+     *
+     * @param cardToken card token
+     */
     public void setCardToken(final String cardToken) {
         this.cardToken = cardToken;
     }
 
+    /**
+     * Get saved card token
+     *
+     * @return Saved card token
+     */
     public String getSavedCardToken() {
         return savedCardToken;
     }
 
+    /**
+     * Set saved card token
+     *
+     * @param savedCardToken Saved card token
+     */
     public void setSavedCardToken(final String savedCardToken) {
         this.savedCardToken = savedCardToken;
     }
 
+    /**
+     * Get expired of saved card token
+     *
+     * @return Expired of saved card token
+     */
     public Date getSavedCardTokenExpiredAt() {
         return savedCardTokenExpiredAt;
     }
 
+    /**
+     * Set expired of saved card token
+     *
+     * @param savedCardTokenExpiredAt Expired of saved card token
+     */
     public void setSavedCardTokenExpiredAt(final Date savedCardTokenExpiredAt) {
         this.savedCardTokenExpiredAt = savedCardTokenExpiredAt;
     }
 
+    /**
+     * Get secure token
+     *
+     * @return Secure token
+     */
     public Boolean getSecureToken() {
         return secureToken;
     }
 
+    /**
+     * Set secure token
+     *
+     * @param secureToken Secure token
+     */
     public void setSecureToken(final Boolean secureToken) {
         this.secureToken = secureToken;
     }
 
+    /**
+     * Get acquirer bank
+     *
+     * @return Acquirer bank
+     */
     public CreditCard.Bank getBank() {
         return bank;
     }
 
+    /**
+     * Set acquirer bank
+     *
+     * @param bank Acquirer bank
+     */
     public void setBank(final CreditCard.Bank bank) {
         this.bank = bank;
     }
 
+    /**
+     * Get biller code
+     *
+     * @return Biller code
+     */
     public String getBillerCode() {
         return billerCode;
     }
 
+    /**
+     * Set biller code
+     *
+     * @param billerCode Biller code
+     */
     public void setBillerCode(final String billerCode) {
         this.billerCode = billerCode;
     }
 
+    /**
+     * Get bill key
+     *
+     * @return Bill key
+     */
     public String getBillKey() {
         return billKey;
     }
 
+    /**
+     * Set bill key
+     *
+     * @param billKey Bill key
+     */
     public void setBillKey(final String billKey) {
         this.billKey = billKey;
     }
 
+    /**
+     * Get XL tunai order id
+     *
+     * @return XL tunai order id
+     */
     public String getXlTunaiOrderId() {
         return xlTunaiOrderId;
     }
 
+    /**
+     * Set XL tunai order id
+     *
+     * @param xlTunaiOrderId XL tunai order id
+     */
     public void setXlTunaiOrderId(final String xlTunaiOrderId) {
         this.xlTunaiOrderId = xlTunaiOrderId;
     }
 
+    /**
+     * Get BII virtual account number
+     *
+     * @return BII virtual account number
+     */
     public String getBiiVaNumber() {
         return biiVaNumber;
     }
 
+    /**
+     * Set BII virtual account number
+     *
+     * @param biiVaNumber BII virtual account number
+     */
     public void setBiiVaNumber(final String biiVaNumber) {
         this.biiVaNumber = biiVaNumber;
     }
 
+    /**
+     * Get redirection URL
+     *
+     * @return Redirection URL
+     */
     public String getRedirectUrl() {
         return redirectUrl;
     }
 
+    /**
+     * Set redirection URL
+     *
+     * @param redirectUrl Redirection URL
+     */
     public void setRedirectUrl(final String redirectUrl) {
         this.redirectUrl = redirectUrl;
     }
 
+    /**
+     * Get card transaction ECI value
+     *
+     * @return Card transaction ECI value
+     */
     public String getEci() {
         return eci;
     }
 
+    /**
+     * Set card transaction ECI value
+     *
+     * @param eci Card transaction ECI value
+     */
     public void setEci(final String eci) {
         this.eci = eci;
     }
 
+    /**
+     * Get list of validation message
+     *
+     * @return List of validation message
+     */
     public String[] getValidationMessages() {
         return validationMessages;
     }
 
+    /**
+     * Set list of validation message
+     *
+     * @param validationMessages List of validation message
+     */
     public void setValidationMessages(final String[] validationMessages) {
         this.validationMessages = validationMessages;
     }
 
+    /**
+     * Get page number of get status transaction
+     *
+     * @return Page number of get status transaction
+     */
+    public Integer getPage() {
+        return page;
+    }
+
+    /**
+     * Set page number of get status transaction
+     *
+     * @param page Page number of get status transaction
+     */
+    public void setPage(Integer page) {
+        this.page = page;
+    }
+
+    /**
+     * Get total page of get status transaction
+     *
+     * @return Total page of get status transaction
+     */
+    public Integer getTotalPage() {
+        return totalPage;
+    }
+
+    /**
+     * Set total page of get status transaction
+     *
+     * @param totalPage Total page of get status transaction
+     */
+    public void setTotalPage(Integer totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    /**
+     * Get total record of get status transaction
+     *
+     * @return Total record of get status transaction
+     */
+    public Integer getTotalRecord() {
+        return totalRecord;
+    }
+
+    /**
+     * Set total record of get status transaction
+     *
+     * @param totalRecord Total record of get status transaction
+     */
+    public void setTotalRecord(Integer totalRecord) {
+        this.totalRecord = totalRecord;
+    }
+
+    /**
+     * Get list of order transaction status
+     *
+     * @return List of order transaction status
+     */
+    public OrderStatus[] getListTransactionStatus() {
+        return listTransactionStatus;
+    }
+
+    /**
+     * Set list of order transaction status
+     *
+     * @param listTransactionStatus List of order transaction status
+     */
+    public void setListTransactionStatus(OrderStatus[] listTransactionStatus) {
+        this.listTransactionStatus = listTransactionStatus;
+    }
+
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final VtResponse that = (VtResponse) o;
+        VtResponse response = (VtResponse) o;
 
-        if (approvalCode != null ? !approvalCode.equals(that.approvalCode) : that.approvalCode != null) return false;
-        if (bank != that.bank) return false;
-        if (biiVaNumber != null ? !biiVaNumber.equals(that.biiVaNumber) : that.biiVaNumber != null) return false;
-        if (billKey != null ? !billKey.equals(that.billKey) : that.billKey != null) return false;
-        if (billerCode != null ? !billerCode.equals(that.billerCode) : that.billerCode != null) return false;
-        if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
-        if (fraudStatus != that.fraudStatus) return false;
-        if (grossAmount != null ? !grossAmount.equals(that.grossAmount) : that.grossAmount != null) return false;
-        if (maskedCardNumber != null ? !maskedCardNumber.equals(that.maskedCardNumber) : that.maskedCardNumber != null)
+        if (bank != response.bank) return false;
+        if (biiVaNumber != null ? !biiVaNumber.equals(response.biiVaNumber) : response.biiVaNumber != null)
             return false;
-        if (orderId != null ? !orderId.equals(that.orderId) : that.orderId != null) return false;
-        if (paymentMethod != that.paymentMethod) return false;
-        if (permataVaNumber != null ? !permataVaNumber.equals(that.permataVaNumber) : that.permataVaNumber != null)
+        if (billKey != null ? !billKey.equals(response.billKey) : response.billKey != null) return false;
+        if (billerCode != null ? !billerCode.equals(response.billerCode) : response.billerCode != null) return false;
+        if (cardToken != null ? !cardToken.equals(response.cardToken) : response.cardToken != null) return false;
+        if (eci != null ? !eci.equals(response.eci) : response.eci != null) return false;
+        if (fraudStatus != response.fraudStatus) return false;
+        if (!Arrays.equals(listTransactionStatus, response.listTransactionStatus)) return false;
+        if (maskedCardNumber != null ? !maskedCardNumber.equals(response.maskedCardNumber) : response.maskedCardNumber != null)
             return false;
-        if (redirectUrl != null ? !redirectUrl.equals(that.redirectUrl) : that.redirectUrl != null) return false;
-        if (savedCardToken != null ? !savedCardToken.equals(that.savedCardToken) : that.savedCardToken != null)
+        if (page != null ? !page.equals(response.page) : response.page != null) return false;
+        if (permataVaNumber != null ? !permataVaNumber.equals(response.permataVaNumber) : response.permataVaNumber != null)
             return false;
-        if (savedCardTokenExpiredAt != null ? !savedCardTokenExpiredAt.equals(that.savedCardTokenExpiredAt) : that.savedCardTokenExpiredAt != null)
+        if (redirectUrl != null ? !redirectUrl.equals(response.redirectUrl) : response.redirectUrl != null)
             return false;
-        if (secureToken != null ? !secureToken.equals(that.secureToken) : that.secureToken != null) return false;
-        if (signatureKey != null ? !signatureKey.equals(that.signatureKey) : that.signatureKey != null) return false;
-        if (statusCode != null ? !statusCode.equals(that.statusCode) : that.statusCode != null) return false;
-        if (statusMessage != null ? !statusMessage.equals(that.statusMessage) : that.statusMessage != null)
+        if (savedCardToken != null ? !savedCardToken.equals(response.savedCardToken) : response.savedCardToken != null)
             return false;
-        if (transactionId != null ? !transactionId.equals(that.transactionId) : that.transactionId != null)
+        if (savedCardTokenExpiredAt != null ? !savedCardTokenExpiredAt.equals(response.savedCardTokenExpiredAt) : response.savedCardTokenExpiredAt != null)
             return false;
-        if (transactionStatus != that.transactionStatus) return false;
-        if (transactionTime != null ? !transactionTime.equals(that.transactionTime) : that.transactionTime != null)
+        if (secureToken != null ? !secureToken.equals(response.secureToken) : response.secureToken != null)
             return false;
-        if (!Arrays.equals(validationMessages, that.validationMessages)) return false;
-        if (xlTunaiOrderId != null ? !xlTunaiOrderId.equals(that.xlTunaiOrderId) : that.xlTunaiOrderId != null)
+        if (signatureKey != null ? !signatureKey.equals(response.signatureKey) : response.signatureKey != null)
+            return false;
+        if (statusMessage != null ? !statusMessage.equals(response.statusMessage) : response.statusMessage != null)
+            return false;
+        if (totalPage != null ? !totalPage.equals(response.totalPage) : response.totalPage != null) return false;
+        if (totalRecord != null ? !totalRecord.equals(response.totalRecord) : response.totalRecord != null)
+            return false;
+        if (!Arrays.equals(validationMessages, response.validationMessages)) return false;
+        if (xlTunaiOrderId != null ? !xlTunaiOrderId.equals(response.xlTunaiOrderId) : response.xlTunaiOrderId != null)
             return false;
 
         return true;
@@ -454,17 +497,9 @@ public class VtResponse {
 
     @Override
     public int hashCode() {
-        int result = transactionId != null ? transactionId.hashCode() : 0;
-        result = 31 * result + (orderId != null ? orderId.hashCode() : 0);
-        result = 31 * result + (grossAmount != null ? grossAmount.hashCode() : 0);
-        result = 31 * result + (paymentMethod != null ? paymentMethod.hashCode() : 0);
-        result = 31 * result + (transactionTime != null ? transactionTime.hashCode() : 0);
-        result = 31 * result + (transactionStatus != null ? transactionStatus.hashCode() : 0);
-        result = 31 * result + (fraudStatus != null ? fraudStatus.hashCode() : 0);
+        int result = fraudStatus != null ? fraudStatus.hashCode() : 0;
         result = 31 * result + (maskedCardNumber != null ? maskedCardNumber.hashCode() : 0);
-        result = 31 * result + (statusCode != null ? statusCode.hashCode() : 0);
         result = 31 * result + (statusMessage != null ? statusMessage.hashCode() : 0);
-        result = 31 * result + (approvalCode != null ? approvalCode.hashCode() : 0);
         result = 31 * result + (permataVaNumber != null ? permataVaNumber.hashCode() : 0);
         result = 31 * result + (signatureKey != null ? signatureKey.hashCode() : 0);
         result = 31 * result + (cardToken != null ? cardToken.hashCode() : 0);
@@ -477,7 +512,12 @@ public class VtResponse {
         result = 31 * result + (xlTunaiOrderId != null ? xlTunaiOrderId.hashCode() : 0);
         result = 31 * result + (biiVaNumber != null ? biiVaNumber.hashCode() : 0);
         result = 31 * result + (redirectUrl != null ? redirectUrl.hashCode() : 0);
+        result = 31 * result + (eci != null ? eci.hashCode() : 0);
         result = 31 * result + (validationMessages != null ? Arrays.hashCode(validationMessages) : 0);
+        result = 31 * result + (page != null ? page.hashCode() : 0);
+        result = 31 * result + (totalPage != null ? totalPage.hashCode() : 0);
+        result = 31 * result + (totalRecord != null ? totalRecord.hashCode() : 0);
+        result = 31 * result + (listTransactionStatus != null ? Arrays.hashCode(listTransactionStatus) : 0);
         return result;
     }
 }
