@@ -32,6 +32,7 @@ public class MandiriClickpayIT extends AbstractIntegrationTest {
         final VtResponse vtResponse = vtDirect.charge(req);
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.SETTLED);
+        assertEquals(vtResponse.getPaymentMethod(), "mandiri_clickpay");
         assertNull(vtResponse.getFraudStatus());
     }
 

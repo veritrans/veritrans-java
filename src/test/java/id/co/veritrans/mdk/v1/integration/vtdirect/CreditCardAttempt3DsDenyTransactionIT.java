@@ -27,6 +27,7 @@ public class CreditCardAttempt3DsDenyTransactionIT extends AbstractCreditCardIT 
         assertEquals(vtResponse.getStatusCode(), "202");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.DENIED);
         assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
+        assertEquals(vtResponse.getPaymentMethod(), "credit_card");
     }
 
     @Test(groups = "integrationTest", dependsOnMethods = "testCharge")

@@ -31,6 +31,7 @@ public class CreditCardNon3DsAuthCancelIT extends AbstractCreditCardIT {
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.AUTHORIZED);
         assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
+        assertEquals(vtResponse.getPaymentMethod(), "credit_card");
         assertNotNull(vtResponse.getTransactionId());
         assertNotNull(vtResponse.getGrossAmount());
 

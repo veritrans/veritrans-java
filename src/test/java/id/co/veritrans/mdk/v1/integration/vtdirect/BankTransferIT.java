@@ -32,6 +32,7 @@ public class BankTransferIT extends AbstractIntegrationTest {
         Assert.assertEquals(response.getOrderId(), orderId);
         Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.PENDING);
         Assert.assertEquals(response.getStatusCode(), "201");
+        Assert.assertEquals(response.getPaymentMethod(), "bank_transfer");
         Assert.assertNotNull(response.getPermataVaNumber());
         Assert.assertNotNull(response.getTransactionId());
 

@@ -32,6 +32,7 @@ public class BcaKlikpayIT extends AbstractIntegrationTest {
         Assert.assertEquals(response.getOrderId(), orderId);
         Assert.assertEquals(response.getStatusCode(), "201");
         Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.PENDING);
+        Assert.assertEquals(response.getPaymentMethod(), "bca_klikpay");
         Assert.assertTrue(response.getStatusMessage().contains("success"));
         Assert.assertNotNull(response.getRedirectUrl());
 

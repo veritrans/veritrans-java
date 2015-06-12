@@ -27,6 +27,7 @@ public class CreditCardNon3DsIT extends AbstractCreditCardIT {
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CAPTURED);
         assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
+        assertEquals(vtResponse.getPaymentMethod(), "credit_card");
     }
 
     @Test(groups = "integrationTest", dependsOnMethods = "testCharge")

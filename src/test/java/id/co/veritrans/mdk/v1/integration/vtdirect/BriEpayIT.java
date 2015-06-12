@@ -29,6 +29,7 @@ public class BriEpayIT extends AbstractIntegrationTest{
         Assert.assertEquals(response.getOrderId(), orderId);
         Assert.assertEquals(response.getStatusCode(), "201");
         Assert.assertEquals(response.getTransactionStatus(), TransactionStatus.PENDING);
+        Assert.assertEquals(response.getPaymentMethod(), "bri_epay");
         Assert.assertTrue(response.getStatusMessage().startsWith("Success"));
         Assert.assertNotNull(response.getRedirectUrl());
 
