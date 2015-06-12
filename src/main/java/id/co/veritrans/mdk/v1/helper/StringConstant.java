@@ -12,5 +12,6 @@ public class StringConstant {
     public final static String GET_STATUS             = "status";
     public final static String CANCEL                 = "cancel";
     public final static String APPROVE                = "approve";
+    public final static String TRANSACTIONS           = "transactions";
 
 }
