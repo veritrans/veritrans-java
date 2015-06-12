@@ -23,7 +23,7 @@ public class VtWebChargeRequest extends AbstractVtRequest {
      * The {@link id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebParam} describing the configuration for the charge
      * request.
      */
-    private VtWebParam vtWeb;
+    private VtWebParam vtweb;
 
     /**
      * VtWebChargeRequest default constructor.
@@ -39,7 +39,7 @@ public class VtWebChargeRequest extends AbstractVtRequest {
      */
     public VtWebChargeRequest(final TransactionDetails transactionDetails, final VtWebParam vtWeb) {
         super(transactionDetails);
-        this.vtWeb = vtWeb;
+        this.vtweb = vtWeb;
     }
 
     /**
@@ -52,15 +52,15 @@ public class VtWebChargeRequest extends AbstractVtRequest {
      */
     public VtWebChargeRequest(final TransactionDetails transactionDetails, final List<TransactionItem> itemDetails, final CustomerDetails customerDetails, final VtWebParam vtWeb) {
         super(transactionDetails, itemDetails, customerDetails);
-        this.vtWeb = vtWeb;
+        this.vtweb = vtWeb;
     }
 
     public VtWebParam getVtWeb() {
-        return vtWeb;
+        return vtweb;
     }
 
-    public void setVtWeb(final VtWebParam vtWeb) {
-        this.vtWeb = vtWeb;
+    public void setVtWeb(final VtWebParam vtweb) {
+        this.vtweb = vtweb;
     }
 
     @Override
@@ -72,7 +72,7 @@ public class VtWebChargeRequest extends AbstractVtRequest {
         final VtWebChargeRequest that = (VtWebChargeRequest) o;
 
         if (paymentType != null ? !paymentType.equals(that.paymentType) : that.paymentType != null) return false;
-        if (vtWeb != null ? !vtWeb.equals(that.vtWeb) : that.vtWeb != null) return false;
+        if (vtweb != null ? !vtweb.equals(that.vtweb) : that.vtweb != null) return false;
 
         return true;
     }
@@ -81,7 +81,7 @@ public class VtWebChargeRequest extends AbstractVtRequest {
     public int hashCode() {
         int result = super.hashCode();
         result = 31 * result + (paymentType != null ? paymentType.hashCode() : 0);
-        result = 31 * result + (vtWeb != null ? vtWeb.hashCode() : 0);
+        result = 31 * result + (vtweb != null ? vtweb.hashCode() : 0);
         return result;
     }
 }

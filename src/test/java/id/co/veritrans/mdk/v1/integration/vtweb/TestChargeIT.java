@@ -25,6 +25,7 @@ public class TestChargeIT extends AbstractIntegrationTest {
         request.setTransactionDetails(new TransactionDetails(orderId, 10000L));
         request.setCustomerDetails(new CustomerDetails("gde", "satrigraha", "gde.satrigraha@veritrans.co.id", "123456789", null, null));
         request.setVtWeb(new VtWebParam());
+        request.getVtWeb().setCreditCardBins(new String[]{"411111"});
 
         final VtResponse vtResponse = vtWeb.charge(request);
         assertEquals(vtResponse.getStatusCode(), "201");
