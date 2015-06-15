@@ -6,11 +6,11 @@ import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebChargeRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebParam;
+import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import id.co.veritrans.mdk.v1.integration.AbstractIntegrationTest;
 import org.testng.annotations.Test;
 
-import static org.testng.Assert.assertEquals;
-import static org.testng.Assert.assertNotNull;
+import static org.testng.Assert.*;
 
 /**
  * Created by gde on 5/20/15.
@@ -26,6 +26,8 @@ public class TestChargeIT extends AbstractIntegrationTest {
         request.setCustomerDetails(new CustomerDetails("gde", "satrigraha", "gde.satrigraha@veritrans.co.id", "123456789", null, null));
         request.setVtWeb(new VtWebParam());
         request.getVtWeb().setCreditCardBins(new String[]{"411111"});
+        assertTrue(JsonUtil.toJson(request).contains("\"vtweb\":{\"credit_card_bins\":[\"411111\"]}"));
+        assertFalse(JsonUtil.toJson(request).contains("\"vt_web\""));
 
         final VtResponse vtResponse = vtWeb.charge(request);
         assertEquals(vtResponse.getStatusCode(), "201");

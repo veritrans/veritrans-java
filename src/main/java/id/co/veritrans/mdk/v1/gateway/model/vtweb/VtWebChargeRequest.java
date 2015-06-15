@@ -23,6 +23,7 @@ public class VtWebChargeRequest extends AbstractVtRequest {
      * The {@link id.co.veritrans.mdk.v1.gateway.model.vtweb.VtWebParam} describing the configuration for the charge
      * request.
      */
+    @JsonProperty("vtweb")
     private VtWebParam vtweb;
 
     /**
@@ -55,6 +56,7 @@ public class VtWebChargeRequest extends AbstractVtRequest {
         this.vtweb = vtWeb;
     }
 
+    @JsonProperty("vtweb")
     public VtWebParam getVtWeb() {
         return vtweb;
     }
