@@ -442,7 +442,16 @@ if (vtResponse.getStatusCode().equals("201")) {
 }
 ```
 
-<br/>
+### Set enabled payment method
+You can specify manually on every request which payment method that want to be enabled on transaction.
+```java
+VtWebChargeRequest vtWebChargeRequest = new VtWebChargeRequest();
+setVtWebChargeRequestValues(vtWebChargeRequest);
+vtWebChargeRequest.setVtWeb(new VtWebParam());
+vtWebChargeRequest.getVtWeb().setEnabledPayments(new VtWebParam.PaymentMethod[]{VtWebParam.PaymentMethod.CREDIT_CARD, VtWebParam.PaymentMethod.CIMB_CLICKS});
+```
+
+<br />
 ## Other Features
 
 ### Check Transaction Status

@@ -533,7 +533,15 @@ if (vtResponse.getStatusCode().equals(&quot;201&quot;)) {
 }
 </code></pre>
 
-<p><br/></p>
+<h3 id="set-enabled-payment-method">Set enabled payment method</h3>
+<p>You can specify manually on every request which payment method that want to be enabled on transaction.</p>
+<pre><code class="java">VtWebChargeRequest vtWebChargeRequest = new VtWebChargeRequest();
+setVtWebChargeRequestValues(vtWebChargeRequest);
+vtWebChargeRequest.setVtWeb(new VtWebParam());
+vtWebChargeRequest.getVtWeb().setEnabledPayments(new VtWebParam.PaymentMethod[]{VtWebParam.PaymentMethod.CREDIT_CARD, VtWebParam.PaymentMethod.CIMB_CLICKS});
+</code></pre>
+
+<p><br /></p>
 <h2 id="other-features">Other Features</h2>
 <h3 id="check-transaction-status">Check Transaction Status</h3>
 <h4 id="vtdirect_1">VtDirect</h4>
