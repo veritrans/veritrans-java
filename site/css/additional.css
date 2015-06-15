@@ -1,0 +1,143 @@
+body{
+	font-family: 'Source Sans Pro', sans-serif !important;	
+	letter-spacing: 1px;
+	line-height: 1.6;
+}
+
+.nav{
+	font-size: 15px;
+	letter-spacing: 0.05px;
+}
+
+.navbar ul.navbar-nav {
+	margin-top: 0px;
+	font-color: #555;
+	font-size: 10px !important;
+	text-transform: uppercase;
+}
+
+.nav>.main>a{
+	padding: 10px 2px 0px 2px;
+	color: #777;
+	font-weight: bold;
+	font-size: 15px;
+}
+
+.nav>.main>a:hover{
+	background-color: transparent;
+	color: #004290;
+	text-decoration: none;
+}
+
+.nav>.main>a:focus{
+	background-color: transparent;
+	color: #004290;
+	text-decoration: none;
+}
+
+.nav>li>a{
+	padding: 10px 2px 0px 15px;
+	color: #777;
+	font-weight: bold;
+	font-size: 13px;
+}
+
+.nav>li>a:hover{
+	background-color: transparent;
+	text-decoration: underline;
+}
+
+.nav>li>a:focus{
+	background-color: transparent;
+	color: #00a2db;
+	text-decoration: none;
+}
+
+.nav .bs-sidebar{
+	border-color: transparent;
+}
+
+.navbar.navbar-default.navbar-fixed-top{
+	background-color: #FFFFFF;
+	box-shadow: 0 1px 2px #bbbbbb;
+}
+
+.navbar .navbar-brand{
+	background-image: url(http://docs.veritrans.co.id/images/veritrans@2x.png);
+}
+
+.bs-sidebar{
+	box-shadow: transparent 0px 0px 0px 0px;
+	border-color: transparent;
+	max-width: 200px;
+}
+
+.well{
+	background-color: transparent;
+	border-color: transparent;
+	padding: 0px;
+	box-shadow: transparent 0px 0px 0px 0px;
+	margin-top: 20px;
+	margin-left: -10PX;
+}
+
+.navbar ul.navbar-nav li.active a {
+	background-color: transparent;
+}
+
+.navbar ul.navbar-nav li.active a:hover {
+	background-color: transparent;
+}
+
+.navbar ul.navbar-nav li a:hover{
+	color: #555;
+	background-color: transparent;
+	border-top-color: transparent;
+	border-left-color: transparent;
+	border-right-color: transparent;
+}
+
+.navbar ul.navbar-nav li a{
+	margin:7px 10px;
+	letter-spacing: 1px;
+}
+
+.navbar-default .nav>li>a {
+	font-size: 12px;
+	font-weight: 400;
+}
+
+p{
+  margin: 0 0 10px;
+  letter-spacing: 0.0725em;
+  color: #555;
+  font-size: 14px;
+  font-weight: 400;
+}
+
+h3 {
+	font-family: 'Source Sans Pro';
+  color: #00a2db;
+  font-weight: 400;
+  font-size: 22px;
+  margin: 1.5em 0 1.5em;
+}
+
+h2 {
+	font-family: 'Source Sans Pro';
+  font-weight: 400;
+  font-size: 30px;
+  color: #004290;
+  margin: 30px 0 30px 0;
+  padding: 0;
+}
+
+h1{
+	font-family: 'Source Sans Pro';
+	font-weight: 500px;
+	font-size: 36px;
+}
+
+img{
+	max-width: 800px;
+}

@@ -1,6 +1,6 @@
 site_name: Veritrans - Java Client Documentation
 use_directory_urls: false
-theme: flatly
+theme_dir: 'custom'
 pages:
 - [index.md, Home]
 - [javadoc/index.html, Javadoc]

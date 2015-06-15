@@ -1,3 +1,5 @@
+<br/>
+
 [ ![Download](https://api.bintray.com/packages/pt-midtrans/maven/veritrans-java-client/images/download.svg) ](https://bintray.com/pt-midtrans/maven/veritrans-java-client/_latestVersion)
 # Veritrans - Java Client Documentation
 This is the official Java Client for Veritrans Payment API.  
@@ -151,6 +153,7 @@ Visit [http://docs.veritrans.co.id/en/api/methods.html#Charge ](http://docs.veri
 
 #### VtDirectChargeRequest
 VtDirectChargeRequest has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:  
+
 - [BankTransferRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BankTransferRequest.html)  
 - [BriEpayRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/BriEpayRequest.html)  
 - [CimbClicksRequest](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/CimbClicksRequest.html)  
