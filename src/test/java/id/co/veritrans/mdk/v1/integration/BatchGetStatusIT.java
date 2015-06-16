@@ -55,7 +55,7 @@ public class BatchGetStatusIT extends AbstractIntegrationTest {
          * Batch Get Status request
          */
         final StatusRequest statusRequest = new StatusRequestBuilder()
-                .setOrderIds(listOrderIds.toArray(new String[listOrderIds.size()]))
+                .setOrderIds(listOrderIds)
                 .setPage(1)
                 .setRowPerPage(10)
                 .createStatusRequest();

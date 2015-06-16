@@ -1,11 +1,13 @@
 package id.co.veritrans.mdk.v1.gateway.model;
 
+import java.util.ArrayList;
+
 /**
  * Get batch status request
  */
 public class StatusRequest implements VtRequest {
 
-    private String[] orderIds;
+    private ArrayList<String> orderIds;
     private Integer page;
     private Integer rowPerPage;
 
@@ -16,7 +18,7 @@ public class StatusRequest implements VtRequest {
      * @param page
      * @param rowPerPage
      */
-    public StatusRequest(String[] orderIds, Integer page, Integer rowPerPage) {
+    public StatusRequest(ArrayList<String> orderIds, Integer page, Integer rowPerPage) {
         this.orderIds = orderIds;
         this.page = page;
         this.rowPerPage = rowPerPage;
@@ -27,7 +29,7 @@ public class StatusRequest implements VtRequest {
      *
      * @return
      */
-    public String[] getOrderIds() {
+    public ArrayList<String> getOrderIds() {
         return orderIds;
     }
 
