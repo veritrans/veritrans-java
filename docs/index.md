@@ -464,11 +464,28 @@ String orderId = "your unique order ID";
 VtResponse vtResponse = vtDirect.status(orderId);
 //continue processing based on the vtResponse
 ```
+
 #### VtWeb
 ```java
 String orderId = "your unique order ID";
 VtResponse vtResponse = vtWeb.status(orderId);
 //continue processing based on the vtResponse
+```
+
+### Check Multiple Transaction Status
+```java
+ArrayList<String> listOrderIds = new ArrayList<String>();
+listOrderIds.add(orderId1);
+listOrderIds.add(orderId2);
+
+// Build status request from list of order ID
+StatusRequest statusRequest = new StatusRequestBuilder()
+    .setOrderIds(listOrderIds)
+    .setPage(1)
+    .setRowPerPage(10)
+    .createStatusRequest();
+
+VtResponse vtResponse = vtDirect.status(statusRequest);
 ```
 
 <br/>

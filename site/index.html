@@ -553,6 +553,21 @@ VtResponse vtResponse = vtWeb.status(orderId);
 //continue processing based on the vtResponse
 </code></pre>
 
+<h3 id="check-multiple-transaction-status">Check Multiple Transaction Status</h3>
+<pre><code class="java">ArrayList&lt;String&gt; listOrderIds = new ArrayList&lt;String&gt;();
+listOrderIds.add(orderId1);
+listOrderIds.add(orderId2);
+
+// Build status request from list of order ID
+StatusRequest statusRequest = new StatusRequestBuilder()
+    .setOrderIds(listOrderIds)
+    .setPage(1)
+    .setRowPerPage(10)
+    .createStatusRequest();
+
+VtResponse vtResponse = vtDirect.status(statusRequest);
+</code></pre>
+
 <p><br/></p>
 <h3 id="credit-card-accept-an-fds-challenge-capture">Credit Card: Accept an <code>FDS challenge</code> capture</h3>
 <h4 id="vtdirect_2">VtDirect</h4>
