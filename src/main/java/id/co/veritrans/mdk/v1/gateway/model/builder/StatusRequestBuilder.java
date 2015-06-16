@@ -2,11 +2,13 @@ package id.co.veritrans.mdk.v1.gateway.model.builder;
 
 import id.co.veritrans.mdk.v1.gateway.model.StatusRequest;
 
+import java.util.ArrayList;
+
 /**
  * Builder of {@link id.co.veritrans.mdk.v1.gateway.model.StatusRequest StatusRequest} class
  */
 public class StatusRequestBuilder {
-    private String[] orderIds;
+    private ArrayList<String> orderIds;
     private Integer page;
     private Integer rowPerPage;
 
@@ -16,7 +18,7 @@ public class StatusRequestBuilder {
      * @param orderIds
      * @return
      */
-    public StatusRequestBuilder setOrderIds(String[] orderIds) {
+    public StatusRequestBuilder setOrderIds(ArrayList<String> orderIds) {
         this.orderIds = orderIds;
         return this;
     }
