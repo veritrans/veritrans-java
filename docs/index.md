@@ -25,7 +25,7 @@ If you're using Maven as the build tools for your project, please add **[jcenter
     <dependency>
         <groupId>id.co.veritrans</groupId>
         <artifactId>vt-java-client</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.2</version>
     </dependency>
 </dependencies>
 ```
@@ -40,7 +40,7 @@ repositories {
 }
 
 dependencies {
-    compile 'id.co.veritrans:vt-java-client:1.0.1'
+    compile 'id.co.veritrans:vt-java-client:1.0.2'
 }
 ```
 
