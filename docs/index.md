@@ -44,6 +44,9 @@ dependencies {
 }
 ```
 
+## Jar Library
+If you want to download veritrans java-client jar library on your own, you can download it directly **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.2/vt-java-client-1.0.2-all.jar)**
+
 # Usage
 
 ## VtGatewayConfig
