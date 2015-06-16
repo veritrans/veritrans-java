@@ -106,6 +106,7 @@ task javadocJar(type: Jar, dependsOn: javadoc) {
 artifacts {
     archives sourceJar
     archives javadocJar
+    archives shadowJar
 }
 
 install {
