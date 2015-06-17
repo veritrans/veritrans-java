@@ -4,6 +4,7 @@ import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.model.FraudStatus;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionStatus;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
+import id.co.veritrans.mdk.v1.gateway.model.builder.CreditCardBuilder;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import org.testng.annotations.Test;
 
@@ -27,7 +28,11 @@ public class CreditCardFull3DsChargeSavedTokenIT extends AbstractCreditCardIT {
     @Test(groups = "integrationTest")
     public void testCharge() throws RestClientException, URISyntaxException, IOException {
         final String cardToken = getToken3Ds("4811111111111114", "01", "2020", "123", CreditCard.Bank.BNI);
-        final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.BNI, null, null, null, Boolean.TRUE));
+        final VtResponse vtResponse = charge(orderId, new CreditCardBuilder()
+                .setCardToken(cardToken)
+                .setAcquirerBank(CreditCard.Bank.BNI)
+                .setSaveCardToken(Boolean.TRUE)
+                .createCreditCard());
 
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CAPTURED);
@@ -69,7 +74,7 @@ public class CreditCardFull3DsChargeSavedTokenIT extends AbstractCreditCardIT {
 
     @Test(groups = "integrationTest", dependsOnMethods = "testCharge")
     public void testChargeUsingSavedToken() throws RestClientException, URISyntaxException {
-        final VtResponse vtResponse = charge(orderId2, new CreditCard(cardToken, CreditCard.Bank.BNI, null, null, null, null));
+        final VtResponse vtResponse = charge(orderId2, new CreditCardBuilder().setCardToken(cardToken).setAcquirerBank(CreditCard.Bank.BNI).setInstallmentTerm(null).setBins(null).setTransactionType(null).setSaveCardToken(null).createCreditCard());
 
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CAPTURED);

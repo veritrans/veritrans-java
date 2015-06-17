@@ -6,6 +6,7 @@ import id.co.veritrans.mdk.v1.config.ProxyConfigBuilder;
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
+import id.co.veritrans.mdk.v1.gateway.model.builder.CreditCardBuilder;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 
 import java.util.Date;
@@ -19,7 +20,7 @@ public class TestUtil {
 
     /* Build credit card object */
     public static CreditCard buildCreditCard() {
-        CreditCard creditCard = new CreditCard();
+        CreditCard creditCard = new CreditCardBuilder().createCreditCard();
         creditCard.setCardToken("abcdef");
         creditCard.setAcquirerBank(CreditCard.Bank.BNI);
 

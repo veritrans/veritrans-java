@@ -2,6 +2,7 @@ package id.co.veritrans.mdk.v1.helper;
 
 import id.co.veritrans.mdk.v1.gateway.model.TransactionStatus;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
+import id.co.veritrans.mdk.v1.gateway.model.builder.CreditCardBuilder;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -23,11 +24,12 @@ public class JsonUtilTest {
 
     @Test
     public void testJsonSerializer() throws Exception {
-        CreditCard creditCard = new CreditCard();
-        creditCard.setCardToken("1234567890");
-        creditCard.setAcquirerBank(CreditCard.Bank.BNI);
-        creditCard.setInstallmentTerm(6);
-        creditCard.setSaveCardToken(true);
+        CreditCard creditCard = new CreditCardBuilder()
+                .setCardToken("1234567890")
+                .setAcquirerBank(CreditCard.Bank.BNI)
+                .setInstallmentTerm(6)
+                .setSaveCardToken(true)
+                .createCreditCard();
 
         String json = JsonUtil.toJson(creditCard);
         Assert.assertTrue(json.contains("token_id"));

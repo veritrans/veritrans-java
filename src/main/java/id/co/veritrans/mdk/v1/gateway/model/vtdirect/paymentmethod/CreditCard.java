@@ -22,6 +22,7 @@ public class CreditCard {
     private TransactionType transactionType;
     @JsonProperty("save_token_id")
     private Boolean saveCardToken;
+    private String fraudSector;
 
     /**
      * Credit card bank enum
@@ -78,12 +79,27 @@ public class CreditCard {
      * @param saveCardToken     Save token id for one/two click feature
      */
     public CreditCard(final String cardToken, final Bank acquirerBank, final Integer installmentTerm, final List<String> bins, final TransactionType transactionType, final Boolean saveCardToken) {
+        this(cardToken, acquirerBank, installmentTerm, bins, transactionType, saveCardToken, null);
+    }
+
+    /**
+     *
+     * @param cardToken       Veritrans card token identifier
+     * @param acquirerBank    Veritrans credit card {@link CreditCard.Bank acquiring bank}
+     * @param installmentTerm Transaction installment term (month)
+     * @param bins            Merchant bin promo
+     * @param transactionType {@link CreditCard.TransactionType Transaction type} for current transaction
+     * @param saveCardToken   Save token id for one/two click feature
+     * @param fraudSector     Merchant fraud sector
+     */
+    public CreditCard(String cardToken, Bank acquirerBank, Integer installmentTerm, List<String> bins, TransactionType transactionType, Boolean saveCardToken, String fraudSector) {
         this.cardToken = cardToken;
         this.acquirerBank = acquirerBank;
         this.installmentTerm = installmentTerm;
         this.bins = bins;
         this.transactionType = transactionType;
         this.saveCardToken = saveCardToken;
+        this.fraudSector = fraudSector;
     }
 
     /**
@@ -194,19 +210,37 @@ public class CreditCard {
         this.saveCardToken = saveCardToken;
     }
 
+    /**
+     * Get merchant fraud sector
+     * @return Merchant fraud sector
+     */
+    public String getFraudSector() {
+        return fraudSector;
+    }
+
+    /**
+     * Set merchant fraud sector
+     * @param fraudSector Merchant fraud sector
+     */
+    public void setFraudSector(String fraudSector) {
+        this.fraudSector = fraudSector;
+    }
+
     @Override
-    public boolean equals(final Object o) {
+    public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        final CreditCard that = (CreditCard) o;
+        CreditCard that = (CreditCard) o;
 
         if (acquirerBank != that.acquirerBank) return false;
         if (bins != null ? !bins.equals(that.bins) : that.bins != null) return false;
+        if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
+        if (fraudSector != null ? !fraudSector.equals(that.fraudSector) : that.fraudSector != null) return false;
         if (installmentTerm != null ? !installmentTerm.equals(that.installmentTerm) : that.installmentTerm != null)
             return false;
-        if (saveCardToken != null ? !saveCardToken.equals(that.saveCardToken) : that.saveCardToken != null) return false;
-        if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
+        if (saveCardToken != null ? !saveCardToken.equals(that.saveCardToken) : that.saveCardToken != null)
+            return false;
         if (transactionType != that.transactionType) return false;
 
         return true;
@@ -220,6 +254,7 @@ public class CreditCard {
         result = 31 * result + (bins != null ? bins.hashCode() : 0);
         result = 31 * result + (transactionType != null ? transactionType.hashCode() : 0);
         result = 31 * result + (saveCardToken != null ? saveCardToken.hashCode() : 0);
+        result = 31 * result + (fraudSector != null ? fraudSector.hashCode() : 0);
         return result;
     }
 }
