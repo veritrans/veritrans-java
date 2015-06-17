@@ -1,9 +1,8 @@
 package id.co.veritrans.mdk.v1;
 
-import id.co.veritrans.mdk.v1.VtGatewayConfigBuilder;
-import id.co.veritrans.mdk.v1.VtGatewayFactory;
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
+import id.co.veritrans.mdk.v1.gateway.model.builder.CreditCardBuilder;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import org.testng.annotations.BeforeClass;
@@ -24,7 +23,7 @@ public class VtDirectTest {
 
     @Test
     public void testChargeCreditCardNormal() {
-        CreditCard card = new CreditCard();
+        CreditCard card = new CreditCardBuilder().createCreditCard();
         card.setCardToken("token credit card");
 
         CreditCardRequest creditCardRequest = new CreditCardRequest();

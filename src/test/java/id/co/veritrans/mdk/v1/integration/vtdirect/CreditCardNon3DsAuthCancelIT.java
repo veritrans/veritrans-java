@@ -4,6 +4,7 @@ import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.model.FraudStatus;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionStatus;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
+import id.co.veritrans.mdk.v1.gateway.model.builder.CreditCardBuilder;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 import org.testng.annotations.Test;
 
@@ -26,7 +27,11 @@ public class CreditCardNon3DsAuthCancelIT extends AbstractCreditCardIT {
     @Test(groups = "integrationTest")
     public void testCharge() throws RestClientException, URISyntaxException {
         final String cardToken = getToken("4011111111111112", "01", "2020", "123", CreditCard.TransactionType.AUTHORIZE);
-        final VtResponse vtResponse = charge(orderId, new CreditCard(cardToken, CreditCard.Bank.MANDIRI, null, null, CreditCard.TransactionType.AUTHORIZE, null));
+        final VtResponse vtResponse = charge(orderId, new CreditCardBuilder()
+                .setCardToken(cardToken)
+                .setAcquirerBank(CreditCard.Bank.MANDIRI)
+                .setTransactionType(CreditCard.TransactionType.AUTHORIZE)
+                .createCreditCard());
 
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.AUTHORIZED);
