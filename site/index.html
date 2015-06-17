@@ -580,6 +580,19 @@ StatusRequest statusRequest = new StatusRequestBuilder()
 VtResponse vtResponse = vtDirect.status(statusRequest);
 </code></pre>
 
+<h3 id="querying-transaction-status">Querying Transaction Status</h3>
+<pre><code class="java">// Build get status query parameter
+final GetStatusParameter parameter = new GetStatusParameterBuilder()
+    .setFraudStatus(FraudStatus.CHALLENGE)
+    .setTransactionStatus(TransactionStatus.AUTHORIZED)
+    .setPaymentMethod(PaymentMethod.CREDIT_CARD)
+    .setPage(2)
+    .setRowPerPage(10)
+    .createGetStatusParameter();
+
+VtResponse response = vtDirect.queryStatus(parameter);
+</code></pre>
+
 <p><br/></p>
 <h3 id="credit-card-accept-an-fds-challenge-capture">Credit Card: Accept an <code>FDS challenge</code> capture</h3>
 <h4 id="vtdirect_2">VtDirect</h4>
