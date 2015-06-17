@@ -11,7 +11,8 @@ public enum TransactionStatus {
     SETTLED("settlement"),
     PENDING("pending"),
     CANCELLED("cancel"),
-    DENIED("deny");
+    DENIED("deny"),
+    EXPIRED("expire");
 
     private final String name;
 

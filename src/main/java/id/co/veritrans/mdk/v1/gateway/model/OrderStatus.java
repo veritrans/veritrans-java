@@ -21,6 +21,9 @@ public class OrderStatus {
     private TransactionStatus transactionStatus;
     private String approvalCode;
     private BigDecimal grossAmount;
+    private FraudStatus fraudStatus;
+    @JsonProperty("masked_card")
+    private String maskedCardNumber;
 
     /**
      * Get transaction identifier
@@ -164,5 +167,41 @@ public class OrderStatus {
      */
     public void setApprovalCode(final String approvalCode) {
         this.approvalCode = approvalCode;
+    }
+
+    /**
+     * Get Transaction fraud status
+     *
+     * @return {@link id.co.veritrans.mdk.v1.gateway.model.FraudStatus Transaction fraud status}
+     */
+    public FraudStatus getFraudStatus() {
+        return fraudStatus;
+    }
+
+    /**
+     * Set transaction fraud status
+     *
+     * @param fraudStatus {@link id.co.veritrans.mdk.v1.gateway.model.FraudStatus Transaction fraud status}
+     */
+    public void setFraudStatus(final FraudStatus fraudStatus) {
+        this.fraudStatus = fraudStatus;
+    }
+
+    /**
+     * Get transaction masked card (for credit card)
+     *
+     * @return Transaction masked card (for credit card)
+     */
+    public String getMaskedCardNumber() {
+        return maskedCardNumber;
+    }
+
+    /**
+     * Set transaction masked card (for credit card)
+     *
+     * @param maskedCardNumber Transaction masked card (for credit card)
+     */
+    public void setMaskedCardNumber(final String maskedCardNumber) {
+        this.maskedCardNumber = maskedCardNumber;
     }
 }

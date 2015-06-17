@@ -2,28 +2,28 @@ package id.co.veritrans.mdk.v1.integration;
 
 import id.co.veritrans.mdk.v1.TestUtil;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
-import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.StatusRequest;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
-import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
+import id.co.veritrans.mdk.v1.gateway.model.*;
+import id.co.veritrans.mdk.v1.gateway.model.builder.GetStatusParameterBuilder;
 import id.co.veritrans.mdk.v1.gateway.model.builder.StatusRequestBuilder;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.BankTransferRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.KlikBcaRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.BankTransfer;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.KlikBca;
+import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 
 import java.io.UnsupportedEncodingException;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 
 /**
  * Created by andes on 6/12/15.
  */
-public class BatchGetStatusIT extends AbstractIntegrationTest {
+public class GetStatusIT extends AbstractIntegrationTest {
 
-    @Test(groups = "integrationTest")
-    public void testGetStatusBatch() throws RestClientException, UnsupportedEncodingException {
+    private ArrayList<String> createTransactions() throws RestClientException {
         String orderId = String.valueOf(System.nanoTime());
         ArrayList<String> listOrderIds = new ArrayList<String>();
 
@@ -51,11 +51,16 @@ public class BatchGetStatusIT extends AbstractIntegrationTest {
         vtDirect.charge(bankTransferRequest);
         listOrderIds.add(orderId);
 
+        return listOrderIds;
+    }
+
+    @Test(groups = "integrationTest")
+    public void testGetStatusBatch() throws RestClientException, UnsupportedEncodingException {
         /**
          * Batch Get Status request
          */
         final StatusRequest statusRequest = new StatusRequestBuilder()
-                .setOrderIds(listOrderIds)
+                .setOrderIds(createTransactions())
                 .setPage(1)
                 .setRowPerPage(10)
                 .createStatusRequest();
@@ -74,6 +79,31 @@ public class BatchGetStatusIT extends AbstractIntegrationTest {
         Assert.assertNotNull(response.getListTransactionStatus()[0].getTransactionId());
         Assert.assertNotNull(response.getListTransactionStatus()[0].getTransactionStatus());
         Assert.assertNotNull(response.getListTransactionStatus()[0].getTransactionTime());
+    }
 
+    @Test(groups = "integrationTest")
+    public void testQueryGetStatus() throws RestClientException, URISyntaxException {
+        /*
+         * Query Get Status
+         */
+        final GetStatusParameter getStatusParameter = new GetStatusParameterBuilder()
+                .setPaymentMethod(PaymentMethod.CREDIT_CARD)
+                .setFromDate(new GregorianCalendar(2015, 04, 27).getTime())
+                .setToDate(new GregorianCalendar(2015, 04, 28).getTime())
+                .createGetStatusParameter();
+
+        VtResponse response = vtDirect.queryStatus(getStatusParameter);
+        System.out.println(JsonUtil.toJson(response));
+
+        Assert.assertEquals(1, response.getListTransactionStatus().length);
+        Assert.assertEquals(FraudStatus.ACCEPTED, response.getListTransactionStatus()[0].getFraudStatus());
+        Assert.assertEquals("481111-1114", response.getListTransactionStatus()[0].getMaskedCardNumber());
+        Assert.assertEquals("e8f66a0e-8e77-493a-953b-9ded28f5a6ae", response.getListTransactionStatus()[0].getOrderId());
+        Assert.assertEquals(PaymentMethod.CREDIT_CARD.getName(), response.getListTransactionStatus()[0].getPaymentMethod());
+        Assert.assertEquals("200", response.getListTransactionStatus()[0].getStatusCode());
+        Assert.assertEquals("01906a7c-1957-43b3-be84-202dc5aa348d", response.getListTransactionStatus()[0].getTransactionId());
+        Assert.assertEquals(TransactionStatus.SETTLED, response.getListTransactionStatus()[0].getTransactionStatus());
+        Assert.assertNotNull(response.getListTransactionStatus()[0].getGrossAmount());
+        Assert.assertNotNull(response.getListTransactionStatus()[0].getTransactionTime());
     }
 }

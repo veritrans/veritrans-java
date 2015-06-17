@@ -26,6 +26,7 @@ import org.apache.http.message.BasicHeader;
 
 import javax.validation.Validator;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 
@@ -102,6 +103,17 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     @Override
     public VtRestClient getRestClient() {
         return this;
+    }
+
+    @Override
+    public VtResponse get(URI uri) throws RestClientException {
+        try {
+            final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + uri.toString();
+            final HttpResponse httpResponse = getHttpClient().execute(new HttpGet(url));
+            return JsonUtil.fromJson(httpResponse, VtResponse.class);
+        } catch (Exception e) {
+            throw new RestClientException(e);
+        }
     }
 
     @Override

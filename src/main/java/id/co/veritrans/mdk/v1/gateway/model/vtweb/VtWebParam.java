@@ -1,7 +1,7 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtweb;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonValue;
+import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 
 import java.util.Arrays;
 
@@ -9,30 +9,6 @@ import java.util.Arrays;
  * Created by gde on 5/20/15.
  */
 public class VtWebParam {
-
-    public static enum PaymentMethod {
-        CREDIT_CARD("credit_card"),
-        BANK_TRANSFER("bank_transfer"),
-        CIMB_CLICKS("cimb_clicks"),
-        MANDIRI_CLICKPAY("mandiri_clickpay"),
-        BRI_EPAY("bri_epay"),
-        TELKOMSEL_CASH("telkomsel_cash"),
-        XL_TUNAI("xl_tunai"),
-        BBM_MONEY("bbm_money"),
-        ECHANNEL("echannel"),
-        CSTORE("cstore");
-
-        private final String name;
-
-        PaymentMethod(final String name) {
-            this.name = name;
-        }
-
-        @JsonValue
-        public String getName() {
-            return name;
-        }
-    }
 
     private PaymentMethod[] enabledPayments;
     @JsonProperty("credit_card_3d_secure")
