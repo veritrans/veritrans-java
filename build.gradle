@@ -185,12 +185,12 @@ bintray {
             }
 
             //Optional configuration for Maven Central Synchronization
-//            mavenCentralSync {
-//                sync = true //Optional (true by default). Determines whether to sync the version to Maven Central.
-//                user = bintrayProperties.getProperty("bintray.oss.user") //OSS user token
-//                password = bintrayProperties.getProperty("bintray.oss.password") //OSS user password
-//                close = '1' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
-//            }
+            mavenCentralSync {
+                sync = true //Optional (true by default). Determines whether to sync the version to Maven Central.
+                user = bintrayProperties.getProperty("bintray.oss.user") //OSS user token
+                password = bintrayProperties.getProperty("bintray.oss.password") //OSS user password
+                close = '0' //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+            }
         }
     }
 }
