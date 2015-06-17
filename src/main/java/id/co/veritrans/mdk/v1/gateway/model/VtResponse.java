@@ -17,9 +17,6 @@ import java.util.Date;
  */
 public class VtResponse extends OrderStatus {
 
-    private FraudStatus fraudStatus;
-    @JsonProperty("masked_card")
-    private String maskedCardNumber;
     private String statusMessage;
     private String permataVaNumber;
     private String signatureKey;
@@ -72,42 +69,6 @@ public class VtResponse extends OrderStatus {
      */
     public static id.co.veritrans.mdk.v1.gateway.model.VtResponse deserializeJson(InputStream inputStream) throws JsonDeserializeException {
         return JsonUtil.fromJson(inputStream, VtResponse.class);
-    }
-
-    /**
-     * Get Transaction fraud status
-     *
-     * @return {@link id.co.veritrans.mdk.v1.gateway.model.FraudStatus Transaction fraud status}
-     */
-    public FraudStatus getFraudStatus() {
-        return fraudStatus;
-    }
-
-    /**
-     * Set transaction fraud status
-     *
-     * @param fraudStatus {@link id.co.veritrans.mdk.v1.gateway.model.FraudStatus Transaction fraud status}
-     */
-    public void setFraudStatus(final FraudStatus fraudStatus) {
-        this.fraudStatus = fraudStatus;
-    }
-
-    /**
-     * Get transaction masked card (for credit card)
-     *
-     * @return Transaction masked card (for credit card)
-     */
-    public String getMaskedCardNumber() {
-        return maskedCardNumber;
-    }
-
-    /**
-     * Set transaction masked card (for credit card)
-     *
-     * @param maskedCardNumber Transaction masked card (for credit card)
-     */
-    public void setMaskedCardNumber(final String maskedCardNumber) {
-        this.maskedCardNumber = maskedCardNumber;
     }
 
     /**
@@ -466,10 +427,7 @@ public class VtResponse extends OrderStatus {
         if (billerCode != null ? !billerCode.equals(response.billerCode) : response.billerCode != null) return false;
         if (cardToken != null ? !cardToken.equals(response.cardToken) : response.cardToken != null) return false;
         if (eci != null ? !eci.equals(response.eci) : response.eci != null) return false;
-        if (fraudStatus != response.fraudStatus) return false;
         if (!Arrays.equals(listTransactionStatus, response.listTransactionStatus)) return false;
-        if (maskedCardNumber != null ? !maskedCardNumber.equals(response.maskedCardNumber) : response.maskedCardNumber != null)
-            return false;
         if (page != null ? !page.equals(response.page) : response.page != null) return false;
         if (permataVaNumber != null ? !permataVaNumber.equals(response.permataVaNumber) : response.permataVaNumber != null)
             return false;
@@ -497,9 +455,7 @@ public class VtResponse extends OrderStatus {
 
     @Override
     public int hashCode() {
-        int result = fraudStatus != null ? fraudStatus.hashCode() : 0;
-        result = 31 * result + (maskedCardNumber != null ? maskedCardNumber.hashCode() : 0);
-        result = 31 * result + (statusMessage != null ? statusMessage.hashCode() : 0);
+        int result = statusMessage != null ? statusMessage.hashCode() : 0;
         result = 31 * result + (permataVaNumber != null ? permataVaNumber.hashCode() : 0);
         result = 31 * result + (signatureKey != null ? signatureKey.hashCode() : 0);
         result = 31 * result + (cardToken != null ? cardToken.hashCode() : 0);
