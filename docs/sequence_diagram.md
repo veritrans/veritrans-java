@@ -31,7 +31,7 @@
 ![CIMB Clicks Transaction](sequence_diagram/cimb-clicks.png)
 
 ***
-## Credit Card Charging With Secure Charge 
+## Credit Card Charging With PAN Charge 
 ***`Coming soon`***  
 <br/>
-![Credit Card Charging With Secure Charge](sequence_diagram/credit-card-secure-charge.png)
+![Credit Card Charging With PAN Charge](sequence_diagram/credit-card-secure-charge.png)
