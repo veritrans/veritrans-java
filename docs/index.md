@@ -301,7 +301,7 @@ if (vtResponse.getStatusCode().equals("200") &&
 ```
 
 <br/>
-#### Credit Card Feature: Pre-authorization & Capture
+#### Credit Card Feature
 ##### Pre-authorization
 See [CreditCard Javadoc](javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/CreditCard.html)  
 See [CreditCard Process Flow Without 3D Secure Authentication](sequence_diagram/index.html#credit-card-charging-without-3d-secure-authentication)  
@@ -351,6 +351,10 @@ if (vtResponseCapture.getStatusCode().equals("200") &&
     // handle denied / unexpected response
 }
 ```
+
+##### Secure Charge ***`Coming soon`***
+***`Only allowed for certain merchant`***  
+For PCIDSS compliance merchant, it will be able to charge credit card transaction using customer credit card data instead of using token.
 
 <br/>
 #### Mandiri Clickpay
