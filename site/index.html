@@ -553,6 +553,23 @@ vtWebChargeRequest.setVtWeb(new VtWebParam());
 vtWebChargeRequest.getVtWeb().setEnabledPayments(new VtWebParam.PaymentMethod[]{VtWebParam.PaymentMethod.CREDIT_CARD, VtWebParam.PaymentMethod.CIMB_CLICKS});
 </code></pre>
 
+<h3 id="handle-vtweb-url-parameter-response">Handle VtWeb URL parameter response</h3>
+<p>After customer finishes transaction on vtWeb page, it will be redirected to merchant web page based on redirect url config that already setup before. Veritrans will response with several url parameter that can be handle by merchant :</p>
+<ul>
+<li>order_id</li>
+<li>status_code</li>
+<li>transaction_status</li>
+</ul>
+<pre><code>&lt;!-- Success transaction example --&gt;
+http://www.example.com/finish?order_id=asf1434355961&amp;status_code=200&amp;transaction_status=capture
+
+&lt;!-- Deny transaction example --&gt;
+http://www.example.com/deny?order_id=asf1434356038&amp;status_code=202&amp;transaction_status=deny
+
+&lt;!-- Pending transaction example --&gt;
+http://www.example.com/pending?order_id=asf1434356096&amp;status_code=201&amp;transaction_status=pending
+</code></pre>
+
 <p><br /></p>
 <h2 id="other-features">Other Features</h2>
 <h3 id="check-transaction-status">Check Transaction Status</h3>
