@@ -1,7 +1,7 @@
 # Release Notes
 
 ## Release 1.0.3
-### 17 June 2015
+### 18 June 2015
 - **[Bug fix]** Fix missing transaction status (TransactionStatus.EXPIRED)
 - **[Bug fix]** Fix get status issue for credit card get multiple order id status
 - **[Feature]** Add fat jar for single jar download integration
