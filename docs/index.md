@@ -588,6 +588,10 @@ if (vtResponse.getStatusCode().equals("200") &&
 ```
 
 <br/>
+## Status Code (Response)
+Status Codes used by Veritrans API are categorized into 2xx, 3xx, 4xx dan 5xx. You can check detail of all status code that responded from transaction request in ***[here](http://docs.veritrans.co.id/en/api/status_code.html)***
+
+<br/>
 ## Notification Handler (Notification URL)
 Notification URL is used by Veritrans Payment API to notify a merchant once a payment process has been completed or failed.
 It is invoked by Veritrans Payment API through HTTP POST by sending a JSON Message in the request body.
