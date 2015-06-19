@@ -352,7 +352,7 @@ if (vtResponseCapture.getStatusCode().equals("200") &&
 }
 ```
 
-##### PAN Charge ***`Coming soon`***
+##### Charging Full PAN ***`Coming soon`***
 ***`Only allowed for certain merchant`***  
 For PCIDSS compliance merchant, it will be able to charge credit card transaction using customer credit card data instead of using token.
 

@@ -100,9 +100,13 @@
     
         <li class="main active"><a href="#process-flow">Process Flow</a></li>
         
-            <li><a href="#credit-card-without-3d-secure-authentication">Credit Card Without 3D Secure Authentication</a></li>
+            <li><a href="#credit-card-charging-without-3d-secure-authentication">Credit Card Charging Without 3D Secure Authentication</a></li>
         
-            <li><a href="#credit-card-with-3d-secure-authentication">Credit Card With 3D Secure Authentication</a></li>
+            <li><a href="#credit-card-charging-with-3d-secure-authentication">Credit Card Charging With 3D Secure Authentication</a></li>
+        
+            <li><a href="#credit-card-charging-with-one-time-tokenization">Credit Card Charging With One-time Tokenization</a></li>
+        
+            <li><a href="#credit-card-charging-full-pan">Credit Card Charging (Full PAN)</a></li>
         
             <li><a href="#bank-transfer-via-permata-va">Bank Transfer via Permata VA</a></li>
         
@@ -116,19 +120,29 @@
         
             <li><a href="#cimb-clicks">CIMB Clicks</a></li>
         
-            <li><a href="#credit-card-charging-with-pan-charge">Credit Card Charging With PAN Charge</a></li>
-        
     
     </ul>
 </div></div>
             <div class="col-md-9" role="main">
 
 <h1 id="process-flow">Process Flow</h1>
-<h2 id="credit-card-without-3d-secure-authentication">Credit Card Without 3D Secure Authentication</h2>
+<h2 id="credit-card-charging-without-3d-secure-authentication">Credit Card Charging Without 3D Secure Authentication</h2>
 <p><img alt="Credit Card Without 3D Secure Authentication" src="../sequence_diagram/credit-card-charging-non-3ds.png" /></p>
 <hr />
-<h2 id="credit-card-with-3d-secure-authentication">Credit Card With 3D Secure Authentication</h2>
+<h2 id="credit-card-charging-with-3d-secure-authentication">Credit Card Charging With 3D Secure Authentication</h2>
 <p><img alt="Credit Card With 3D Secure Authentication" src="../sequence_diagram/credit-card-charging-3ds.png" /></p>
+<hr />
+<h2 id="credit-card-charging-with-one-time-tokenization">Credit Card Charging With One-time Tokenization</h2>
+<h4 id="you-need-to-set-save_card_token-flag-to-true-for-the-first-credit-card-transaction-and-store-the-saved_card_token-parameter-for-next-charging">You need to set <code>save_card_token</code> flag to <code>true</code> for the first credit card transaction and store the <code>saved_card_token</code> parameter for next charging</h4>
+<p><img alt="Credit Card With One-time Tokenization 2" src="../sequence_diagram/credit-card-one-click2.png" /><br />
+<br/></p>
+<h4 id="on-next-charging-you-can-directly-charge-using-saved_card_token-parameter">On next charging, you can directly charge using <code>saved_card_token</code> parameter</h4>
+<p><img alt="Credit Card With One-time Tokenization 1" src="../sequence_diagram/credit-card-one-click1.png" /></p>
+<hr />
+<h2 id="credit-card-charging-full-pan">Credit Card Charging (Full PAN)</h2>
+<p><strong><em><code>Coming soon</code></em></strong><br />
+<br/>
+<img alt="Credit Card Charging (Full PAN)" src="../sequence_diagram/credit-card-secure-charge.png" /></p>
 <hr />
 <h2 id="bank-transfer-via-permata-va">Bank Transfer via Permata VA</h2>
 <p><img alt="Bank Transfer via Permata VA" src="../sequence_diagram/bank-transfer.png" /></p>
@@ -146,12 +160,7 @@
 <p><img alt="BRI Epay Transaction" src="../sequence_diagram/bri-epay.png" /></p>
 <hr />
 <h2 id="cimb-clicks">CIMB Clicks</h2>
-<p><img alt="CIMB Clicks Transaction" src="../sequence_diagram/cimb-clicks.png" /></p>
-<hr />
-<h2 id="credit-card-charging-with-pan-charge">Credit Card Charging With PAN Charge</h2>
-<p><strong><em><code>Coming soon</code></em></strong><br />
-<br/>
-<img alt="Credit Card Charging With PAN Charge" src="../sequence_diagram/credit-card-secure-charge.png" /></p></div>
+<p><img alt="CIMB Clicks Transaction" src="../sequence_diagram/cimb-clicks.png" /></p></div>
         </div>
 
         <script src="../js/jquery-1.10.2.min.js"></script>
