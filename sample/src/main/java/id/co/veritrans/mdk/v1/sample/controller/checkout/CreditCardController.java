@@ -9,8 +9,6 @@ import id.co.veritrans.mdk.v1.sample.controller.model.CheckoutForm;
 import id.co.veritrans.mdk.v1.sample.db.model.Transaction;
 import id.co.veritrans.mdk.v1.sample.manager.CartManager;
 import id.co.veritrans.mdk.v1.sample.manager.SessionManager;
-import id.co.veritrans.mdk.v1.sample.manager.SessionManagerFactory;
-import id.co.veritrans.mdk.v1.sample.manager.VtPaymentManager;
 import id.co.veritrans.mdk.v1.sample.util.SessionUtil;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
