@@ -22,6 +22,12 @@
 ![Credit Card Charging (Full PAN)](sequence_diagram/credit-card-secure-charge.png)
 
 ***
+## Credit Card Charging (Full PAN 3D Secure)
+***`Coming soon`***  
+<br/>
+![Credit Card Charging (Full PAN 3D Secure)](sequence_diagram/credit-card-secure-charge-3ds.png)
+
+***
 ## Bank Transfer via Permata VA
 ![Bank Transfer via Permata VA](sequence_diagram/bank-transfer.png)
 
