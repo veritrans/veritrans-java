@@ -1,28 +1,20 @@
 #Process Flow
 
-## Credit Card Charging Without 3D Secure Authentication
+## Credit Card (One-time Tokenization)
 ![Credit Card Without 3D Secure Authentication](sequence_diagram/credit-card-charging-non-3ds.png)
 
 ***
-## Credit Card Charging With 3D Secure Authentication
-![Credit Card With 3D Secure Authentication](sequence_diagram/credit-card-charging-3ds.png)
-
-***
-## Credit Card Charging With One-time Tokenization
-#### You need to set `save_card_token` flag to `true` for the first credit card transaction and store the `saved_card_token` parameter for next charging  
-![Credit Card With One-time Tokenization 2](sequence_diagram/credit-card-one-click2.png)  
-<br/>
-#### On next charging, you can directly charge using `saved_card_token` parameter  
-![Credit Card With One-time Tokenization 1](sequence_diagram/credit-card-one-click1.png)
-
-***
-## Credit Card Charging (Full PAN)
+## Credit Card (Full PAN)
 ***`Coming soon`***  
 <br/>
 ![Credit Card Charging (Full PAN)](sequence_diagram/credit-card-secure-charge.png)
 
 ***
-## Credit Card Charging (Full PAN 3D Secure)
+## Credit Card With 3D Secure (One-time Tokenization)
+![Credit Card With 3D Secure Authentication](sequence_diagram/credit-card-charging-3ds.png)
+
+***
+## Credit Card With 3D Secure (Full PAN)
 ***`Coming soon`***  
 <br/>
 ![Credit Card Charging (Full PAN 3D Secure)](sequence_diagram/credit-card-secure-charge-3ds.png)
