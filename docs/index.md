@@ -352,6 +352,72 @@ if (vtResponseCapture.getStatusCode().equals("200") &&
 }
 ```
 
+##### One-time Tokenization 
+See [CreditCard Process Flow With One-time Tokenization](sequence_diagram/index.html#credit-card-charging-with-one-time-tokenization)  
+See [Veritrans One Click Documentation](http://docs.veritrans.co.id/en/vtdirect/other_features.html#one-click)
+
+One-time tokenization feature allows you to use one token on several transactions. The token represents the credit card number, expiry date, CVV, and 3D Secure authentication of the customer. This will make transactions easier since the credit card information needs to be filled only once and not recurrently.  
+<br/>
+Do note that token will be activated only after the initial transaction is performed. To use the one click feature, 3D Secure feature has to be used.
+
+##### Initial transaction
+```java
+CreditCardRequest vtDirectChargeRequest = new CreditCardRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+
+CreditCard creditCard = new CreditCardBuilder()
+    .setTokenId("creditCardToken")          // token is obtained from HTTP POST variable.
+    .setAcquirerBank(CreditCard.Bank.BNI)   // your acquirer bank for Credit Card
+    .setSaveCardToken(true)                 // Set this flag true for one time tokenization
+    .createCreditCard(); 
+
+vtDirectChargeRequest.setCreditCard(creditCard);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
+
+if (vtResponse.getStatusCode().equals("200") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
+    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+        // you need to save this token for next recurring transaction
+        String oneTimeToken = vtResponse.getSavedCardToken();
+
+} else if (vtResponse.getStatusCode().equals("201") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
+    vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
+
+    // handle FDS challenge (you can do this later)
+} else {
+    // handle denied / unexpected response
+}
+```
+
+##### Following transaction
+```java
+CreditCardRequest vtDirectChargeRequest = new CreditCardRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+
+CreditCard creditCard = new CreditCardBuilder()
+    .setTokenId("savedCardToken")           // using saved card token from initial transaction
+    .setAcquirerBank(CreditCard.Bank.BNI)   // your acquirer bank for Credit Card
+    .createCreditCard(); 
+
+vtDirectChargeRequest.setCreditCard(creditCard);
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
+
+if (vtResponse.getStatusCode().equals("200") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
+    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+        
+        // handle successful transaction
+} else if (vtResponse.getStatusCode().equals("201") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
+    vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
+
+    // handle FDS challenge (you can do this later)
+} else {
+    // handle denied / unexpected response
+}
+```
+
 ##### Charging Full PAN ***`Coming soon`***
 ***`Only allowed for certain merchant`***  
 For PCIDSS compliance merchant, it will be able to charge credit card transaction using customer credit card data instead of using token.
