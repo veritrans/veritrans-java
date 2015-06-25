@@ -14,6 +14,7 @@ import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -34,6 +35,9 @@ import java.util.List;
  * Created by gde on 5/8/15.
  */
 public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
+
+    private final static int CONNECT_TIMEOUT = 5000;  // in milisecond
+    private final static int SOCKET_TIMEOUT  = 30000; // in milisecond
 
     private final Validator validator;
     private final VtGatewayConfig vtGatewayConfig;
@@ -109,7 +113,10 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     public VtResponse get(URI uri) throws RestClientException {
         try {
             final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + uri.toString();
-            final HttpResponse httpResponse = getHttpClient().execute(new HttpGet(url));
+            final HttpGet httpGet = new HttpGet(url);
+            httpGet.setConfig(getRequestConfig());
+
+            final HttpResponse httpResponse = getHttpClient().execute(httpGet);
             return JsonUtil.fromJson(httpResponse, VtResponse.class);
         } catch (Exception e) {
             throw new RestClientException(e);
@@ -120,7 +127,10 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     public VtResponse get(final String path) throws RestClientException {
         try {
             final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
-            final HttpResponse httpResponse = getHttpClient().execute(new HttpGet(url));
+            final HttpGet httpGet = new HttpGet(url);
+            httpGet.setConfig(getRequestConfig());
+
+            final HttpResponse httpResponse = getHttpClient().execute(httpGet);
             return JsonUtil.fromJson(httpResponse, VtResponse.class);
         } catch (Exception e) {
             throw new RestClientException(e);
@@ -131,7 +141,10 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     public VtResponse post(final String path) throws RestClientException {
         try {
             final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
-            final HttpResponse httpResponse = getHttpClient().execute(new HttpPost(url));
+            final HttpPost httpPost = new HttpPost(url);
+            httpPost.setConfig(getRequestConfig());
+
+            final HttpResponse httpResponse = getHttpClient().execute(httpPost);
             return JsonUtil.fromJson(httpResponse, VtResponse.class);
         } catch (Exception e) {
             throw new RestClientException(e);
@@ -143,6 +156,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
         try {
             final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
             final HttpPost httpPost = new HttpPost(url);
+            httpPost.setConfig(getRequestConfig());
             httpPost.setEntity(new StringEntity(JsonUtil.toJson(vtRequest)));
             httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
 
@@ -151,5 +165,14 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
         } catch (Exception e) {
             throw new RestClientException(e);
         }
+    }
+
+    private RequestConfig getRequestConfig() {
+        RequestConfig requestConfig = RequestConfig.copy(RequestConfig.DEFAULT)
+                .setConnectTimeout(CONNECT_TIMEOUT)
+                .setSocketTimeout(SOCKET_TIMEOUT)
+                .build();
+
+        return requestConfig;
     }
 }
