@@ -1,5 +1,10 @@
 # Release Notes
 
+## Release 1.0.4
+### 25 June 2015
+- **[Feature]** Implement http client connect timeout and socket timeout
+
+
 ## Release 1.0.3
 ### 18 June 2015
 - **[Bug fix]** Fix missing transaction status (TransactionStatus.EXPIRED)
