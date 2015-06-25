@@ -11,10 +11,10 @@ import id.co.veritrans.mdk.v1.net.VtRestClient;
 import org.apache.commons.codec.binary.Base64;
 import org.apache.http.Header;
 import org.apache.http.HttpHost;
-import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.config.RequestConfig;
+import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
@@ -116,8 +116,12 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
             final HttpGet httpGet = new HttpGet(url);
             httpGet.setConfig(getRequestConfig());
 
-            final HttpResponse httpResponse = getHttpClient().execute(httpGet);
-            return JsonUtil.fromJson(httpResponse, VtResponse.class);
+            final CloseableHttpResponse httpResponse = getHttpClient().execute(httpGet);
+            try {
+                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+            } finally {
+                httpResponse.close();
+            }
         } catch (Exception e) {
             throw new RestClientException(e);
         }
@@ -130,8 +134,12 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
             final HttpGet httpGet = new HttpGet(url);
             httpGet.setConfig(getRequestConfig());
 
-            final HttpResponse httpResponse = getHttpClient().execute(httpGet);
-            return JsonUtil.fromJson(httpResponse, VtResponse.class);
+            final CloseableHttpResponse httpResponse = getHttpClient().execute(httpGet);
+            try {
+                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+            } finally {
+                httpResponse.close();
+            }
         } catch (Exception e) {
             throw new RestClientException(e);
         }
@@ -144,8 +152,12 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
             final HttpPost httpPost = new HttpPost(url);
             httpPost.setConfig(getRequestConfig());
 
-            final HttpResponse httpResponse = getHttpClient().execute(httpPost);
-            return JsonUtil.fromJson(httpResponse, VtResponse.class);
+            final CloseableHttpResponse httpResponse = getHttpClient().execute(httpPost);
+            try {
+                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+            } finally {
+                httpResponse.close();
+            }
         } catch (Exception e) {
             throw new RestClientException(e);
         }
@@ -160,8 +172,12 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
             httpPost.setEntity(new StringEntity(JsonUtil.toJson(vtRequest)));
             httpPost.addHeader(new BasicHeader("Content-Type", "application/json"));
 
-            final HttpResponse httpResponse = getHttpClient().execute(httpPost);
-            return JsonUtil.fromJson(httpResponse, VtResponse.class);
+            final CloseableHttpResponse httpResponse = getHttpClient().execute(httpPost);
+            try {
+                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+            } finally {
+                httpResponse.close();
+            }
         } catch (Exception e) {
             throw new RestClientException(e);
         }
