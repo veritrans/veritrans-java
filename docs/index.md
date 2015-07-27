@@ -25,7 +25,7 @@ If you're using Maven as the build tools for your project, please add **[jcenter
     <dependency>
         <groupId>id.co.veritrans</groupId>
         <artifactId>vt-java-client</artifactId>
-        <version>1.0.5</version>
+        <version>1.0.6</version>
     </dependency>
 </dependencies>
 ```
@@ -40,12 +40,12 @@ repositories {
 }
 
 dependencies {
-    compile 'id.co.veritrans:vt-java-client:1.0.5'
+    compile 'id.co.veritrans:vt-java-client:1.0.6'
 }
 ```
 
 ## Jar Library
-If you want to download veritrans java-client jar library on your own, you can download it directly **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.5/vt-java-client-1.0.5-all.jar)**
+If you want to download veritrans java-client jar library on your own, you can download it directly **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.6/vt-java-client-1.0.6-all.jar)**
 
 # Usage
 
@@ -287,7 +287,8 @@ VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
-    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+    vtRe
+    sponse.getFraudStatus() == FraudStatus.ACCEPTED) {
 
     // handle successful capture
 } else if (vtResponse.getStatusCode().equals("201") &&
@@ -301,9 +302,33 @@ if (vtResponse.getStatusCode().equals("200") &&
 ```
 
 <br/>
-#### Credit Card (Full PAN) ***`Coming soon`***
+#### Credit Card (Full PAN)
 ***`Only allowed for certain merchant`***  
-For PCIDSS compliance merchant, it will be able to charge credit card transaction using customer credit card data instead of using token.
+`currently only support for non 3DS transaction`  
+For PCIDSS compliance merchant, it able to charge credit card transaction using customer credit card data instead of using token.
+```java
+CreditCardFullPanRequest vtDirectChargeRequest = new CreditCardFullPanRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+
+CreditCardFullPan creditCardFullPan = new CreditCardFullPan("5410111111111116", "123", "01", "2020");
+vtDirectChargeRequest.setCreditCardFullPan(creditCardFullPan);
+
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
+
+if (vtResponse.getStatusCode().equals("200") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
+    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+
+    // handle successful capture
+} else if (vtResponse.getStatusCode().equals("201") &&
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
+    vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
+
+    // handle FDS challenge (you can do this later)
+} else {
+    // handle denied / unexpected response
+}
+```
 
 <br/>
 #### Mandiri Clickpay

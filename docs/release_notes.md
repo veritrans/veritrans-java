@@ -1,5 +1,10 @@
 # Release Notes
 
+## Release 1.0.6
+### 27 July 2015
+- **[Feature]** Add full PAN charging feature for PCIDSS compliance merchant
+
+
 ## Release 1.0.5
 ### 25 June 2015
 - **[Bug fix]** Fix unclosed http client connection issue 

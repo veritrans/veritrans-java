@@ -152,7 +152,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;id.co.veritrans&lt;/groupId&gt;
         &lt;artifactId&gt;vt-java-client&lt;/artifactId&gt;
-        &lt;version&gt;1.0.5&lt;/version&gt;
+        &lt;version&gt;1.0.6&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;
 </code></pre>
@@ -166,12 +166,12 @@
 }
 
 dependencies {
-    compile 'id.co.veritrans:vt-java-client:1.0.5'
+    compile 'id.co.veritrans:vt-java-client:1.0.6'
 }
 </code></pre>
 
 <h2 id="jar-library">Jar Library</h2>
-<p>If you want to download veritrans java-client jar library on your own, you can download it directly <strong><a href="https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.5/vt-java-client-1.0.5-all.jar">here</a></strong></p>
+<p>If you want to download veritrans java-client jar library on your own, you can download it directly <strong><a href="https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.6/vt-java-client-1.0.6-all.jar">here</a></strong></p>
 <h1 id="usage">Usage</h1>
 <h2 id="vtgatewayconfig">VtGatewayConfig</h2>
 <p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.
@@ -389,7 +389,8 @@ VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
     vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &amp;&amp;
-    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+    vtRe
+    sponse.getFraudStatus() == FraudStatus.ACCEPTED) {
 
     // handle successful capture
 } else if (vtResponse.getStatusCode().equals(&quot;201&quot;) &amp;&amp;
@@ -403,9 +404,33 @@ if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
 </code></pre>
 
 <p><br/></p>
-<h4 id="credit-card-full-pan-coming-soon">Credit Card (Full PAN) <strong><em><code>Coming soon</code></em></strong></h4>
+<h4 id="credit-card-full-pan">Credit Card (Full PAN)</h4>
 <p><strong><em><code>Only allowed for certain merchant</code></em></strong><br />
-For PCIDSS compliance merchant, it will be able to charge credit card transaction using customer credit card data instead of using token.</p>
+<code>currently only support for non 3DS transaction</code><br />
+For PCIDSS compliance merchant, it able to charge credit card transaction using customer credit card data instead of using token.</p>
+<pre><code class="java">CreditCardFullPanRequest vtDirectChargeRequest = new CreditCardFullPanRequest();
+setVtDirectChargeRequestValues(vtDirectChargeRequest);
+
+CreditCardFullPan creditCardFullPan = new CreditCardFullPan(&quot;5410111111111116&quot;, &quot;123&quot;, &quot;01&quot;, &quot;2020&quot;);
+vtDirectChargeRequest.setCreditCardFullPan(creditCardFullPan);
+
+VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
+
+if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &amp;&amp;
+    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+
+    // handle successful capture
+} else if (vtResponse.getStatusCode().equals(&quot;201&quot;) &amp;&amp;
+    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &amp;&amp;
+    vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
+
+    // handle FDS challenge (you can do this later)
+} else {
+    // handle denied / unexpected response
+}
+</code></pre>
+
 <p><br/></p>
 <h4 id="mandiri-clickpay">Mandiri Clickpay</h4>
 <p>See <a href="./javadoc/id/co/veritrans/mdk/v1/gateway/model/vtdirect/paymentmethod/MandiriClickpay.html">MandiriClickpay Javadoc</a><br />

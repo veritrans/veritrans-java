@@ -5,7 +5,6 @@
 
 ***
 ## Credit Card (Full PAN)
-***`Coming soon`***  
 <br/>
 ![Credit Card Charging (Full PAN)](sequence_diagram/credit-card-secure-charge.png)
 
