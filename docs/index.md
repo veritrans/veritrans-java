@@ -287,8 +287,7 @@ VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals("200") &&
     vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
-    vtRe
-    sponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
 
     // handle successful capture
 } else if (vtResponse.getStatusCode().equals("201") &&
