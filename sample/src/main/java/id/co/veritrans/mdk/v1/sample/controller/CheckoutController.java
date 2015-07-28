@@ -92,6 +92,8 @@ public class CheckoutController {
     public ModelAndView checkoutChoosePaymentVtDirectPost(final HttpSession httpSession, @RequestParam("paymentMethod") final String paymentMethod) {
         if (paymentMethod.equals("creditCard")) {
             return new ModelAndView("redirect:/checkout/credit_card");
+        } else if (paymentMethod.equals("creditCardFullPan")) {
+            return new ModelAndView("redirect:/checkout/credit_card_full_pan");
         } else if (paymentMethod.equals("cimbClicks")) {
             return new ModelAndView("redirect:/checkout/cimb_clicks");
         } else if (paymentMethod.equals("mandiriClickpay")) {
