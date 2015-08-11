@@ -98,30 +98,25 @@ See [ProxyConfigBuilder Javadoc](javadoc/id/co/veritrans/mdk/v1/config/ProxyConf
 // this demonstrate configuring proxy settings using method chaining from the builder class
 ProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();
 
-vtGatewayConfigBuilder.setHttpConfig(
-    httpConfigBuilder.setProxyConfig(
-        proxyConfigBuilder.setHost("proxy host address")
-            .setPort(12345)
-            .setUsername("proxy username or null")
-            .setPassword("proxy password or null")
-            .createProxyConfig()
-    ).createHttpConfig()
-);
+vtGatewayConfigBuilder.setProxyConfig(
+    proxyConfigBuilder.setHost("proxy host address")
+        .setPort(12345)
+        .setUsername("proxy username or null")
+        .setPassword("proxy password or null")
+        .createProxyConfig()
+).createVtGatewayConfig();
 ```
 
 ```java
 // this demonstrate configuring proxy settings without method chaining
 ProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();
-
 proxyConfigBuilder.setHost("proxy host address");
 proxyConfigBuilder.setPort(12345);
 proxyConfigBuilder.setUsername("proxy username or null");
 proxyConfigBuilder.setPassword("proxy password or null");
 
 ProxyConfig proxyConfig = proxyConfigBuilder.createProxyConfig();
-HttpConfig httpConfig = httpConfigBuilder.setProxyConfig(proxyConfig).createHttpConfig();
-
-vtGatewayConfigBuilder.setHttpConfig(httpConfig);
+vtGatewayConfigBuilder.setProxyConfig(proxyConfig);
 ```
 
 <br/>

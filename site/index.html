@@ -215,29 +215,24 @@ See <a href="./javadoc/id/co/veritrans/mdk/v1/config/ProxyConfigBuilder.html">Pr
 <pre><code class="java">// this demonstrate configuring proxy settings using method chaining from the builder class
 ProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();
 
-vtGatewayConfigBuilder.setHttpConfig(
-    httpConfigBuilder.setProxyConfig(
-        proxyConfigBuilder.setHost(&quot;proxy host address&quot;)
-            .setPort(12345)
-            .setUsername(&quot;proxy username or null&quot;)
-            .setPassword(&quot;proxy password or null&quot;)
-            .createProxyConfig()
-    ).createHttpConfig()
-);
+vtGatewayConfigBuilder.setProxyConfig(
+    proxyConfigBuilder.setHost(&quot;proxy host address&quot;)
+        .setPort(12345)
+        .setUsername(&quot;proxy username or null&quot;)
+        .setPassword(&quot;proxy password or null&quot;)
+        .createProxyConfig()
+).createVtGatewayConfig();
 </code></pre>
 
 <pre><code class="java">// this demonstrate configuring proxy settings without method chaining
 ProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();
-
 proxyConfigBuilder.setHost(&quot;proxy host address&quot;);
 proxyConfigBuilder.setPort(12345);
 proxyConfigBuilder.setUsername(&quot;proxy username or null&quot;);
 proxyConfigBuilder.setPassword(&quot;proxy password or null&quot;);
 
 ProxyConfig proxyConfig = proxyConfigBuilder.createProxyConfig();
-HttpConfig httpConfig = httpConfigBuilder.setProxyConfig(proxyConfig).createHttpConfig();
-
-vtGatewayConfigBuilder.setHttpConfig(httpConfig);
+vtGatewayConfigBuilder.setProxyConfig(proxyConfig);
 </code></pre>
 
 <p><br/></p>
@@ -389,8 +384,7 @@ VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
 if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
     vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &amp;&amp;
-    vtRe
-    sponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
 
     // handle successful capture
 } else if (vtResponse.getStatusCode().equals(&quot;201&quot;) &amp;&amp;
