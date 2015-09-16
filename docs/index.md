@@ -25,7 +25,7 @@ If you're using Maven as the build tools for your project, please add **[jcenter
     <dependency>
         <groupId>id.co.veritrans</groupId>
         <artifactId>vt-java-client</artifactId>
-        <version>1.0.6</version>
+        <version>1.0.7</version>
     </dependency>
 </dependencies>
 ```
@@ -40,12 +40,12 @@ repositories {
 }
 
 dependencies {
-    compile 'id.co.veritrans:vt-java-client:1.0.6'
+    compile 'id.co.veritrans:vt-java-client:1.0.7'
 }
 ```
 
 ## Jar Library
-If you want to download veritrans java-client jar library on your own, you can download it directly **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.6/vt-java-client-1.0.6-all.jar)**
+If you want to download veritrans java-client jar library on your own, you can download it directly **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.7/vt-java-client-1.0.7-all.jar)**
 
 # Usage
 
