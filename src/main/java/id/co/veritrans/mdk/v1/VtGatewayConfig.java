@@ -3,25 +3,16 @@ package id.co.veritrans.mdk.v1;
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
 import id.co.veritrans.mdk.v1.config.ProxyConfig;
 
-import javax.validation.Valid;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-
 /**
  * Veritrans gateway configuration
  */
 public class VtGatewayConfig {
 
     private static final int CPU_COUNT = Runtime.getRuntime().availableProcessors();
-    @NotNull
     private final EnvironmentType environmentType;
-    @NotNull
     private final String serverKey;
-    @NotNull
     private final String clientKey;
-    @Min(1)
     private final int maxConnectionPoolSize;
-    @Valid
     private final ProxyConfig proxyConfig;
 
     /**

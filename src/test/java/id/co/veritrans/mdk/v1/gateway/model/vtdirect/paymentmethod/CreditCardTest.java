@@ -1,32 +1,19 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod;
 
-import id.co.veritrans.mdk.v1.TestUtil;
 import id.co.veritrans.mdk.v1.gateway.model.builder.CreditCardBuilder;
 import id.co.veritrans.mdk.v1.helper.JsonUtil;
-import id.co.veritrans.mdk.v1.helper.ValidationUtil;
-import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Test;
 
-import javax.validation.ConstraintViolation;
-import javax.validation.Validator;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
-import static org.testng.Assert.*;
+import static org.testng.Assert.assertEquals;
+import static org.testng.Assert.assertTrue;
 
 /**
  * Created by andes on 5/7/15.
  */
 public class CreditCardTest {
-
-    private Set<ConstraintViolation<CreditCard>> constraintViolations;
-    private Validator validator;
-
-    @BeforeClass
-    public void prepare() {
-        validator = ValidationUtil.getValidator();
-    }
 
     @Test
     public void testCreditCardNormal() {
@@ -60,23 +47,6 @@ public class CreditCardTest {
         assertTrue(jsonCreditCard.contains("\"bank\":\"bni\""));
         assertTrue(jsonCreditCard.contains("\"type\":\"authorize\""));
         assertTrue(jsonCreditCard.contains("\"save_token_id\":true"));
-
-        constraintViolations = validator.validate(creditCard);
-        assertTrue(constraintViolations.isEmpty());
-
-        constraintViolations = validator.validate(TestUtil.buildCreditCard());
-        assertTrue(constraintViolations.isEmpty());
     }
 
-    @Test
-    public void testCreditCardError() {
-        CreditCard creditCard = new CreditCardBuilder().createCreditCard();
-
-        constraintViolations = validator.validate(creditCard);
-        assertFalse(constraintViolations.isEmpty());
-
-        String errorMessage = ValidationUtil.buildExceptionMessage(constraintViolations.toArray(new ConstraintViolation[0]));
-        assertTrue(errorMessage.contains("cardToken"));
-        assertFalse(errorMessage.contains("acquirerBank"));
-    }
 }

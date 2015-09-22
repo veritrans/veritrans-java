@@ -1,13 +1,10 @@
 package id.co.veritrans.mdk.v1.config;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * Merchant proxy configuration
  */
 public class ProxyConfig {
 
-    @NotNull
     private final String host;
     private final int port;
     private final String username;

@@ -3,7 +3,6 @@ package id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -11,7 +10,6 @@ import java.util.List;
  */
 public class CreditCard {
 
-    @NotNull
     @JsonProperty("token_id")
     private String cardToken;
     @JsonProperty("bank")

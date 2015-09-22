@@ -6,10 +6,8 @@ import id.co.veritrans.mdk.v1.gateway.VtWeb;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtDirect;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtWeb;
-import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 
 import javax.validation.ConstraintViolationException;
-import javax.validation.Validator;
 import java.io.IOException;
 
 /**
@@ -17,7 +15,6 @@ import java.io.IOException;
  */
 public class VtGatewayFactory {
 
-    private final Validator validator = ValidationUtil.getValidator();
     private final VtGatewayConfig vtGatewayConfig;
     private final DefaultVtGatewaySession vtGatewaySession;
 
@@ -31,9 +28,8 @@ public class VtGatewayFactory {
             throw new NullPointerException("vtGatewayConfig");
         }
 
-        validate(vtGatewayConfig);
         this.vtGatewayConfig = vtGatewayConfig;
-        this.vtGatewaySession = new DefaultVtGatewaySession(vtGatewayConfig, validator);
+        this.vtGatewaySession = new DefaultVtGatewaySession(vtGatewayConfig);
     }
 
     /**
@@ -140,10 +136,6 @@ public class VtGatewayFactory {
 
     public void destroy() throws IOException {
         vtGatewaySession.destroy();
-    }
-
-    private void validate(VtGatewayConfig vtGatewayConfig) throws ConstraintViolationException {
-        ValidationUtil.validateThrowException(validator, vtGatewayConfig);
     }
 
     @Override
