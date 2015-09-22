@@ -25,7 +25,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
 import org.apache.http.message.BasicHeader;
 
-import javax.validation.Validator;
 import java.io.IOException;
 import java.net.URI;
 import java.util.Arrays;
@@ -39,13 +38,11 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     private final static int CONNECT_TIMEOUT = 5000;  // in milisecond
     private final static int SOCKET_TIMEOUT  = 30000; // in milisecond
 
-    private final Validator validator;
     private final VtGatewayConfig vtGatewayConfig;
     private final PoolingHttpClientConnectionManager connectionManager;
     private final CloseableHttpClient httpClient;
 
-    public DefaultVtGatewaySession(final VtGatewayConfig vtGatewayConfig, final Validator validator) {
-        this.validator = validator;
+    public DefaultVtGatewaySession(final VtGatewayConfig vtGatewayConfig) {
         this.vtGatewayConfig = vtGatewayConfig;
         this.connectionManager = new PoolingHttpClientConnectionManager();
 

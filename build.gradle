@@ -30,7 +30,7 @@ def gitUrl = 'https://github.com/gde-vt/veritrans-java.git'
 def gitIssuesUrl = 'https://github.com/gde-vt/veritrans-java/issues'
 
 group = 'id.co.veritrans'
-version = '1.0.6'
+version = '1.0.8'
 
 sourceCompatibility = '1.6'
 targetCompatibility = '1.6'
@@ -53,8 +53,6 @@ dependencies {
 
     compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'org.hibernate:hibernate-validator:5.2.0.Beta1'
-    compile 'javax.el:javax.el-api:3.0.0'
-
     compile 'com.fasterxml.jackson.core:jackson-databind:2.5.3'
 
     testCompile 'org.slf4j:log4j-over-slf4j:1.7.12'

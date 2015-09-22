@@ -1,11 +1,7 @@
 package id.co.veritrans.mdk.v1.config;
 
-import id.co.veritrans.mdk.v1.helper.ValidationUtil;
 import org.testng.Assert;
 import org.testng.annotations.Test;
-
-import javax.validation.ConstraintViolation;
-import java.util.Set;
 
 /**
  * Created by andes on 5/8/15.
@@ -21,23 +17,10 @@ public class ProxyConfigTest {
                 .setPassword("password")
                 .createProxyConfig();
 
-        Set<ConstraintViolation<ProxyConfig>> error = ValidationUtil.getValidator().validate(proxyConfig);
-        Assert.assertTrue(error.isEmpty());
-
         Assert.assertEquals(proxyConfig.getHost(), "127.0.0.1");
         Assert.assertEquals(proxyConfig.getPort(), 1234);
         Assert.assertEquals(proxyConfig.getUsername(), "username");
         Assert.assertEquals(proxyConfig.getPassword(), "password");
     }
 
-    @Test
-    public void testProxyConfigError() {
-        ProxyConfig proxyConfig = new ProxyConfigBuilder().createProxyConfig();
-
-        Set<ConstraintViolation<ProxyConfig>> error = ValidationUtil.getValidator().validate(proxyConfig);
-        Assert.assertFalse(error.isEmpty());
-
-        String errorMessage = ValidationUtil.buildExceptionMessage(error.toArray(new ConstraintViolation[0]));
-        Assert.assertTrue(errorMessage.contains("host"));
-    }
 }
