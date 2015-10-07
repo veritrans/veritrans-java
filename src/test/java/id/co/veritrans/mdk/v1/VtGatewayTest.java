@@ -6,8 +6,6 @@ import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.VtWeb;
 import org.testng.annotations.Test;
 
-import javax.validation.ConstraintViolationException;
-
 import static org.testng.Assert.*;
 
 /**
@@ -63,23 +61,4 @@ public class VtGatewayTest {
         assertNotNull(vtWeb);
     }
 
-    @Test(expectedExceptions = ConstraintViolationException.class)
-    public void testInvalidConfigVtDirect() {
-        VtGatewayFactory factory = new VtGatewayFactory(new VtGatewayConfigBuilder()
-                .setServerKey("a")
-                .setEnvironmentType(EnvironmentType.SANDBOX)
-                .createVtGatewayConfig());
-
-        VtDirect vtDirect = factory.vtDirect();
-    }
-
-    @Test(expectedExceptions = ConstraintViolationException.class)
-    public void testInvalidConfigVtWeb() {
-        VtGatewayFactory factory = new VtGatewayFactory(new VtGatewayConfigBuilder()
-                .setServerKey("a")
-                .setEnvironmentType(EnvironmentType.PRODUCTION)
-                .createVtGatewayConfig());
-
-        VtWeb vtWeb = factory.vtWeb();
-    }
 }

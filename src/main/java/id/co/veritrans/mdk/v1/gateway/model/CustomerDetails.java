@@ -1,18 +1,13 @@
 package id.co.veritrans.mdk.v1.gateway.model;
 
-import javax.validation.constraints.NotNull;
-
 /**
  * Transaction customer detail
  */
 public class CustomerDetails {
 
-    @NotNull
     private String firstName;
     private String lastName;
-    @NotNull
     private String email;
-    @NotNull
     private String phone;
     private Address billingAddress;
     private Address shippingAddress;

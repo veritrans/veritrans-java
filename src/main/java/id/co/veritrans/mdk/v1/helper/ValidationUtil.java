@@ -24,13 +24,6 @@ public class ValidationUtil {
         return sb.toString();
     }
 
-    public static Validator getValidator() {
-        ValidatorFactory validatorFactory = Validation.buildDefaultValidatorFactory();
-        Validator validator = validatorFactory.getValidator();
-
-        return validator;
-    }
-
     private static String getConstraintViolationMessage(final ConstraintViolation violation) {
         return violation.getPropertyPath().toString() + ": " + violation.getMessage();
     }

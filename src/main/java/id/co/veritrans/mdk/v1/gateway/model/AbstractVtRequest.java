@@ -1,7 +1,5 @@
 package id.co.veritrans.mdk.v1.gateway.model;
 
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import java.util.List;
 
 /**
@@ -9,8 +7,6 @@ import java.util.List;
  */
 public abstract class AbstractVtRequest implements VtRequest {
 
-    @Valid
-    @NotNull
     private TransactionDetails transactionDetails;
     private List<TransactionItem> itemDetails;
     private CustomerDetails customerDetails;

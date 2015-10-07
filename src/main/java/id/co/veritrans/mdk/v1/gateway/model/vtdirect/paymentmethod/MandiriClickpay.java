@@ -1,17 +1,13 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod;
 
-import javax.validation.constraints.Size;
-
 /**
  * Mandiri clickpay model
  */
 public class MandiriClickpay {
 
     private String cardNumber;
-    @Size(min = 10, max = 10)
     private String input1;
     private String input2;
-    @Size(min = 5, max = 5)
     private String input3;
     private String token;
 
