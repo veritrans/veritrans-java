@@ -1,5 +1,9 @@
 # Release Notes
 
+## Release 1.0.9
+### 7 October 2015
+- **[Bug fix]** Add custom field parameter to handle notification response
+
 ## Release 1.0.8
 ### 22 September 2015
 - **[Bug fix]** Remove all validation to avoid library conflict
