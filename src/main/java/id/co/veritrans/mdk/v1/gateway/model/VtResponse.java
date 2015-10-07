@@ -41,6 +41,9 @@ public class VtResponse extends OrderStatus {
     private Integer totalRecord;
     @JsonProperty("transactions")
     private OrderStatus[] listTransactionStatus;
+    private String customField1;
+    private String customField2;
+    private String customField3;
 
 
     /**
@@ -413,41 +416,93 @@ public class VtResponse extends OrderStatus {
         this.listTransactionStatus = listTransactionStatus;
     }
 
+    /**
+     * Get custom field 1 parameter
+     *
+     * @return Custom field 1 parameter
+     */
+    public String getCustomField1() {
+        return customField1;
+    }
+
+    /**
+     * Set custom field 1 parameter
+     *
+     * @param customField1 Custom field 1 parameter
+     */
+    public void setCustomField1(String customField1) {
+        this.customField1 = customField1;
+    }
+
+    /**
+     * Get custom field 2 parameter
+     *
+     * @return Custom field 2 parameter
+     */
+    public String getCustomField2() {
+        return customField2;
+    }
+
+    /**
+     * Set custom field 2 parameter
+     *
+     * @param customField2 Custom field 2 parameter
+     */
+    public void setCustomField2(String customField2) {
+        this.customField2 = customField2;
+    }
+
+    /**
+     * Get custom field 3 parameter
+     *
+     * @return Custom field 3 parameter
+     */
+    public String getCustomField3() {
+        return customField3;
+    }
+
+    /**
+     * Set custom field 3 parameter
+     *
+     * @param customField3 Custom field 3 parameter
+     */
+    public void setCustomField3(String customField3) {
+        this.customField3 = customField3;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        VtResponse response = (VtResponse) o;
+        VtResponse that = (VtResponse) o;
 
-        if (bank != response.bank) return false;
-        if (biiVaNumber != null ? !biiVaNumber.equals(response.biiVaNumber) : response.biiVaNumber != null)
+        if (bank != that.bank) return false;
+        if (biiVaNumber != null ? !biiVaNumber.equals(that.biiVaNumber) : that.biiVaNumber != null) return false;
+        if (billKey != null ? !billKey.equals(that.billKey) : that.billKey != null) return false;
+        if (billerCode != null ? !billerCode.equals(that.billerCode) : that.billerCode != null) return false;
+        if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
+        if (customField1 != null ? !customField1.equals(that.customField1) : that.customField1 != null) return false;
+        if (customField2 != null ? !customField2.equals(that.customField2) : that.customField2 != null) return false;
+        if (customField3 != null ? !customField3.equals(that.customField3) : that.customField3 != null) return false;
+        if (eci != null ? !eci.equals(that.eci) : that.eci != null) return false;
+        if (!Arrays.equals(listTransactionStatus, that.listTransactionStatus)) return false;
+        if (page != null ? !page.equals(that.page) : that.page != null) return false;
+        if (permataVaNumber != null ? !permataVaNumber.equals(that.permataVaNumber) : that.permataVaNumber != null)
             return false;
-        if (billKey != null ? !billKey.equals(response.billKey) : response.billKey != null) return false;
-        if (billerCode != null ? !billerCode.equals(response.billerCode) : response.billerCode != null) return false;
-        if (cardToken != null ? !cardToken.equals(response.cardToken) : response.cardToken != null) return false;
-        if (eci != null ? !eci.equals(response.eci) : response.eci != null) return false;
-        if (!Arrays.equals(listTransactionStatus, response.listTransactionStatus)) return false;
-        if (page != null ? !page.equals(response.page) : response.page != null) return false;
-        if (permataVaNumber != null ? !permataVaNumber.equals(response.permataVaNumber) : response.permataVaNumber != null)
+        if (redirectUrl != null ? !redirectUrl.equals(that.redirectUrl) : that.redirectUrl != null) return false;
+        if (savedCardToken != null ? !savedCardToken.equals(that.savedCardToken) : that.savedCardToken != null)
             return false;
-        if (redirectUrl != null ? !redirectUrl.equals(response.redirectUrl) : response.redirectUrl != null)
+        if (savedCardTokenExpiredAt != null ? !savedCardTokenExpiredAt.equals(that.savedCardTokenExpiredAt) : that.savedCardTokenExpiredAt != null)
             return false;
-        if (savedCardToken != null ? !savedCardToken.equals(response.savedCardToken) : response.savedCardToken != null)
+        if (secureToken != null ? !secureToken.equals(that.secureToken) : that.secureToken != null) return false;
+        if (signatureKey != null ? !signatureKey.equals(that.signatureKey) : that.signatureKey != null) return false;
+        if (statusMessage != null ? !statusMessage.equals(that.statusMessage) : that.statusMessage != null)
             return false;
-        if (savedCardTokenExpiredAt != null ? !savedCardTokenExpiredAt.equals(response.savedCardTokenExpiredAt) : response.savedCardTokenExpiredAt != null)
-            return false;
-        if (secureToken != null ? !secureToken.equals(response.secureToken) : response.secureToken != null)
-            return false;
-        if (signatureKey != null ? !signatureKey.equals(response.signatureKey) : response.signatureKey != null)
-            return false;
-        if (statusMessage != null ? !statusMessage.equals(response.statusMessage) : response.statusMessage != null)
-            return false;
-        if (totalPage != null ? !totalPage.equals(response.totalPage) : response.totalPage != null) return false;
-        if (totalRecord != null ? !totalRecord.equals(response.totalRecord) : response.totalRecord != null)
-            return false;
-        if (!Arrays.equals(validationMessages, response.validationMessages)) return false;
-        if (xlTunaiOrderId != null ? !xlTunaiOrderId.equals(response.xlTunaiOrderId) : response.xlTunaiOrderId != null)
+        if (totalPage != null ? !totalPage.equals(that.totalPage) : that.totalPage != null) return false;
+        if (totalRecord != null ? !totalRecord.equals(that.totalRecord) : that.totalRecord != null) return false;
+        if (!Arrays.equals(validationMessages, that.validationMessages)) return false;
+        if (xlTunaiOrderId != null ? !xlTunaiOrderId.equals(that.xlTunaiOrderId) : that.xlTunaiOrderId != null)
             return false;
 
         return true;
@@ -474,6 +529,9 @@ public class VtResponse extends OrderStatus {
         result = 31 * result + (totalPage != null ? totalPage.hashCode() : 0);
         result = 31 * result + (totalRecord != null ? totalRecord.hashCode() : 0);
         result = 31 * result + (listTransactionStatus != null ? Arrays.hashCode(listTransactionStatus) : 0);
+        result = 31 * result + (customField1 != null ? customField1.hashCode() : 0);
+        result = 31 * result + (customField2 != null ? customField2.hashCode() : 0);
+        result = 31 * result + (customField3 != null ? customField3.hashCode() : 0);
         return result;
     }
 }
