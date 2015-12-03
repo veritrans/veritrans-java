@@ -30,6 +30,8 @@ import java.util.Map;
 @RequestMapping("/checkout/credit_card_full_pan")
 public class CreditCardFullPanController extends AbstractVtDirectController {
 
+    private static final boolean D3_SECURE = true;
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView checkoutCreditCardGet(final HttpSession httpSession) {
         final SessionManager sessionManager = sessionManagerFactory.get(httpSession);
@@ -63,7 +65,7 @@ public class CreditCardFullPanController extends AbstractVtDirectController {
             return new ModelAndView("redirect:/checkout/choose_payment");
         }
 
-        final CreditCardFullPanRequest request = createCreditCardFullPanRequest(new CreditCardFullPan(cardNumber.replaceAll("\\s+",""), cardCvv, cardExpiredMonth, cardExpiredYear), checkoutForm, cartManager);
+        final CreditCardFullPanRequest request = createCreditCardFullPanRequest(new CreditCardFullPan(cardNumber.replaceAll("\\s+",""), cardCvv, cardExpiredMonth, cardExpiredYear, D3_SECURE), checkoutForm, cartManager);
         final Transaction transaction = saveTransaction(request, cartManager, request.getPaymentMethod());
 
         try {
@@ -72,12 +74,12 @@ public class CreditCardFullPanController extends AbstractVtDirectController {
             transaction.setPaymentFdsStatus(vtResponse.getFraudStatus() == null ? null : vtResponse.getFraudStatus().name());
             transaction.setPaymentStatus(vtResponse.getTransactionStatus() == null ? null : vtResponse.getTransactionStatus().name());
 
-            if (vtResponse.getStatusCode().equals("200")) {
+            if (vtResponse.getStatusCode().equals("201")) {
                 cartManager.clear();
                 httpSession.removeAttribute("checkoutForm");
 
                 redirectAttributes.addAttribute("transactionId", transaction.getId());
-                return new ModelAndView("redirect:/checkout/success");
+                return new ModelAndView("redirect:" + vtResponse.getRedirectUrl());
             } else {
                 return new ModelAndView("redirect:/checkout");
             }

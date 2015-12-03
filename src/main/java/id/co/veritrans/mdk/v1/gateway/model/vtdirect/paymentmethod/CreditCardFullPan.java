@@ -13,6 +13,7 @@ public class CreditCardFullPan {
     private String cardExpiredMonth;
     @JsonProperty("card_exp_year")
     private String cardExpiredYear;
+    private boolean secure;
 
     /**
      * Credit card full pan constructor
@@ -27,6 +28,23 @@ public class CreditCardFullPan {
         this.cardCvv = cardCvv;
         this.cardExpiredMonth = cardExpiredMonth;
         this.cardExpiredYear = cardExpiredYear;
+    }
+
+    /**
+     * Credit card full pan constructor
+     *
+     * @param cardNumber       Credit card number
+     * @param cardCvv          Credit card cvv number
+     * @param cardExpiredMonth Credit card expired month
+     * @param cardExpiredYear  Credit card expired year
+     * @param secure           Credit card enable 3D secure
+     */
+    public CreditCardFullPan(String cardNumber, String cardCvv, String cardExpiredMonth, String cardExpiredYear, boolean secure) {
+        this.cardNumber = cardNumber;
+        this.cardCvv = cardCvv;
+        this.cardExpiredMonth = cardExpiredMonth;
+        this.cardExpiredYear = cardExpiredYear;
+        this.secure = secure;
     }
 
     /**
@@ -101,6 +119,24 @@ public class CreditCardFullPan {
         this.cardExpiredYear = cardExpiredYear;
     }
 
+    /**
+     * Is credit card using 3D Secure?
+     *
+     * @return Credit card enable 3D secure
+     */
+    public boolean isSecure() {
+        return secure;
+    }
+
+    /**
+     * Set credit card enable 3D secure
+     *
+     * @param secure Credit card enable 3D secure
+     */
+    public void setSecure(boolean secure) {
+        this.secure = secure;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -108,6 +144,7 @@ public class CreditCardFullPan {
 
         CreditCardFullPan that = (CreditCardFullPan) o;
 
+        if (secure != that.secure) return false;
         if (cardCvv != null ? !cardCvv.equals(that.cardCvv) : that.cardCvv != null) return false;
         if (cardExpiredMonth != null ? !cardExpiredMonth.equals(that.cardExpiredMonth) : that.cardExpiredMonth != null)
             return false;
@@ -124,6 +161,7 @@ public class CreditCardFullPan {
         result = 31 * result + (cardCvv != null ? cardCvv.hashCode() : 0);
         result = 31 * result + (cardExpiredMonth != null ? cardExpiredMonth.hashCode() : 0);
         result = 31 * result + (cardExpiredYear != null ? cardExpiredYear.hashCode() : 0);
+        result = 31 * result + (secure ? 1 : 0);
         return result;
     }
 }
