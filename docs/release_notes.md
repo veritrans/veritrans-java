@@ -1,5 +1,10 @@
 # Release Notes
 
+## Release 1.0.10
+### 3 December 2015
+- **[Bug fix]** Bump `com.fasterxml.jackson` dependency to latest version
+
+
 ## Release 1.0.9
 ### 7 October 2015
 - **[Bug fix]** Add custom field parameter to handle notification response
