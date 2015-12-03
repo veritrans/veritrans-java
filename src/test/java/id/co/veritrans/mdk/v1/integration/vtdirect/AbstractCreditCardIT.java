@@ -101,7 +101,7 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
         return vtResponse.getCardToken();
     }
 
-    private void do3Ds(String redirectUrl) throws IOException {
+    public void do3Ds(String redirectUrl) throws IOException {
         LOGGER.info("do3Ds opening redirectUrl: {}", redirectUrl);
         final String redirectUrlContent = consumeGetAsString(redirectUrl);
         final Matcher pareqMatcher = PATTERN_PAREQ.matcher(redirectUrlContent);
