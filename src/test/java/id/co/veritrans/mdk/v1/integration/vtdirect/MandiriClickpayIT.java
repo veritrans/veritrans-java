@@ -46,7 +46,7 @@ public class MandiriClickpayIT extends AbstractIntegrationTest {
     @Test(groups = "integrationTest", dependsOnMethods = "testStatusAfterCharge")
     public void testCancelCharge() throws RestClientException, UnsupportedEncodingException {
         final VtResponse vtResponse = vtDirect.cancel(orderId);
-        assertEquals(vtResponse.getStatusCode(), "412");
+        assertEquals(vtResponse.getStatusCode(), "404");
     }
 
     @Test(groups = "integrationTest", dependsOnMethods = "testCancelCharge")
