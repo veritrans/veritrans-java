@@ -1,5 +1,10 @@
 # Release Notes
 
+## Release 1.1.0
+### 4 December 2015
+- **[Feature]** Add Full PAN 3D secure charging **`(only applied for certain merchant)`**
+
+
 ## Release 1.0.10
 ### 3 December 2015
 - **[Bug fix]** Bump `com.fasterxml.jackson` dependency to latest version

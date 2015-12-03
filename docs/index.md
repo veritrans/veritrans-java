@@ -25,7 +25,7 @@ If you're using Maven as the build tools for your project, please add **[jcenter
     <dependency>
         <groupId>id.co.veritrans</groupId>
         <artifactId>vt-java-client</artifactId>
-        <version>1.0.10</version>
+        <version>1.1.0</version>
     </dependency>
 </dependencies>
 ```
@@ -40,12 +40,12 @@ repositories {
 }
 
 dependencies {
-    compile 'id.co.veritrans:vt-java-client:1.0.10'
+    compile 'id.co.veritrans:vt-java-client:1.1.0'
 }
 ```
 
 ## Jar Library
-If you want to download veritrans java-client jar library on your own, you can download it directly **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.10/vt-java-client-1.0.10-all.jar)**
+If you want to download veritrans java-client jar library on your own, you can download it directly **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.1.0/vt-java-client-1.1.0-all.jar)**
 
 # Usage
 
@@ -298,28 +298,23 @@ if (vtResponse.getStatusCode().equals("200") &&
 <br/>
 #### Credit Card (Full PAN)
 ***`Only allowed for certain merchant`***  
-`currently only support for non 3DS transaction`  
 For PCIDSS compliance merchant, it able to charge credit card transaction using customer credit card data instead of using token.
 ```java
+String IS_USE_3DS = true;
 CreditCardFullPanRequest vtDirectChargeRequest = new CreditCardFullPanRequest();
 setVtDirectChargeRequestValues(vtDirectChargeRequest);
 
-CreditCardFullPan creditCardFullPan = new CreditCardFullPan("5410111111111116", "123", "01", "2020");
+CreditCardFullPan creditCardFullPan = new CreditCardFullPan("5410111111111116", "123", "01", "2020", IS_USE_3DS);
 vtDirectChargeRequest.setCreditCardFullPan(creditCardFullPan);
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
-if (vtResponse.getStatusCode().equals("200") &&
-    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
-    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+if vtResponse.getStatusCode().equals("201") {
 
-    // handle successful capture
-} else if (vtResponse.getStatusCode().equals("201") &&
-    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &&
-    vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
-
-    // handle FDS challenge (you can do this later)
+    // handle successful request, redirect user to redirect_url
+    // vtResponse.getRedirectUrl();
 } else {
+
     // handle denied / unexpected response
 }
 ```

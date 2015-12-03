@@ -152,7 +152,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;id.co.veritrans&lt;/groupId&gt;
         &lt;artifactId&gt;vt-java-client&lt;/artifactId&gt;
-        &lt;version&gt;1.0.10&lt;/version&gt;
+        &lt;version&gt;1.1.0&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;
 </code></pre>
@@ -166,12 +166,12 @@
 }
 
 dependencies {
-    compile 'id.co.veritrans:vt-java-client:1.0.10'
+    compile 'id.co.veritrans:vt-java-client:1.1.0'
 }
 </code></pre>
 
 <h2 id="jar-library">Jar Library</h2>
-<p>If you want to download veritrans java-client jar library on your own, you can download it directly <strong><a href="https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.0.10/vt-java-client-1.0.10-all.jar">here</a></strong></p>
+<p>If you want to download veritrans java-client jar library on your own, you can download it directly <strong><a href="https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.1.0/vt-java-client-1.1.0-all.jar">here</a></strong></p>
 <h1 id="usage">Usage</h1>
 <h2 id="vtgatewayconfig">VtGatewayConfig</h2>
 <p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.
@@ -400,27 +400,22 @@ if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
 <p><br/></p>
 <h4 id="credit-card-full-pan">Credit Card (Full PAN)</h4>
 <p><strong><em><code>Only allowed for certain merchant</code></em></strong><br />
-<code>currently only support for non 3DS transaction</code><br />
 For PCIDSS compliance merchant, it able to charge credit card transaction using customer credit card data instead of using token.</p>
-<pre><code class="java">CreditCardFullPanRequest vtDirectChargeRequest = new CreditCardFullPanRequest();
+<pre><code class="java">String IS_USE_3DS = true;
+CreditCardFullPanRequest vtDirectChargeRequest = new CreditCardFullPanRequest();
 setVtDirectChargeRequestValues(vtDirectChargeRequest);
 
-CreditCardFullPan creditCardFullPan = new CreditCardFullPan(&quot;5410111111111116&quot;, &quot;123&quot;, &quot;01&quot;, &quot;2020&quot;);
+CreditCardFullPan creditCardFullPan = new CreditCardFullPan(&quot;5410111111111116&quot;, &quot;123&quot;, &quot;01&quot;, &quot;2020&quot;, IS_USE_3DS);
 vtDirectChargeRequest.setCreditCardFullPan(creditCardFullPan);
 
 VtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);
 
-if (vtResponse.getStatusCode().equals(&quot;200&quot;) &amp;&amp;
-    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &amp;&amp;
-    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {
+if vtResponse.getStatusCode().equals(&quot;201&quot;) {
 
-    // handle successful capture
-} else if (vtResponse.getStatusCode().equals(&quot;201&quot;) &amp;&amp;
-    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED &amp;&amp;
-    vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {
-
-    // handle FDS challenge (you can do this later)
+    // handle successful request, redirect user to redirect_url
+    // vtResponse.getRedirectUrl();
 } else {
+
     // handle denied / unexpected response
 }
 </code></pre>
