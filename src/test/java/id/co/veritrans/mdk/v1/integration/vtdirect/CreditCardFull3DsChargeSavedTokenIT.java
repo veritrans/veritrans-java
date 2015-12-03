@@ -14,7 +14,6 @@ import java.net.URISyntaxException;
 
 import static org.testng.Assert.assertEquals;
 import static org.testng.Assert.assertNotNull;
-import static org.testng.Assert.assertNull;
 
 /**
  * Created by gde on 5/11/15.
@@ -78,7 +77,7 @@ public class CreditCardFull3DsChargeSavedTokenIT extends AbstractCreditCardIT {
 
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CAPTURED);
-        assertNull(vtResponse.getFraudStatus());
+        assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
         assertNotNull(vtResponse.getTransactionId());
         assertNotNull(vtResponse.getGrossAmount());
     }
