@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
@@ -64,6 +65,11 @@ public class JsonUtil {
             _deserializationConfig = getDeserializationConfig()
                     .with(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES)
                     .without(JsonParser.Feature.AUTO_CLOSE_SOURCE);
+
+            configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            configure(DeserializationFeature.FAIL_ON_IGNORED_PROPERTIES, false);
+            configure(DeserializationFeature.FAIL_ON_NUMBERS_FOR_ENUMS, false);
+            configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         }
     }
 }
