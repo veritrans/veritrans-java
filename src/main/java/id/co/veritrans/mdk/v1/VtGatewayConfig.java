@@ -49,6 +49,8 @@ public class VtGatewayConfig {
      * @param serverKey             Merchant <a href="https://my.sandbox.veritrans.co.id/login">server key</a>
      * @param clientKey             Merchant <a href="https://my.sandbox.veritrans.co.id/login">client key</a>
      * @param maxConnectionPoolSize Http client max connection pool size
+     * @param connectTimeout        Http client connect timeout
+     * @param socketTimeout         Http client socket timeout
      * @param proxyConfig           Http client {@link id.co.veritrans.mdk.v1.config.ProxyConfig proxy configuration}
      */
     public VtGatewayConfig(EnvironmentType environmentType, String serverKey, String clientKey, int maxConnectionPoolSize,
