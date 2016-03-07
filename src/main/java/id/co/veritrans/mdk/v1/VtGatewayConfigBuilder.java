@@ -12,6 +12,18 @@ public class VtGatewayConfigBuilder {
     private String clientKey;
     private int maxConnectionPoolSize = 16;
     private ProxyConfig proxyConfig;
+    private int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
+    private int socketTimeout = DEFAULT_SOCKET_TIMEOUT;
+
+    /**
+     * Default connect timeout
+     */
+    public static final int DEFAULT_CONNECT_TIMEOUT = 5000;
+
+    /**
+     * Default socket timeout
+     */
+    public static final int DEFAULT_SOCKET_TIMEOUT = 30000;
 
     /**
      * Set VtGatewayConfig environment type
@@ -54,6 +66,26 @@ public class VtGatewayConfigBuilder {
     }
 
     /**
+     * Set VtGatewayConfig http client connect timeout
+     * @param connectTimeout Http client connect timeout
+     * @return {@link id.co.veritrans.mdk.v1.VtGatewayConfigBuilder VtGatewayConfigBuilder}
+     */
+    public VtGatewayConfigBuilder setConnectTimeout(int connectTimeout) {
+        this.connectTimeout = connectTimeout;
+        return this;
+    }
+
+    /**
+     * Set VtGatewayConfig http client socket timeout
+     * @param socketTimeout Http client socket timeout
+     * @return {@link id.co.veritrans.mdk.v1.VtGatewayConfigBuilder VtGatewayConfigBuilder}
+     */
+    public VtGatewayConfigBuilder setSocketTimeout(int socketTimeout) {
+        this.socketTimeout = socketTimeout;
+        return this;
+    }
+
+    /**
      * Set VtGatewayConfig proxy configuration
      * @param proxyConfig   {@link id.co.veritrans.mdk.v1.config.ProxyConfig Proxy config}
      * @return              {@link id.co.veritrans.mdk.v1.VtGatewayConfigBuilder VtGatewayConfigBuilder}
@@ -68,6 +100,6 @@ public class VtGatewayConfigBuilder {
      * @return {@link id.co.veritrans.mdk.v1.VtGatewayConfig VtGatewayConfig}
      */
     public VtGatewayConfig createVtGatewayConfig() {
-        return new VtGatewayConfig(environmentType, serverKey, clientKey, maxConnectionPoolSize, proxyConfig);
+        return new VtGatewayConfig(environmentType, serverKey, clientKey, maxConnectionPoolSize, connectTimeout, socketTimeout, proxyConfig);
     }
 }
