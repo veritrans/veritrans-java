@@ -20,12 +20,12 @@ public class VtGatewayConfig {
     /**
      * Default connect timeout
      */
-    public static int DEFAULT_CONNECT_TIMEOUT = 5000;
+    public static final int DEFAULT_CONNECT_TIMEOUT = 5000;
 
     /**
      * Default socket timeout
      */
-    public static int DEFAULT_SOCKET_TIMEOUT = 30000;
+    public static final int DEFAULT_SOCKET_TIMEOUT = 30000;
 
     /**
      * Veritrans gateway configuration constructor
