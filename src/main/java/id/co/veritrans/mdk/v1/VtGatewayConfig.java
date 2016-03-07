@@ -14,6 +14,8 @@ public class VtGatewayConfig {
     private final String clientKey;
     private final int maxConnectionPoolSize;
     private final ProxyConfig proxyConfig;
+    private final int connectTimeout;
+    private final int socketTimeout;
 
     /**
      * Veritrans gateway configuration constructor
@@ -29,6 +31,29 @@ public class VtGatewayConfig {
         this.clientKey = clientKey;
         this.maxConnectionPoolSize = maxConnectionPoolSize;
         this.proxyConfig = proxyConfig;
+        this.connectTimeout = VtGatewayConfigBuilder.DEFAULT_CONNECT_TIMEOUT;
+        this.socketTimeout = VtGatewayConfigBuilder.DEFAULT_SOCKET_TIMEOUT;
+    }
+
+    /**
+     * Veritrans gateway configuration constructor
+     * @param environmentType       {@link id.co.veritrans.mdk.v1.config.EnvironmentType Environment type}
+     * @param serverKey             Merchant <a href="https://my.sandbox.veritrans.co.id/login">server key</a>
+     * @param clientKey             Merchant <a href="https://my.sandbox.veritrans.co.id/login">client key</a>
+     * @param maxConnectionPoolSize Http client max connection pool size
+     * @param connectTimeout        Http client connect timeout
+     * @param socketTimeout         Http client socket timeout
+     * @param proxyConfig           Http client {@link id.co.veritrans.mdk.v1.config.ProxyConfig proxy configuration}
+     */
+    public VtGatewayConfig(EnvironmentType environmentType, String serverKey, String clientKey, int maxConnectionPoolSize,
+                           int connectTimeout, int socketTimeout, ProxyConfig proxyConfig) {
+        this.environmentType = environmentType;
+        this.serverKey = serverKey;
+        this.clientKey = clientKey;
+        this.maxConnectionPoolSize = maxConnectionPoolSize;
+        this.proxyConfig = proxyConfig;
+        this.connectTimeout = connectTimeout;
+        this.socketTimeout = socketTimeout;
     }
 
     /**
@@ -71,6 +96,22 @@ public class VtGatewayConfig {
         return proxyConfig;
     }
 
+    /**
+     * Get http client connect timeout
+     * @return Http client connect timeout
+     */
+    public int getConnectTimeout() {
+        return connectTimeout;
+    }
+
+    /**
+     * Get http client socket timeout
+     * @return Http client socket timeout
+     */
+    public int getSocketTimeout() {
+        return socketTimeout;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -79,6 +120,8 @@ public class VtGatewayConfig {
         VtGatewayConfig config = (VtGatewayConfig) o;
 
         if (maxConnectionPoolSize != config.maxConnectionPoolSize) return false;
+        if (socketTimeout != config.socketTimeout) return false;
+        if (connectTimeout!= config.connectTimeout) return false;
         if (clientKey != null ? !clientKey.equals(config.clientKey) : config.clientKey != null) return false;
         if (environmentType != config.environmentType) return false;
         if (proxyConfig != null ? !proxyConfig.equals(config.proxyConfig) : config.proxyConfig != null) return false;
@@ -93,6 +136,8 @@ public class VtGatewayConfig {
         result = 31 * result + (serverKey != null ? serverKey.hashCode() : 0);
         result = 31 * result + (clientKey != null ? clientKey.hashCode() : 0);
         result = 31 * result + maxConnectionPoolSize;
+        result = 31 * result + socketTimeout;
+        result = 31 * result + connectTimeout;
         result = 31 * result + (proxyConfig != null ? proxyConfig.hashCode() : 0);
         return result;
     }

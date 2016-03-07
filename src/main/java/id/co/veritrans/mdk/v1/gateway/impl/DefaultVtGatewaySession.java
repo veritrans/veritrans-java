@@ -35,9 +35,6 @@ import java.util.List;
  */
 public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
 
-    private final static int CONNECT_TIMEOUT = 5000;  // in milisecond
-    private final static int SOCKET_TIMEOUT  = 30000; // in milisecond
-
     private final VtGatewayConfig vtGatewayConfig;
     private final PoolingHttpClientConnectionManager connectionManager;
     private final CloseableHttpClient httpClient;
@@ -182,8 +179,8 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
 
     private RequestConfig getRequestConfig() {
         RequestConfig requestConfig = RequestConfig.copy(RequestConfig.DEFAULT)
-                .setConnectTimeout(CONNECT_TIMEOUT)
-                .setSocketTimeout(SOCKET_TIMEOUT)
+                .setConnectTimeout(vtGatewayConfig.getConnectTimeout())
+                .setSocketTimeout(vtGatewayConfig.getSocketTimeout())
                 .build();
 
         return requestConfig;

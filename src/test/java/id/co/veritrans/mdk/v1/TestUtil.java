@@ -67,6 +67,8 @@ public class TestUtil {
                 .setEnvironmentType(EnvironmentType.SANDBOX)
                 .setServerKey("a")
                 .setClientKey("b")
+                .setConnectTimeout(VtGatewayConfig.DEFAULT_CONNECT_TIMEOUT)
+                .setSocketTimeout(VtGatewayConfig.DEFAULT_SOCKET_TIMEOUT)
                 .createVtGatewayConfig();
     }
 
