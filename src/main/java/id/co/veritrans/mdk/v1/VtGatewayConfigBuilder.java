@@ -12,8 +12,18 @@ public class VtGatewayConfigBuilder {
     private String clientKey;
     private int maxConnectionPoolSize = 16;
     private ProxyConfig proxyConfig;
-    private int connectTimeout = VtGatewayConfig.DEFAULT_CONNECT_TIMEOUT;
-    private int socketTimeout = VtGatewayConfig.DEFAULT_SOCKET_TIMEOUT;
+    private int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
+    private int socketTimeout = DEFAULT_SOCKET_TIMEOUT;
+
+    /**
+     * Default connect timeout
+     */
+    public static final int DEFAULT_CONNECT_TIMEOUT = 5000;
+
+    /**
+     * Default socket timeout
+     */
+    public static final int DEFAULT_SOCKET_TIMEOUT = 30000;
 
     /**
      * Set VtGatewayConfig environment type

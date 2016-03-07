@@ -17,6 +17,8 @@ public class VtGatewayConfigTest {
                 .setEnvironmentType(EnvironmentType.SANDBOX)
                 .setMaxConnectionPoolSize(1)
                 .setProxyConfig(TestUtil.buildProxyConfig())
+                .setSocketTimeout(1000)
+                .setConnectTimeout(1000)
                 .createVtGatewayConfig();
 
         Assert.assertEquals(config.getServerKey(), "a");
@@ -24,5 +26,7 @@ public class VtGatewayConfigTest {
         Assert.assertEquals(config.getEnvironmentType(), EnvironmentType.SANDBOX);
         Assert.assertEquals(config.getMaxConnectionPoolSize(), 1);
         Assert.assertNotNull(config.getProxyConfig());
+        Assert.assertEquals(config.getSocketTimeout(), 1000);
+        Assert.assertEquals(config.getConnectTimeout(), 1000);
     }
 }

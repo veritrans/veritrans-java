@@ -14,18 +14,8 @@ public class VtGatewayConfig {
     private final String clientKey;
     private final int maxConnectionPoolSize;
     private final ProxyConfig proxyConfig;
-    private int connectTimeout = DEFAULT_CONNECT_TIMEOUT;
-    private int socketTimeout = DEFAULT_SOCKET_TIMEOUT;
-
-    /**
-     * Default connect timeout
-     */
-    public static final int DEFAULT_CONNECT_TIMEOUT = 5000;
-
-    /**
-     * Default socket timeout
-     */
-    public static final int DEFAULT_SOCKET_TIMEOUT = 30000;
+    private final int connectTimeout;
+    private final int socketTimeout;
 
     /**
      * Veritrans gateway configuration constructor
@@ -41,6 +31,8 @@ public class VtGatewayConfig {
         this.clientKey = clientKey;
         this.maxConnectionPoolSize = maxConnectionPoolSize;
         this.proxyConfig = proxyConfig;
+        this.connectTimeout = VtGatewayConfigBuilder.DEFAULT_CONNECT_TIMEOUT;
+        this.socketTimeout = VtGatewayConfigBuilder.DEFAULT_SOCKET_TIMEOUT;
     }
 
     /**
