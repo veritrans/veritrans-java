@@ -29,4 +29,20 @@ public class VtGatewayConfigTest {
         Assert.assertEquals(config.getSocketTimeout(), 1000);
         Assert.assertEquals(config.getConnectTimeout(), 1000);
     }
+
+    @Test
+    public void testDefaultValue() {
+        VtGatewayConfig config = new VtGatewayConfigBuilder()
+                .setServerKey("a")
+                .setClientKey("b")
+                .setEnvironmentType(EnvironmentType.PRODUCTION)
+                .createVtGatewayConfig();
+
+        Assert.assertEquals(config.getServerKey(), "a");
+        Assert.assertEquals(config.getClientKey(), "b");
+        Assert.assertEquals(config.getEnvironmentType(), EnvironmentType.PRODUCTION);
+        Assert.assertEquals(config.getMaxConnectionPoolSize(), 16);
+        Assert.assertEquals(config.getConnectTimeout(), 5000);
+        Assert.assertEquals(config.getSocketTimeout(), 30000);
+    }
 }
