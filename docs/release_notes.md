@@ -1,5 +1,9 @@
 # Release Notes
 
+## Release 1.2.0
+### 7 March 2015
+- **[Feature]** Add http connect and socket timeout config
+
 ## Release 1.1.1
 ### 22 February 2015
 - **[Bug fix]** Handle un-registered parameter on `VtResponse`

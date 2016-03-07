@@ -152,7 +152,7 @@
     &lt;dependency&gt;
         &lt;groupId&gt;id.co.veritrans&lt;/groupId&gt;
         &lt;artifactId&gt;vt-java-client&lt;/artifactId&gt;
-        &lt;version&gt;1.1.1&lt;/version&gt;
+        &lt;version&gt;1.2.0&lt;/version&gt;
     &lt;/dependency&gt;
 &lt;/dependencies&gt;
 </code></pre>
@@ -166,12 +166,12 @@
 }
 
 dependencies {
-    compile 'id.co.veritrans:vt-java-client:1.1.1'
+    compile 'id.co.veritrans:vt-java-client:1.2.0'
 }
 </code></pre>
 
 <h2 id="jar-library">Jar Library</h2>
-<p>If you want to download veritrans java-client jar library on your own, you can download it directly <strong><a href="https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.1.1/vt-java-client-1.1.1-all.jar">here</a></strong></p>
+<p>If you want to download veritrans java-client jar library on your own, you can download it directly <strong><a href="https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.2.0/vt-java-client-1.2.0-all.jar">here</a></strong></p>
 <h1 id="usage">Usage</h1>
 <h2 id="vtgatewayconfig">VtGatewayConfig</h2>
 <p>VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.
@@ -233,6 +233,14 @@ proxyConfigBuilder.setPassword(&quot;proxy password or null&quot;);
 
 ProxyConfig proxyConfig = proxyConfigBuilder.createProxyConfig();
 vtGatewayConfigBuilder.setProxyConfig(proxyConfig);
+</code></pre>
+
+<p><br/></p>
+<h4 id="connect-and-socket-timeout-configuration">Connect and Socket Timeout Configuration</h4>
+<p>You can setup the http connect and socket timeout configuration manually. The default value is <code>5000 ms</code> for connect timeout and <code>30000 ms</code> for socket timeout</p>
+<pre><code class="java">/* Value is on milisecond (ms) */
+vtGatewayConfigBuilder.setConnectTimeout(10000)
+                      .setSocketTimeout(20000);
 </code></pre>
 
 <p><br/></p>

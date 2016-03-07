@@ -25,7 +25,7 @@ If you're using Maven as the build tools for your project, please add **[jcenter
     <dependency>
         <groupId>id.co.veritrans</groupId>
         <artifactId>vt-java-client</artifactId>
-        <version>1.1.1</version>
+        <version>1.2.0</version>
     </dependency>
 </dependencies>
 ```
@@ -40,12 +40,12 @@ repositories {
 }
 
 dependencies {
-    compile 'id.co.veritrans:vt-java-client:1.1.1'
+    compile 'id.co.veritrans:vt-java-client:1.2.0'
 }
 ```
 
 ## Jar Library
-If you want to download veritrans java-client jar library on your own, you can download it directly **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.1.1/vt-java-client-1.1.1-all.jar)**
+If you want to download veritrans java-client jar library on your own, you can download it directly **[here](https://bintray.com/artifact/download/pt-midtrans/maven/id/co/veritrans/vt-java-client/1.2.0/vt-java-client-1.2.0-all.jar)**
 
 # Usage
 
@@ -117,6 +117,15 @@ proxyConfigBuilder.setPassword("proxy password or null");
 
 ProxyConfig proxyConfig = proxyConfigBuilder.createProxyConfig();
 vtGatewayConfigBuilder.setProxyConfig(proxyConfig);
+```
+
+<br/>
+#### Connect and Socket Timeout Configuration
+You can setup the http connect and socket timeout configuration manually. The default value is `5000 ms` for connect timeout and `30000 ms` for socket timeout
+```java
+/* Value is on milisecond (ms) */
+vtGatewayConfigBuilder.setConnectTimeout(10000)
+                      .setSocketTimeout(20000);
 ```
 
 <br/>
