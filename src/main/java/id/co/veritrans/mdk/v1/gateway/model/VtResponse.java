@@ -44,6 +44,7 @@ public class VtResponse extends OrderStatus {
     private String customField1;
     private String customField2;
     private String customField3;
+    private String id;
 
 
     /**
@@ -470,42 +471,60 @@ public class VtResponse extends OrderStatus {
         this.customField3 = customField3;
     }
 
+    /**
+     * Get id parameter
+     *
+     * @return Id parameter
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Set id parameter
+     *
+     * @param id Id parameter
+     */
+    public void setId(final String id) {
+        this.id = id;
+    }
+
     @Override
-    public boolean equals(Object o) {
+    public boolean equals(final Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        VtResponse that = (VtResponse) o;
+        final VtResponse that = (VtResponse) o;
 
-        if (bank != that.bank) return false;
-        if (biiVaNumber != null ? !biiVaNumber.equals(that.biiVaNumber) : that.biiVaNumber != null) return false;
-        if (billKey != null ? !billKey.equals(that.billKey) : that.billKey != null) return false;
-        if (billerCode != null ? !billerCode.equals(that.billerCode) : that.billerCode != null) return false;
-        if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
-        if (customField1 != null ? !customField1.equals(that.customField1) : that.customField1 != null) return false;
-        if (customField2 != null ? !customField2.equals(that.customField2) : that.customField2 != null) return false;
-        if (customField3 != null ? !customField3.equals(that.customField3) : that.customField3 != null) return false;
-        if (eci != null ? !eci.equals(that.eci) : that.eci != null) return false;
-        if (!Arrays.equals(listTransactionStatus, that.listTransactionStatus)) return false;
-        if (page != null ? !page.equals(that.page) : that.page != null) return false;
+        if (statusMessage != null ? !statusMessage.equals(that.statusMessage) : that.statusMessage != null)
+            return false;
         if (permataVaNumber != null ? !permataVaNumber.equals(that.permataVaNumber) : that.permataVaNumber != null)
             return false;
-        if (redirectUrl != null ? !redirectUrl.equals(that.redirectUrl) : that.redirectUrl != null) return false;
+        if (signatureKey != null ? !signatureKey.equals(that.signatureKey) : that.signatureKey != null) return false;
+        if (cardToken != null ? !cardToken.equals(that.cardToken) : that.cardToken != null) return false;
         if (savedCardToken != null ? !savedCardToken.equals(that.savedCardToken) : that.savedCardToken != null)
             return false;
         if (savedCardTokenExpiredAt != null ? !savedCardTokenExpiredAt.equals(that.savedCardTokenExpiredAt) : that.savedCardTokenExpiredAt != null)
             return false;
         if (secureToken != null ? !secureToken.equals(that.secureToken) : that.secureToken != null) return false;
-        if (signatureKey != null ? !signatureKey.equals(that.signatureKey) : that.signatureKey != null) return false;
-        if (statusMessage != null ? !statusMessage.equals(that.statusMessage) : that.statusMessage != null)
-            return false;
-        if (totalPage != null ? !totalPage.equals(that.totalPage) : that.totalPage != null) return false;
-        if (totalRecord != null ? !totalRecord.equals(that.totalRecord) : that.totalRecord != null) return false;
-        if (!Arrays.equals(validationMessages, that.validationMessages)) return false;
+        if (bank != that.bank) return false;
+        if (billerCode != null ? !billerCode.equals(that.billerCode) : that.billerCode != null) return false;
+        if (billKey != null ? !billKey.equals(that.billKey) : that.billKey != null) return false;
         if (xlTunaiOrderId != null ? !xlTunaiOrderId.equals(that.xlTunaiOrderId) : that.xlTunaiOrderId != null)
             return false;
+        if (biiVaNumber != null ? !biiVaNumber.equals(that.biiVaNumber) : that.biiVaNumber != null) return false;
+        if (redirectUrl != null ? !redirectUrl.equals(that.redirectUrl) : that.redirectUrl != null) return false;
+        if (eci != null ? !eci.equals(that.eci) : that.eci != null) return false;
+        if (!Arrays.equals(validationMessages, that.validationMessages)) return false;
+        if (page != null ? !page.equals(that.page) : that.page != null) return false;
+        if (totalPage != null ? !totalPage.equals(that.totalPage) : that.totalPage != null) return false;
+        if (totalRecord != null ? !totalRecord.equals(that.totalRecord) : that.totalRecord != null) return false;
+        if (!Arrays.equals(listTransactionStatus, that.listTransactionStatus)) return false;
+        if (customField1 != null ? !customField1.equals(that.customField1) : that.customField1 != null) return false;
+        if (customField2 != null ? !customField2.equals(that.customField2) : that.customField2 != null) return false;
+        if (customField3 != null ? !customField3.equals(that.customField3) : that.customField3 != null) return false;
+        return id != null ? id.equals(that.id) : that.id == null;
 
-        return true;
     }
 
     @Override
@@ -524,14 +543,15 @@ public class VtResponse extends OrderStatus {
         result = 31 * result + (biiVaNumber != null ? biiVaNumber.hashCode() : 0);
         result = 31 * result + (redirectUrl != null ? redirectUrl.hashCode() : 0);
         result = 31 * result + (eci != null ? eci.hashCode() : 0);
-        result = 31 * result + (validationMessages != null ? Arrays.hashCode(validationMessages) : 0);
+        result = 31 * result + Arrays.hashCode(validationMessages);
         result = 31 * result + (page != null ? page.hashCode() : 0);
         result = 31 * result + (totalPage != null ? totalPage.hashCode() : 0);
         result = 31 * result + (totalRecord != null ? totalRecord.hashCode() : 0);
-        result = 31 * result + (listTransactionStatus != null ? Arrays.hashCode(listTransactionStatus) : 0);
+        result = 31 * result + Arrays.hashCode(listTransactionStatus);
         result = 31 * result + (customField1 != null ? customField1.hashCode() : 0);
         result = 31 * result + (customField2 != null ? customField2.hashCode() : 0);
         result = 31 * result + (customField3 != null ? customField3.hashCode() : 0);
+        result = 31 * result + (id != null ? id.hashCode() : 0);
         return result;
     }
 }
