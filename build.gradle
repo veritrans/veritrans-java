@@ -10,14 +10,14 @@
 buildscript {
     repositories { jcenter() }
     dependencies {
-        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.1'
+        classpath 'com.github.jengelman.gradle.plugins:shadow:1.2.4'
     }
 }
 
 plugins {
     id "com.jfrog.bintray" version "1.1"
     id "java"
-    id "com.github.johnrengelman.shadow" version "1.2.1"
+    id "com.github.johnrengelman.shadow" version "1.2.4"
 }
 
 // Apply the java plugin to add support for Java
@@ -32,8 +32,8 @@ def gitIssuesUrl = 'https://github.com/gde-vt/veritrans-java/issues'
 group = 'id.co.veritrans'
 version = '1.2.1'
 
-sourceCompatibility = '1.6'
-targetCompatibility = '1.6'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
