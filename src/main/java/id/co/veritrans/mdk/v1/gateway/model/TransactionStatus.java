@@ -12,7 +12,8 @@ public enum TransactionStatus {
     PENDING("pending"),
     CANCELLED("cancel"),
     DENIED("deny"),
-    EXPIRED("expire");
+    EXPIRED("expire"),
+    FAILED("failure");
 
     private final String name;
 
