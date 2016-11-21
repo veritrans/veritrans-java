@@ -1,0 +1,13 @@
+id.co.veritrans.mdk.v1
+id.co.veritrans.mdk.v1.config
+id.co.veritrans.mdk.v1.exception
+id.co.veritrans.mdk.v1.gateway
+id.co.veritrans.mdk.v1.gateway.impl
+id.co.veritrans.mdk.v1.gateway.model
+id.co.veritrans.mdk.v1.gateway.model.builder
+id.co.veritrans.mdk.v1.gateway.model.vtdirect
+id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod
+id.co.veritrans.mdk.v1.gateway.model.vtweb
+id.co.veritrans.mdk.v1.gateway.model.vtweb.paymentoption
+id.co.veritrans.mdk.v1.helper
+id.co.veritrans.mdk.v1.net
