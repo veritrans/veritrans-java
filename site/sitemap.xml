@@ -3,32 +3,40 @@
 
     
     <url>
-     <loc>None/index.html</loc>
-     <lastmod>2015-06-10</lastmod>
+     <loc>/index.html</loc>
+     <lastmod>2016-11-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/javadoc/index.html</loc>
-     <lastmod>2015-06-10</lastmod>
+     <loc>/javadoc/index.html</loc>
+     <lastmod>2016-11-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/sequence_diagram/index.html</loc>
-     <lastmod>2015-06-10</lastmod>
+     <loc>/sequence_diagram/index.html</loc>
+     <lastmod>2016-11-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     
 
     
     <url>
-     <loc>None/sample_app/index.html</loc>
-     <lastmod>2015-06-10</lastmod>
+     <loc>/sample_app/index.html</loc>
+     <lastmod>2016-11-21</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
+     <loc>/release_notes/index.html</loc>
+     <lastmod>2016-11-21</lastmod>
      <changefreq>daily</changefreq>
     </url>
     

@@ -1,0 +1,469 @@
+{
+    "docs": [
+        {
+            "location": "/index.html", 
+            "text": "Veritrans - Java Client Documentation\n\n\nThis is the official Java Client for Veritrans Payment API.  \n\n\nPlease visit \nhttps://www.veritrans.co.id\n for more information about the products and see the documentations at \nhttp://docs.veritrans.co.id\n for more technical details. We also have a few \nsequence diagrams\n which can help you to understands the big picture of our various payment methods process flow.\n\n\n\n\nInstallation\n\n\nMaven\n\n\nIf you're using Maven as the build tools for your project, please add \njcenter\n repository to your build definition, then add the following dependency to your project's build definition (pom.xml):\n\n\nrepositories\n\n    \nrepository\n\n        \nid\njcenter\n/id\n\n        \nname\nbintray\n/name\n\n        \nurl\nhttp://jcenter.bintray.com\n/url\n\n    \n/repository\n\n\n/repositories\n\n\n\ndependencies\n\n    \ndependency\n\n        \ngroupId\nid.co.veritrans\n/groupId\n\n        \nartifactId\nvt-java-client\n/artifactId\n\n        \nversion\n1.2.1\n/version\n\n    \n/dependency\n\n\n/dependencies\n\n\n\n\n\nGradle\n\n\nIf you're using Gradle as the build tools for your project, please add \njcenter\n repository to your build script then add the following dependency to your project's build definition (build.gradle):\n\n\nrepositories {\n    maven {\n        url  \nhttp://jcenter.bintray.com\n \n    }\n}\n\ndependencies {\n    compile 'id.co.veritrans:vt-java-client:1.2.1'\n}\n\n\n\n\nJar Library\n\n\nIf you want to download veritrans java-client jar library on your own, you can download it directly \nhere\n\n\nUsage\n\n\nVtGatewayConfig\n\n\nVtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.\nPlease note that every classes related with VtGatewayConfig is \nimmutable\n by design. However a builder class is provided to aid the object creation.  \n\n\nSee \nVtGatewayConfig Javadoc\n.\nSee \nVtGatewayConfigBuilder Javadoc\n.\nSee \nid.co.veritrans.mdk.v1.config Javadoc\n\n\nServer \n Client Key\n\n\nYou must set the \nServer Key\n and \nClient Key\n as defined in your \nMerchant Administration Portal (MAP)\n.\n\n\nVtGatewayConfigBuilder vtGatewayConfigBuilder = new VtGatewayConfigBuilder();\nvtGatewayConfigBuilder.setServerKey(\nYour Server Key\n);\nvtGatewayConfigBuilder.setClientKey(\nYour Client Key\n);\n\n\n\n\nEnvironment\n\n\nYou can choose to use Sandbox or Production environment. During development \n testing, you might want to set it to Sandbox and use the Production environment when you're ready to go live.  \n\n\nSee \nEnvironmentType Javadoc\n.\n\n\n// config for sandbox environment\nvtGatewayConfigBuilder.setEnvironmentType(EnvironmentType.SANDBOX);\n\n// config for production environment\nvtGatewayConfigBuilder.setEnvironmentType(EnvironmentType.PRODUCTION);\n\n\n\n\n\n\nConnection Pool Size\n\n\nVeritrans-Java Client is designed to use a HTTP Connection Pool to maintain it's HTTP Connection to Veritrans Server, thus we can take benefit from the\nHTTP Keep Alive feature and reuse the connection. In order to support this functionality, a connection pool size need to be set explicitly,\nto accomodate the needs of every different companies.\n\nWe recommend to set \nmaximum HTTP Connection Pool Size to 16\n, however it is up to you to set it to a lower or higher value. Do remember that a too low or too high\nvalue \ncould degrade the system performance\n.\n\n\nhttpConfigBuilder.setMaxConnectionPoolSize(16);\nvtGatewayConfigBuilder.setHttpConfig(httpConfigBuilder.createHttpConfig());\n\n\n\n\n\n\nProxy Configuration\n\n\nYou can setup proxy configuration if you need connect to Veritrans Payment API through proxy server.\n\nSee \nProxyConfig Javadoc\n\nSee \nProxyConfigBuilder Javadoc\n\n\n// this demonstrate configuring proxy settings using method chaining from the builder class\nProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();\n\nvtGatewayConfigBuilder.setProxyConfig(\n    proxyConfigBuilder.setHost(\nproxy host address\n)\n        .setPort(12345)\n        .setUsername(\nproxy username or null\n)\n        .setPassword(\nproxy password or null\n)\n        .createProxyConfig()\n).createVtGatewayConfig();\n\n\n\n\n// this demonstrate configuring proxy settings without method chaining\nProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();\nproxyConfigBuilder.setHost(\nproxy host address\n);\nproxyConfigBuilder.setPort(12345);\nproxyConfigBuilder.setUsername(\nproxy username or null\n);\nproxyConfigBuilder.setPassword(\nproxy password or null\n);\n\nProxyConfig proxyConfig = proxyConfigBuilder.createProxyConfig();\nvtGatewayConfigBuilder.setProxyConfig(proxyConfig);\n\n\n\n\n\n\nConnect and Socket Timeout Configuration\n\n\nYou can setup the http connect and socket timeout configuration manually. The default value is \n5000 ms\n for connect timeout and \n30000 ms\n for socket timeout\n\n\n/* Value is on milisecond (ms) */\nvtGatewayConfigBuilder.setConnectTimeout(10000)\n                      .setSocketTimeout(20000);\n\n\n\n\n\n\nVtGatewayFactory\n\n\nVtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a \nsingle instance of VtGatewayFactory class\n and \nmaintain the reference\n to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect and VtWeb.  \n\n\nIf you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a \nVtGatewayFactory instance for each configuration profile\n and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances.\n\nSee \nVtGatewayFactory Javadoc\n  \n\n\nExample code to build a VtGatewayFactory:\n\n\nVtGatewayConfig vtGatewayConfig = vtGatewayConfigBuilder.createVtGatewayConfig();\nVtGatewayFactory vtGatewayFactory = new VtGatewayFactory(vtGatewayConfig);\n\n\n\n\n\n\nVtDirect\n\n\nVtDirect is an interface class, where it's instance can be used to communicate with Veritrans Payment API. VtDirect instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  \n\n\nSee \nVtDirect Javadoc\n.\n\nExample code to obtain reference to VtDirect instance:\n\n\nVtDirect vtDirect = vtGatewayFactory.vtDirect();\n\n\n\n\nCharging a transaction\n\n\nVtDirect has method named \ncharge\n which takes an instance of VtDirectChargeRequest subclass as the parameter.\nThis method will make a charge request to Veritrans Payment API and return a VtResponse as a result, which can be used to determine the status of the transaction.  \n\n\nSee \nVtDirectChargeRequest\n\nSee \nVtResponse\n\nVisit \nhttp://docs.veritrans.co.id/en/api/methods.html#Charge \nfor more information.\n\n\nVtDirectChargeRequest\n\n\nVtDirectChargeRequest has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:  \n\n\n\n\nBankTransferRequest\n  \n\n\nBriEpayRequest\n  \n\n\nCimbClicksRequest\n  \n\n\nCreditCardRequest\n  \n\n\nMandiriClickpayRequest\n  \n\n\nBcaKlikpayRequest\n  \n\n\nKlikBcaRequest\n\n\n\n\nSee \nid.co.veritrans.mdk.gateway.model Javadoc\n\nSee \nid.co.veritrans.mdk.gateway.model.vtdirect Javadoc\n\n\nIt is recommended to have a single method to configure the generic VtDirectChargeRequest values. Example for Credit Card charge:\n\n\n...\n// somewhere in the code\nCreditCardRequest vtDirectChargeRequest = new CreditCardRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\n// continue processing\n...\n\n/**\n * This method is just for example.\n * The actual values should be obtained from another sources.\n */\npublic void setVtDirectChargeRequestValues(VtDirectChargeRequest vtDirectChargeRequest) {\n    vtDirectChargeRequest.setTransactionDetails(new TransactionDetails());\n    vtDirectChargeRequest.setCustomerDetails(new CustomerDetails());\n\n    vtDirectChargeRequest.getTransactionDetails().setOrderId(\nyour unique order ID\n);\n    vtDirectChargeRequest.getTransactionDetails().setGrossAmount(10000l);\n\n    vtDirectChargeRequest.getCustomerDetails().setEmail(\nuser@domain.com\n);\n    vtDirectChargeRequest.getCustomerDetails().setFirstName(\nfirstName\n);\n    vtDirectChargeRequest.getCustomerDetails().setPhone(\n0123456789\n);\n    vtDirectChargeRequest.getCustomerDetails().setBillingAddress(new Address());\n\n    Address billingAddress = vtDirectChargeRequest.getCustomerDetails().getBillingAddress();\n    billingAddress.setAddress(\nRandom Street 6A\n);\n    billingAddress.setCity(\nJakarta Pusat\n);\n    billingAddress.setPostalCode(\n12210\n);\n}\n\n\n\n\n\n\nBank Transfer\n\n\nSee \nBankTransfer Javadoc\n\nSee \nBank Transfer Process Flow\n\n\nBankTransferRequest vtDirectChargeRequest = new BankTransferRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setBankTransfer(new BankTransfer());\n\nvtDirectChargeRequest.getBankTransfer().setBank(BankTransfer.Bank.PERMATA);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful Bank Transfer charge request\n    // check the permataVaNumber in the vtResponse\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nBri Epay\n\n\nBriEpayRequest vtDirectChargeRequest = new BriEpayRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful Bank Transfer charge request\n    // check the redirectUrl value in the vtResponse (redirect the customer to the redirectUrl to continue the payment process)\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nCimb Clicks\n\n\nSee \nCimbClicks Javadoc\n\n\nCimbClicksRequest vtDirectChargeRequest = new CimbClicksRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setCimbClicks(new CimbClicks());\n\nvtDirectChargeRequest.getCimbClicks().setDescription(\nPayment for Merchant XYZ\n);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful Cimb Clicks charge request\n    // check the redirectUrl value in the vtResponse (redirect the customer to the redirectUrl to continue the payment process)\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nCredit Card (One-Time Tokenization)\n\n\nSee \nCreditCard Javadoc\n\nSee \nCreditCard Process Flow Without 3D Secure Authentication\n\nSee \nCreditCard Process Flow With 3D Secure Authentication\n  \n\n\nEvery Credit Card transaction must use a \nToken\n generated by Veritrans Payment API instead of using plain card number.\n Please visit \nAcquiring Credit Card Token\n for further information.\n\n\nCreditCardRequest vtDirectChargeRequest = new CreditCardRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\n\nCreditCard creditCard = new CreditCardBuilder()\n    .setTokenId(\ncreditCardToken\n)          // token is obtained from HTTP POST variable.\n    .setAcquirerBank(CreditCard.Bank.BNI)   // your acquirer bank for Credit Card\n    .setFraudSector(\nfraud sector\n)         // merchant fraud sector (applicable only for several merchant) \n    .createCreditCard(); \n\nvtDirectChargeRequest.setCreditCard(creditCard);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED \n\n    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {\n\n    // handle successful capture\n} else if (vtResponse.getStatusCode().equals(\n201\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED \n\n    vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {\n\n    // handle FDS challenge (you can do this later)\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nCredit Card (Full PAN)\n\n\nOnly allowed for certain merchant\n\nFor PCIDSS compliance merchant, it able to charge credit card transaction using customer credit card data instead of using token.\n\n\nString IS_USE_3DS = true;\nCreditCardFullPanRequest vtDirectChargeRequest = new CreditCardFullPanRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\n\nCreditCardFullPan creditCardFullPan = new CreditCardFullPan(\n5410111111111116\n, \n123\n, \n01\n, \n2020\n, IS_USE_3DS);\nvtDirectChargeRequest.setCreditCardFullPan(creditCardFullPan);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif vtResponse.getStatusCode().equals(\n201\n) {\n\n    // handle successful request, redirect user to redirect_url\n    // vtResponse.getRedirectUrl();\n} else {\n\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nMandiri Clickpay\n\n\nSee \nMandiriClickpay Javadoc\n\nVisit \nVeritrans Mandiri Clickpay Documentation\n for more information.\n\n\nMandiriClickpayRequest vtDirectChargeRequest = new MandiriClickpayRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setMandiriClickpay(new MandiriClickpay());\n\nvtDirectChargeRequest.getMandiriClickpay().setCardNumber(\n4111111111111111\n);\nvtDirectChargeRequest.getMandiriClickpay().setInput1(\n111111111\n);\nvtDirectChargeRequest.getMandiriClickpay().setInput2(\n10000\n);\nvtDirectChargeRequest.getMandiriClickpay().setInput3(\n54321\n);\nvtDirectChargeRequest.getMandiriClickpay().setToken(\n000000\n);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {\n\n    // handle successful Mandiri Clickpay charge request\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nBCA KlikPay\n\n\nSee \nBcaKlikpay Javadoc\n  \n\n\nBcaKlikpayRequest vtDirectChargeRequest = new BcaKlikpayRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setBcaKlikpay(new BcaKlikpay());\n\nvtDirectChargeRequest.getBcaKlikpay().setType(1);\nvtDirectChargeRequest.getBcaKlikpay().setMiscFee(10000L);\nvtDirectChargeRequest.getBcaKlikpay().setDescription(\nProduct X\n);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful  BCA Klikpay charge request\n    // check the redirectUrl value in the vtResponse (redirect the customer to the redirectUrl to continue the payment process)\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nKlik BCA\n\n\nSee \nKlik BCA Javadoc\n  \n\n\nKlikBcaRequest vtDirectChargeRequest = new KlikBcaRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setKlikBca(new KlikBca());\n\nvtDirectChargeRequest.getKlikBca().setUserId(\nuser ID\n);\nvtDirectChargeRequest.getKlikBca().setDescription(\nTransaction description\n);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful  BCA Klikpay charge request\n    // show instruction to customer on how to pay with klikbca\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nVtWeb\n\n\nVtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but \nVtWeb \ncharge\n functionality will be responded with redirect url\n which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.  \n\n\nSee \nVtWeb Javadoc\n.\n\nExample code to obtain reference to VtWeb instance:\n\n\nVtWeb vtWeb = vtGatewayFactory.vtWeb();\n\n\n\n\n\n\nCharging a transaction\n\n\nVtWebChargeRequest vtWebChargeRequest = new VtWebChargeRequest();\nsetVtWebChargeRequestValues(vtWebChargeRequest);\nvtWebChargeRequest.setVtWeb(new VtWebParam());\nvtWebChargeRequest.getVtWeb().setCreditCardUse3dSecure(true);\n\nVtResponse vtResponse = vtWeb.charge(vtWebChargeRequest);\nif (vtResponse.getStatusCode().equals(\n201\n)) {\n    // Redirect user to redirecturl param [vtResponse.getRedirectUrl()]\n} else {\n    // Handle denied / unexpected response\n}\n\n\n\n\nSet enabled payment method\n\n\nYou can specify manually on every request which payment method that want to be enabled on transaction.\n\n\nVtWebChargeRequest vtWebChargeRequest = new VtWebChargeRequest();\nsetVtWebChargeRequestValues(vtWebChargeRequest);\nvtWebChargeRequest.setVtWeb(new VtWebParam());\nvtWebChargeRequest.getVtWeb().setEnabledPayments(new VtWebParam.PaymentMethod[]{VtWebParam.PaymentMethod.CREDIT_CARD, VtWebParam.PaymentMethod.CIMB_CLICKS});\n\n\n\n\nHandle VtWeb URL parameter response\n\n\nAfter customer finishes transaction on vtWeb page, it will be redirected to merchant web page based on redirect url config that already setup before. Veritrans will response with several url parameter that can be handle by merchant :\n\n\n\n\norder_id\n\n\nstatus_code\n\n\ntransaction_status\n\n\n\n\n!-- Success transaction example --\n\nhttp://www.example.com/finish?order_id=asf1434355961\nstatus_code=200\ntransaction_status=capture\n\n\n!-- Deny transaction example --\n\nhttp://www.example.com/deny?order_id=asf1434356038\nstatus_code=202\ntransaction_status=deny\n\n\n!-- Pending transaction example --\n\nhttp://www.example.com/pending?order_id=asf1434356096\nstatus_code=201\ntransaction_status=pending\n\n\n\n\n\n\nOther Features\n\n\nCheck Transaction Status\n\n\nVtDirect\n\n\nString orderId = \nyour unique order ID\n;\nVtResponse vtResponse = vtDirect.status(orderId);\n// continue processing based on the vtResponse\n\n\n\n\nVtWeb\n\n\nString orderId = \nyour unique order ID\n;\nVtResponse vtResponse = vtWeb.status(orderId);\n// continue processing based on the vtResponse\n\n\n\n\nCheck Multiple Transaction Status\n\n\nArrayList\nString\n listOrderIds = new ArrayList\nString\n();\nlistOrderIds.add(orderId1);\nlistOrderIds.add(orderId2);\n\n// Build status request from list of order ID\nStatusRequest statusRequest = new StatusRequestBuilder()\n    .setOrderIds(listOrderIds)\n    .setPage(1)\n    .setRowPerPage(10)\n    .createStatusRequest();\n\nVtResponse vtResponse = vtDirect.status(statusRequest);\n\n\n\n\nQuerying Transaction Status\n\n\n// Build get status query parameter\nfinal GetStatusParameter parameter = new GetStatusParameterBuilder()\n    .setFraudStatus(FraudStatus.CHALLENGE)\n    .setTransactionStatus(TransactionStatus.AUTHORIZED)\n    .setPaymentMethod(PaymentMethod.CREDIT_CARD)\n    .setPage(2)\n    .setRowPerPage(10)\n    .createGetStatusParameter();\n\nVtResponse response = vtDirect.queryStatus(parameter);\n\n\n\n\n\n\nCredit Card: Accept an \nFDS challenge\n capture\n\n\nVtDirect\n\n\nString orderId = \nyour unique order ID\n;\nVtResponse vtResponse = vtDirect.approve(orderId);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {\n\n    // handle successful capture approval\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\nVtWeb\n\n\nString orderId = \nyour unique order ID\n;\nVtResponse vtResponse = vtWeb.approve(orderId);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {\n\n    // handle successful capture approval\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nCancel Transaction\n\n\nVtDirect\n\n\nString orderId = \nyour unique order ID\n;\nVtResponse vtResponse = vtDirect.cancel(orderId);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {\n\n    // handle successful transaction cancel\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\nVtWeb\n\n\nString orderId = \nyour unique order ID\n;\nVtResponse vtResponse = vtWeb.cancel(orderId);\n\nif (vtResponse.getStatusCode().equals(\n200\n) \n\n    vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {\n\n    // handle successful transaction cancel\n} else {\n    // handle denied / unexpected response\n}\n\n\n\n\n\n\nStatus Code (Response)\n\n\nStatus Codes used by Veritrans API are categorized into 2xx, 3xx, 4xx dan 5xx. You can check detail of all status code that responded from transaction request in \nhere\n\n\n\n\nNotification Handler (Notification URL)\n\n\nNotification URL is used by Veritrans Payment API to notify a merchant once a payment process has been completed or failed.\nIt is invoked by Veritrans Payment API through HTTP POST by sending a JSON Message in the request body.\nThe structure of the JSON Message is identical with the JSON Response when invoking the Veritrans Payment API.  \n\n\nThere is a static method provided by VtResponse to help you deserializing the JSON Message into a VtResponse instance.\nThis method accepts \nJSON String\n or a \nRaw Input Stream\n.\n\nDo remember that it is still the caller responsibility to close the InputStream\n.\n\n\nBelow is an example code to handle Notification URL using Java Servlet API:\n\n\n...\nvoid doPost(HttpServletRequest req, HttpServletResponse resp) {\n    try {\n        ServletInputStream inputStream = req.getInputStream();\n        VtResponse vtResponse = VtResponse.deserializeJson(inputStream);\n\n        // if necessary, we can utilize VtDirect's or VtWeb's Check Transaction Status Feature to make sure the notification is really coming from Veritrans\n        String orderId = vtResponse.getOrderId();\n        vtResponse = vtDirect.status(orderId); // we used VtDirect in this example, however we can use VtWeb too\n\n        if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {\n            // handle settled / successful charge request\n        } else {\n            // handle denied / unexpected response\n        }\n    } catch (JsonDeserializeException e) {\n        // handle JSON deserialization error\n        ...\n    } finally {\n        resp.setStatus(HttpServletResponse.SC_OK);\n    }\n}\n...", 
+            "title": "Home"
+        }, 
+        {
+            "location": "/index.html#veritrans-java-client-documentation", 
+            "text": "This is the official Java Client for Veritrans Payment API.    Please visit  https://www.veritrans.co.id  for more information about the products and see the documentations at  http://docs.veritrans.co.id  for more technical details. We also have a few  sequence diagrams  which can help you to understands the big picture of our various payment methods process flow.", 
+            "title": "Veritrans - Java Client Documentation"
+        }, 
+        {
+            "location": "/index.html#installation", 
+            "text": "", 
+            "title": "Installation"
+        }, 
+        {
+            "location": "/index.html#maven", 
+            "text": "If you're using Maven as the build tools for your project, please add  jcenter  repository to your build definition, then add the following dependency to your project's build definition (pom.xml):  repositories \n     repository \n         id jcenter /id \n         name bintray /name \n         url http://jcenter.bintray.com /url \n     /repository  /repositories  dependencies \n     dependency \n         groupId id.co.veritrans /groupId \n         artifactId vt-java-client /artifactId \n         version 1.2.1 /version \n     /dependency  /dependencies", 
+            "title": "Maven"
+        }, 
+        {
+            "location": "/index.html#gradle", 
+            "text": "If you're using Gradle as the build tools for your project, please add  jcenter  repository to your build script then add the following dependency to your project's build definition (build.gradle):  repositories {\n    maven {\n        url   http://jcenter.bintray.com  \n    }\n}\n\ndependencies {\n    compile 'id.co.veritrans:vt-java-client:1.2.1'\n}", 
+            "title": "Gradle"
+        }, 
+        {
+            "location": "/index.html#jar-library", 
+            "text": "If you want to download veritrans java-client jar library on your own, you can download it directly  here", 
+            "title": "Jar Library"
+        }, 
+        {
+            "location": "/index.html#usage", 
+            "text": "", 
+            "title": "Usage"
+        }, 
+        {
+            "location": "/index.html#vtgatewayconfig", 
+            "text": "VtGatewayConfig stores the settings that is needed by the Veritrans-Java Client to properly accessing the Veritrans Payment API.\nPlease note that every classes related with VtGatewayConfig is  immutable  by design. However a builder class is provided to aid the object creation.    See  VtGatewayConfig Javadoc .\nSee  VtGatewayConfigBuilder Javadoc .\nSee  id.co.veritrans.mdk.v1.config Javadoc", 
+            "title": "VtGatewayConfig"
+        }, 
+        {
+            "location": "/index.html#server-client-key", 
+            "text": "You must set the  Server Key  and  Client Key  as defined in your  Merchant Administration Portal (MAP) .  VtGatewayConfigBuilder vtGatewayConfigBuilder = new VtGatewayConfigBuilder();\nvtGatewayConfigBuilder.setServerKey( Your Server Key );\nvtGatewayConfigBuilder.setClientKey( Your Client Key );", 
+            "title": "Server &amp; Client Key"
+        }, 
+        {
+            "location": "/index.html#environment", 
+            "text": "You can choose to use Sandbox or Production environment. During development   testing, you might want to set it to Sandbox and use the Production environment when you're ready to go live.    See  EnvironmentType Javadoc .  // config for sandbox environment\nvtGatewayConfigBuilder.setEnvironmentType(EnvironmentType.SANDBOX);\n\n// config for production environment\nvtGatewayConfigBuilder.setEnvironmentType(EnvironmentType.PRODUCTION);", 
+            "title": "Environment"
+        }, 
+        {
+            "location": "/index.html#connection-pool-size", 
+            "text": "Veritrans-Java Client is designed to use a HTTP Connection Pool to maintain it's HTTP Connection to Veritrans Server, thus we can take benefit from the\nHTTP Keep Alive feature and reuse the connection. In order to support this functionality, a connection pool size need to be set explicitly,\nto accomodate the needs of every different companies. \nWe recommend to set  maximum HTTP Connection Pool Size to 16 , however it is up to you to set it to a lower or higher value. Do remember that a too low or too high\nvalue  could degrade the system performance .  httpConfigBuilder.setMaxConnectionPoolSize(16);\nvtGatewayConfigBuilder.setHttpConfig(httpConfigBuilder.createHttpConfig());", 
+            "title": "Connection Pool Size"
+        }, 
+        {
+            "location": "/index.html#proxy-configuration", 
+            "text": "You can setup proxy configuration if you need connect to Veritrans Payment API through proxy server. \nSee  ProxyConfig Javadoc \nSee  ProxyConfigBuilder Javadoc  // this demonstrate configuring proxy settings using method chaining from the builder class\nProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();\n\nvtGatewayConfigBuilder.setProxyConfig(\n    proxyConfigBuilder.setHost( proxy host address )\n        .setPort(12345)\n        .setUsername( proxy username or null )\n        .setPassword( proxy password or null )\n        .createProxyConfig()\n).createVtGatewayConfig();  // this demonstrate configuring proxy settings without method chaining\nProxyConfigBuilder proxyConfigBuilder = new ProxyConfigBuilder();\nproxyConfigBuilder.setHost( proxy host address );\nproxyConfigBuilder.setPort(12345);\nproxyConfigBuilder.setUsername( proxy username or null );\nproxyConfigBuilder.setPassword( proxy password or null );\n\nProxyConfig proxyConfig = proxyConfigBuilder.createProxyConfig();\nvtGatewayConfigBuilder.setProxyConfig(proxyConfig);", 
+            "title": "Proxy Configuration"
+        }, 
+        {
+            "location": "/index.html#connect-and-socket-timeout-configuration", 
+            "text": "You can setup the http connect and socket timeout configuration manually. The default value is  5000 ms  for connect timeout and  30000 ms  for socket timeout  /* Value is on milisecond (ms) */\nvtGatewayConfigBuilder.setConnectTimeout(10000)\n                      .setSocketTimeout(20000);", 
+            "title": "Connect and Socket Timeout Configuration"
+        }, 
+        {
+            "location": "/index.html#vtgatewayfactory", 
+            "text": "VtGatewayFactory is a factory class which is used to obtain a reference to various Veritrans Product interface instance, eg: VtDirect instance. This class is also responsible as a manager for every Veritrans Product interface instance returned by the instance of this class. Normally you will make a  single instance of VtGatewayFactory class  and  maintain the reference  to this instance, then use it whenever you need to obtain a reference to a Veritrans Product interface. Some instance of Veritrans Product interface instance returned by this class maybe safe to be cached, such as: VtDirect and VtWeb.    If you need to have multiple VtGatewayFactory with different configuration profiles, consider to make a  VtGatewayFactory instance for each configuration profile  and reuse that VtGatewayFactory instance to obtain reference to Veritrans Product interface instances. \nSee  VtGatewayFactory Javadoc     Example code to build a VtGatewayFactory:  VtGatewayConfig vtGatewayConfig = vtGatewayConfigBuilder.createVtGatewayConfig();\nVtGatewayFactory vtGatewayFactory = new VtGatewayFactory(vtGatewayConfig);", 
+            "title": "VtGatewayFactory"
+        }, 
+        {
+            "location": "/index.html#vtdirect", 
+            "text": "VtDirect is an interface class, where it's instance can be used to communicate with Veritrans Payment API. VtDirect instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.    See  VtDirect Javadoc . \nExample code to obtain reference to VtDirect instance:  VtDirect vtDirect = vtGatewayFactory.vtDirect();", 
+            "title": "VtDirect"
+        }, 
+        {
+            "location": "/index.html#charging-a-transaction", 
+            "text": "VtDirect has method named  charge  which takes an instance of VtDirectChargeRequest subclass as the parameter.\nThis method will make a charge request to Veritrans Payment API and return a VtResponse as a result, which can be used to determine the status of the transaction.    See  VtDirectChargeRequest \nSee  VtResponse \nVisit  http://docs.veritrans.co.id/en/api/methods.html#Charge  for more information.", 
+            "title": "Charging a transaction"
+        }, 
+        {
+            "location": "/index.html#vtdirectchargerequest", 
+            "text": "VtDirectChargeRequest has specific subclass for a specific payment method, ex: for Credit Card payment method, there is a subclass named CreditCardRequest. The list of currently supported payment methods:     BankTransferRequest     BriEpayRequest     CimbClicksRequest     CreditCardRequest     MandiriClickpayRequest     BcaKlikpayRequest     KlikBcaRequest   See  id.co.veritrans.mdk.gateway.model Javadoc \nSee  id.co.veritrans.mdk.gateway.model.vtdirect Javadoc  It is recommended to have a single method to configure the generic VtDirectChargeRequest values. Example for Credit Card charge:  ...\n// somewhere in the code\nCreditCardRequest vtDirectChargeRequest = new CreditCardRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\n// continue processing\n...\n\n/**\n * This method is just for example.\n * The actual values should be obtained from another sources.\n */\npublic void setVtDirectChargeRequestValues(VtDirectChargeRequest vtDirectChargeRequest) {\n    vtDirectChargeRequest.setTransactionDetails(new TransactionDetails());\n    vtDirectChargeRequest.setCustomerDetails(new CustomerDetails());\n\n    vtDirectChargeRequest.getTransactionDetails().setOrderId( your unique order ID );\n    vtDirectChargeRequest.getTransactionDetails().setGrossAmount(10000l);\n\n    vtDirectChargeRequest.getCustomerDetails().setEmail( user@domain.com );\n    vtDirectChargeRequest.getCustomerDetails().setFirstName( firstName );\n    vtDirectChargeRequest.getCustomerDetails().setPhone( 0123456789 );\n    vtDirectChargeRequest.getCustomerDetails().setBillingAddress(new Address());\n\n    Address billingAddress = vtDirectChargeRequest.getCustomerDetails().getBillingAddress();\n    billingAddress.setAddress( Random Street 6A );\n    billingAddress.setCity( Jakarta Pusat );\n    billingAddress.setPostalCode( 12210 );\n}", 
+            "title": "VtDirectChargeRequest"
+        }, 
+        {
+            "location": "/index.html#bank-transfer", 
+            "text": "See  BankTransfer Javadoc \nSee  Bank Transfer Process Flow  BankTransferRequest vtDirectChargeRequest = new BankTransferRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setBankTransfer(new BankTransfer());\n\nvtDirectChargeRequest.getBankTransfer().setBank(BankTransfer.Bank.PERMATA);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful Bank Transfer charge request\n    // check the permataVaNumber in the vtResponse\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "Bank Transfer"
+        }, 
+        {
+            "location": "/index.html#bri-epay", 
+            "text": "BriEpayRequest vtDirectChargeRequest = new BriEpayRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful Bank Transfer charge request\n    // check the redirectUrl value in the vtResponse (redirect the customer to the redirectUrl to continue the payment process)\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "Bri Epay"
+        }, 
+        {
+            "location": "/index.html#cimb-clicks", 
+            "text": "See  CimbClicks Javadoc  CimbClicksRequest vtDirectChargeRequest = new CimbClicksRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setCimbClicks(new CimbClicks());\n\nvtDirectChargeRequest.getCimbClicks().setDescription( Payment for Merchant XYZ );\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful Cimb Clicks charge request\n    // check the redirectUrl value in the vtResponse (redirect the customer to the redirectUrl to continue the payment process)\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "Cimb Clicks"
+        }, 
+        {
+            "location": "/index.html#credit-card-one-time-tokenization", 
+            "text": "See  CreditCard Javadoc \nSee  CreditCard Process Flow Without 3D Secure Authentication \nSee  CreditCard Process Flow With 3D Secure Authentication     Every Credit Card transaction must use a  Token  generated by Veritrans Payment API instead of using plain card number.  Please visit  Acquiring Credit Card Token  for further information.  CreditCardRequest vtDirectChargeRequest = new CreditCardRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\n\nCreditCard creditCard = new CreditCardBuilder()\n    .setTokenId( creditCardToken )          // token is obtained from HTTP POST variable.\n    .setAcquirerBank(CreditCard.Bank.BNI)   // your acquirer bank for Credit Card\n    .setFraudSector( fraud sector )         // merchant fraud sector (applicable only for several merchant) \n    .createCreditCard(); \n\nvtDirectChargeRequest.setCreditCard(creditCard);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED  \n    vtResponse.getFraudStatus() == FraudStatus.ACCEPTED) {\n\n    // handle successful capture\n} else if (vtResponse.getStatusCode().equals( 201 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED  \n    vtResponse.getFraudStatus() == FraudStatus.CHALLENGE) {\n\n    // handle FDS challenge (you can do this later)\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "Credit Card (One-Time Tokenization)"
+        }, 
+        {
+            "location": "/index.html#credit-card-full-pan", 
+            "text": "Only allowed for certain merchant \nFor PCIDSS compliance merchant, it able to charge credit card transaction using customer credit card data instead of using token.  String IS_USE_3DS = true;\nCreditCardFullPanRequest vtDirectChargeRequest = new CreditCardFullPanRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\n\nCreditCardFullPan creditCardFullPan = new CreditCardFullPan( 5410111111111116 ,  123 ,  01 ,  2020 , IS_USE_3DS);\nvtDirectChargeRequest.setCreditCardFullPan(creditCardFullPan);\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif vtResponse.getStatusCode().equals( 201 ) {\n\n    // handle successful request, redirect user to redirect_url\n    // vtResponse.getRedirectUrl();\n} else {\n\n    // handle denied / unexpected response\n}", 
+            "title": "Credit Card (Full PAN)"
+        }, 
+        {
+            "location": "/index.html#mandiri-clickpay", 
+            "text": "See  MandiriClickpay Javadoc \nVisit  Veritrans Mandiri Clickpay Documentation  for more information.  MandiriClickpayRequest vtDirectChargeRequest = new MandiriClickpayRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setMandiriClickpay(new MandiriClickpay());\n\nvtDirectChargeRequest.getMandiriClickpay().setCardNumber( 4111111111111111 );\nvtDirectChargeRequest.getMandiriClickpay().setInput1( 111111111 );\nvtDirectChargeRequest.getMandiriClickpay().setInput2( 10000 );\nvtDirectChargeRequest.getMandiriClickpay().setInput3( 54321 );\nvtDirectChargeRequest.getMandiriClickpay().setToken( 000000 );\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {\n\n    // handle successful Mandiri Clickpay charge request\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "Mandiri Clickpay"
+        }, 
+        {
+            "location": "/index.html#bca-klikpay", 
+            "text": "See  BcaKlikpay Javadoc     BcaKlikpayRequest vtDirectChargeRequest = new BcaKlikpayRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setBcaKlikpay(new BcaKlikpay());\n\nvtDirectChargeRequest.getBcaKlikpay().setType(1);\nvtDirectChargeRequest.getBcaKlikpay().setMiscFee(10000L);\nvtDirectChargeRequest.getBcaKlikpay().setDescription( Product X );\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful  BCA Klikpay charge request\n    // check the redirectUrl value in the vtResponse (redirect the customer to the redirectUrl to continue the payment process)\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "BCA KlikPay"
+        }, 
+        {
+            "location": "/index.html#klik-bca", 
+            "text": "See  Klik BCA Javadoc     KlikBcaRequest vtDirectChargeRequest = new KlikBcaRequest();\nsetVtDirectChargeRequestValues(vtDirectChargeRequest);\nvtDirectChargeRequest.setKlikBca(new KlikBca());\n\nvtDirectChargeRequest.getKlikBca().setUserId( user ID );\nvtDirectChargeRequest.getKlikBca().setDescription( Transaction description );\n\nVtResponse vtResponse = vtDirect.charge(vtDirectChargeRequest);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.PENDING) {\n\n    // handle successful  BCA Klikpay charge request\n    // show instruction to customer on how to pay with klikbca\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "Klik BCA"
+        }, 
+        {
+            "location": "/index.html#vtweb", 
+            "text": "VtWeb is an interface class, where it's instance can be used to communicate with Veritrans Payment API, but  VtWeb  charge  functionality will be responded with redirect url  which is used to redirect customers to Veritrans's Payment Page. VtWeb instance is safe to share with multiple threads, hence you can safely cache the instance of this class and reuse it multiple times.    See  VtWeb Javadoc . \nExample code to obtain reference to VtWeb instance:  VtWeb vtWeb = vtGatewayFactory.vtWeb();", 
+            "title": "VtWeb"
+        }, 
+        {
+            "location": "/index.html#charging-a-transaction_1", 
+            "text": "VtWebChargeRequest vtWebChargeRequest = new VtWebChargeRequest();\nsetVtWebChargeRequestValues(vtWebChargeRequest);\nvtWebChargeRequest.setVtWeb(new VtWebParam());\nvtWebChargeRequest.getVtWeb().setCreditCardUse3dSecure(true);\n\nVtResponse vtResponse = vtWeb.charge(vtWebChargeRequest);\nif (vtResponse.getStatusCode().equals( 201 )) {\n    // Redirect user to redirecturl param [vtResponse.getRedirectUrl()]\n} else {\n    // Handle denied / unexpected response\n}", 
+            "title": "Charging a transaction"
+        }, 
+        {
+            "location": "/index.html#set-enabled-payment-method", 
+            "text": "You can specify manually on every request which payment method that want to be enabled on transaction.  VtWebChargeRequest vtWebChargeRequest = new VtWebChargeRequest();\nsetVtWebChargeRequestValues(vtWebChargeRequest);\nvtWebChargeRequest.setVtWeb(new VtWebParam());\nvtWebChargeRequest.getVtWeb().setEnabledPayments(new VtWebParam.PaymentMethod[]{VtWebParam.PaymentMethod.CREDIT_CARD, VtWebParam.PaymentMethod.CIMB_CLICKS});", 
+            "title": "Set enabled payment method"
+        }, 
+        {
+            "location": "/index.html#handle-vtweb-url-parameter-response", 
+            "text": "After customer finishes transaction on vtWeb page, it will be redirected to merchant web page based on redirect url config that already setup before. Veritrans will response with several url parameter that can be handle by merchant :   order_id  status_code  transaction_status   !-- Success transaction example -- \nhttp://www.example.com/finish?order_id=asf1434355961 status_code=200 transaction_status=capture !-- Deny transaction example -- \nhttp://www.example.com/deny?order_id=asf1434356038 status_code=202 transaction_status=deny !-- Pending transaction example -- \nhttp://www.example.com/pending?order_id=asf1434356096 status_code=201 transaction_status=pending", 
+            "title": "Handle VtWeb URL parameter response"
+        }, 
+        {
+            "location": "/index.html#other-features", 
+            "text": "", 
+            "title": "Other Features"
+        }, 
+        {
+            "location": "/index.html#check-transaction-status", 
+            "text": "", 
+            "title": "Check Transaction Status"
+        }, 
+        {
+            "location": "/index.html#vtdirect_1", 
+            "text": "String orderId =  your unique order ID ;\nVtResponse vtResponse = vtDirect.status(orderId);\n// continue processing based on the vtResponse", 
+            "title": "VtDirect"
+        }, 
+        {
+            "location": "/index.html#vtweb_1", 
+            "text": "String orderId =  your unique order ID ;\nVtResponse vtResponse = vtWeb.status(orderId);\n// continue processing based on the vtResponse", 
+            "title": "VtWeb"
+        }, 
+        {
+            "location": "/index.html#check-multiple-transaction-status", 
+            "text": "ArrayList String  listOrderIds = new ArrayList String ();\nlistOrderIds.add(orderId1);\nlistOrderIds.add(orderId2);\n\n// Build status request from list of order ID\nStatusRequest statusRequest = new StatusRequestBuilder()\n    .setOrderIds(listOrderIds)\n    .setPage(1)\n    .setRowPerPage(10)\n    .createStatusRequest();\n\nVtResponse vtResponse = vtDirect.status(statusRequest);", 
+            "title": "Check Multiple Transaction Status"
+        }, 
+        {
+            "location": "/index.html#querying-transaction-status", 
+            "text": "// Build get status query parameter\nfinal GetStatusParameter parameter = new GetStatusParameterBuilder()\n    .setFraudStatus(FraudStatus.CHALLENGE)\n    .setTransactionStatus(TransactionStatus.AUTHORIZED)\n    .setPaymentMethod(PaymentMethod.CREDIT_CARD)\n    .setPage(2)\n    .setRowPerPage(10)\n    .createGetStatusParameter();\n\nVtResponse response = vtDirect.queryStatus(parameter);", 
+            "title": "Querying Transaction Status"
+        }, 
+        {
+            "location": "/index.html#credit-card-accept-an-fds-challenge-capture", 
+            "text": "", 
+            "title": "Credit Card: Accept an FDS challenge capture"
+        }, 
+        {
+            "location": "/index.html#vtdirect_2", 
+            "text": "String orderId =  your unique order ID ;\nVtResponse vtResponse = vtDirect.approve(orderId);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {\n\n    // handle successful capture approval\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "VtDirect"
+        }, 
+        {
+            "location": "/index.html#vtweb_2", 
+            "text": "String orderId =  your unique order ID ;\nVtResponse vtResponse = vtWeb.approve(orderId);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.CAPTURED) {\n\n    // handle successful capture approval\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "VtWeb"
+        }, 
+        {
+            "location": "/index.html#cancel-transaction", 
+            "text": "", 
+            "title": "Cancel Transaction"
+        }, 
+        {
+            "location": "/index.html#vtdirect_3", 
+            "text": "String orderId =  your unique order ID ;\nVtResponse vtResponse = vtDirect.cancel(orderId);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {\n\n    // handle successful transaction cancel\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "VtDirect"
+        }, 
+        {
+            "location": "/index.html#vtweb_3", 
+            "text": "String orderId =  your unique order ID ;\nVtResponse vtResponse = vtWeb.cancel(orderId);\n\nif (vtResponse.getStatusCode().equals( 200 )  \n    vtResponse.getTransactionStatus() == TransactionStatus.CANCELLED) {\n\n    // handle successful transaction cancel\n} else {\n    // handle denied / unexpected response\n}", 
+            "title": "VtWeb"
+        }, 
+        {
+            "location": "/index.html#status-code-response", 
+            "text": "Status Codes used by Veritrans API are categorized into 2xx, 3xx, 4xx dan 5xx. You can check detail of all status code that responded from transaction request in  here", 
+            "title": "Status Code (Response)"
+        }, 
+        {
+            "location": "/index.html#notification-handler-notification-url", 
+            "text": "Notification URL is used by Veritrans Payment API to notify a merchant once a payment process has been completed or failed.\nIt is invoked by Veritrans Payment API through HTTP POST by sending a JSON Message in the request body.\nThe structure of the JSON Message is identical with the JSON Response when invoking the Veritrans Payment API.    There is a static method provided by VtResponse to help you deserializing the JSON Message into a VtResponse instance.\nThis method accepts  JSON String  or a  Raw Input Stream . Do remember that it is still the caller responsibility to close the InputStream .  Below is an example code to handle Notification URL using Java Servlet API:  ...\nvoid doPost(HttpServletRequest req, HttpServletResponse resp) {\n    try {\n        ServletInputStream inputStream = req.getInputStream();\n        VtResponse vtResponse = VtResponse.deserializeJson(inputStream);\n\n        // if necessary, we can utilize VtDirect's or VtWeb's Check Transaction Status Feature to make sure the notification is really coming from Veritrans\n        String orderId = vtResponse.getOrderId();\n        vtResponse = vtDirect.status(orderId); // we used VtDirect in this example, however we can use VtWeb too\n\n        if (vtResponse.getTransactionStatus() == TransactionStatus.SETTLED) {\n            // handle settled / successful charge request\n        } else {\n            // handle denied / unexpected response\n        }\n    } catch (JsonDeserializeException e) {\n        // handle JSON deserialization error\n        ...\n    } finally {\n        resp.setStatus(HttpServletResponse.SC_OK);\n    }\n}\n...", 
+            "title": "Notification Handler (Notification URL)"
+        }, 
+        {
+            "location": "/javadoc/index.html", 
+            "text": "vt-java-client 1.2.1 API\n\n\n\n    targetPage = \"\" + window.location.search;\n    if (targetPage != \"\" && targetPage != \"undefined\")\n        targetPage = targetPage.substring(1);\n    if (targetPage.indexOf(\":\") != -1 || (targetPage != \"\" && !validURL(targetPage)))\n        targetPage = \"undefined\";\n    function validURL(url) {\n        try {\n            url = decodeURIComponent(url);\n        }\n        catch (error) {\n            return false;\n        }\n        var pos = url.indexOf(\".html\");\n        if (pos == -1 || pos != url.length - 5)\n            return false;\n        var allowNumber = false;\n        var allowSep = false;\n        var seenDot = false;\n        for (var i = 0; i < url.length - 5; i++) {\n            var ch = url.charAt(i);\n            if ('a' <= ch && ch <= 'z' ||\n                    'A' <= ch && ch <= 'Z' ||\n                    ch == '$' ||\n                    ch == '_' ||\n                    ch.charCodeAt(0) > 127) {\n                allowNumber = true;\n                allowSep = true;\n            } else if ('0' <= ch && ch <= '9'\n                    || ch == '-') {\n                if (!allowNumber)\n                     return false;\n            } else if (ch == '/' || ch == '.') {\n                if (!allowSep)\n                    return false;\n                allowNumber = false;\n                allowSep = false;\n                if (ch == '.')\n                     seenDot = true;\n                if (ch == '/' && seenDot)\n                     return false;\n            } else {\n                return false;\n            }\n        }\n        return true;\n    }\n    function loadFrames() {\n        if (targetPage != \"\" && targetPage != \"undefined\")\n             top.classFrame.location = top.targetPage;\n    }\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nJavaScript is disabled on your browser.\n\n\n\n\nFrame Alert\n\n\nThis document is designed to be viewed using the frames feature. If you see this message, you are using a non-frame-capable web client. Link to \nNon-frame version\n.", 
+            "title": "Javadoc"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html", 
+            "text": "Process Flow\n\n\nCredit Card (One-time Tokenization)\n\n\n\n\n\n\nCredit Card (Full PAN)\n\n\n\n\n\n\n\n\nCredit Card With 3D Secure (One-time Tokenization)\n\n\n\n\n\n\nCredit Card With 3D Secure (Full PAN)\n\n\nComing soon\n\n\n\n\n\n\n\n\nBank Transfer via Permata VA\n\n\n\n\n\n\nBCA KlikBCA\n\n\n\n\n\n\nBCA Klikpay\n\n\n\n\n\n\nMandiri Clickpay\n\n\n\n\n\n\nBRI Epay\n\n\n\n\n\n\nCIMB Clicks", 
+            "title": "Sequence Diagram"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#process-flow", 
+            "text": "", 
+            "title": "Process Flow"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#credit-card-one-time-tokenization", 
+            "text": "", 
+            "title": "Credit Card (One-time Tokenization)"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#credit-card-full-pan", 
+            "text": "", 
+            "title": "Credit Card (Full PAN)"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#credit-card-with-3d-secure-one-time-tokenization", 
+            "text": "", 
+            "title": "Credit Card With 3D Secure (One-time Tokenization)"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#credit-card-with-3d-secure-full-pan", 
+            "text": "Coming soon", 
+            "title": "Credit Card With 3D Secure (Full PAN)"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#bank-transfer-via-permata-va", 
+            "text": "", 
+            "title": "Bank Transfer via Permata VA"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#bca-klikbca", 
+            "text": "", 
+            "title": "BCA KlikBCA"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#bca-klikpay", 
+            "text": "", 
+            "title": "BCA Klikpay"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#mandiri-clickpay", 
+            "text": "", 
+            "title": "Mandiri Clickpay"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#bri-epay", 
+            "text": "", 
+            "title": "BRI Epay"
+        }, 
+        {
+            "location": "/sequence_diagram/index.html#cimb-clicks", 
+            "text": "", 
+            "title": "CIMB Clicks"
+        }, 
+        {
+            "location": "/sample_app/index.html", 
+            "text": "Sample Store Application\n\n\nVeritrans java-client sample store application\n\n\n\n\nHow to build and run\n\n\nYou can get sample store source code from \nVeritrans Java Client\n repository on \n~/veritrans-java/sample\n directory.\n\nThis sample store application use \nSpring Boot Framework\n\n\n\n\nVeritrans sample store use gradle build tools for compile, build, and running the application.\n\nBefore build and run sample store application, you need to setup several config first such as merchant \nserver-key\n and \nclient-key\n\nwhich can be obtained from \nVeritrans Merchant Admin Portal\n.\n\n\n\n\nYou need to setup config on these file:  \n\n\n\n\n~/veritrans-java/sample/src/main/resources/config/application.yml\n -\n \nserver-key\n and \nclient-key\n  \n\n\n~/veritrans-java/sample/src/main/resources/static/assets/vtdirect.js\n -\n \nclient-key\n\n\n\n\n\n\nTo run the apps, you can just simply run this command on sample store project directory \n~/veritrans-java/sample\n :\n\n\n./gradlew bootRun\n\n\n\n\nor if you have gradle installed on you machine, you can use this command :\n\n\ngradle bootRun\n\n\n\n\nAfter gradle task build and run the apps, you can go to \nhttp://localhost:8080/index\n on your browser and try out the sample store application. On the sample store, you can try to make a transaction. After that you can check your transaction status on \nVeritrans Merchant Admin Portal\n.  \n\n\n\n\nVeritrans java client usage\n\n\nVeritrans java-client library usage example can be shown on \nVtPaymentManager.java\n class. \nVtPaymentManager.java\n class is spring singleton beans which is use to hold \nVtGatewayFactory\n parameter so you can get the factory easily. You need to construct \nVtGatewayFactory\n object using several merchant config. In sample store case, merchant config was store on \napplication.yml\n and loaded by \nVtPaymentConfig.java\n class.\n\n\n\n\nVtPaymentManager.java\n - VtGatewayFactory example:\n\n\n@PostConstruct\npublic void setup() {\n    vtGatewayFactory = new VtGatewayFactory(new VtGatewayConfigBuilder()\n            .setClientKey(vtPaymentConfig.getClientKey())\n            .setServerKey(vtPaymentConfig.getServerKey())\n            .setEnvironmentType(EnvironmentType.valueOf(vtPaymentConfig.getEnvironment()))\n            .setMaxConnectionPoolSize(vtPaymentConfig.getConnectionPoolSize())\n            .createVtGatewayConfig()\n    );\n}\n\n\n\n\n\n\nAfter that, you can get \nVtDirect\n object which will be use to trigger the transaction. Before charge a transaction, you need to construct request message that will be used as \nVtDirect\n charge parameter. For example, sample store application use \nCreditCardRequest\n as charge parameter.\n\n\n\n\nan \nimportant note for credit card transaction\n, you need to convert \ncustomer card credentials\n into \ntoken\n first before you can charge the transaction. This part will be explained more detail on \njavascript part\n below\n\n\n\n\n\nAbstractVtDirectController.java\n - VtDirect example:\n\n\nprivate VtDirect vtDirect;\n\n@PostConstruct\npublic void setup() {\n    vtDirect = vtPaymentManager.getVtGatewayFactory().vtDirect();\n}\n\n\n\n\n\n\nCreditCardController.java\n - CreditCardRequest and charging example:\n\n\npublic ModelAndView checkoutCreditCardPost(/* Parameter */) {\n\n    /* Construct creit card request */\n    final CreditCardRequest request = createCreditCardRequest(/* Parameter */);\n\n    /* Charge transaction using credit card request */\n    try {\n        final VtResponse vtResponse = vtDirect.charge(creditCardRequest);\n        // ...\n        if (vtResponse.getStatusCode().equals(\n200\n)) {\n            // ...\n        }\n    } catch (RestClientException e) {\n        // ...\n    }\n}\n\n\n\n\n\n\nWhen you call \nvtDirect.charge(creditCardRequest)\n method, it will send request to Veritrans Payment API and return the response into \nVtResponse\n object. You can check whether transaction was success or not from \nVtResponse\n object.\n\n\n\n\nFor transaction with \nfraudStatus\n is \nchallenge\n, you need to \napprove\n the transaction manually using method call \nvtDirect.approve(order_id)\n. If you not approve challenged transaction until settlement time, transaction will be canceled automatically by system.\n\n\n\n\n\n\nVeritrans javascript (credit card)\n\n\nCredit card transaction have special handling compare than another payment type. For security reason, merchant \nwill not recieve any customer card credentials\n and will be replaced with \nveritrans card token\n.\n\n\n\nVeritrans card token can be obtained using javascript library that you need to setup on merchant web page. You can see detail overview about this javascript library on \nVeritrans credit card documentation\n. For example on sample store application, there is two javascript file need to setup on merchant web page (see \nlayout.html\n on \nfooter-vtdirect-creditcard\n part) :\n\n\n\n\nhttps://api.sandbox.veritrans.co.id/v2/assets/js/veritrans.min.js\n\n\n/assets/vtdirect.js\n\n\n\n\nThe first file was used to trigger \nget_token\n transaction request to veritrans payment api. This request will translate customer card credentials into veritrans token that can be use to charge a credit card transaction.", 
+            "title": "Sample App"
+        }, 
+        {
+            "location": "/sample_app/index.html#sample-store-application", 
+            "text": "Veritrans java-client sample store application", 
+            "title": "Sample Store Application"
+        }, 
+        {
+            "location": "/sample_app/index.html#how-to-build-and-run", 
+            "text": "You can get sample store source code from  Veritrans Java Client  repository on  ~/veritrans-java/sample  directory. \nThis sample store application use  Spring Boot Framework   Veritrans sample store use gradle build tools for compile, build, and running the application. \nBefore build and run sample store application, you need to setup several config first such as merchant  server-key  and  client-key \nwhich can be obtained from  Veritrans Merchant Admin Portal .   You need to setup config on these file:     ~/veritrans-java/sample/src/main/resources/config/application.yml  -   server-key  and  client-key     ~/veritrans-java/sample/src/main/resources/static/assets/vtdirect.js  -   client-key    To run the apps, you can just simply run this command on sample store project directory  ~/veritrans-java/sample  :  ./gradlew bootRun  or if you have gradle installed on you machine, you can use this command :  gradle bootRun  After gradle task build and run the apps, you can go to  http://localhost:8080/index  on your browser and try out the sample store application. On the sample store, you can try to make a transaction. After that you can check your transaction status on  Veritrans Merchant Admin Portal .", 
+            "title": "How to build and run"
+        }, 
+        {
+            "location": "/sample_app/index.html#veritrans-java-client-usage", 
+            "text": "Veritrans java-client library usage example can be shown on  VtPaymentManager.java  class.  VtPaymentManager.java  class is spring singleton beans which is use to hold  VtGatewayFactory  parameter so you can get the factory easily. You need to construct  VtGatewayFactory  object using several merchant config. In sample store case, merchant config was store on  application.yml  and loaded by  VtPaymentConfig.java  class.   VtPaymentManager.java  - VtGatewayFactory example:  @PostConstruct\npublic void setup() {\n    vtGatewayFactory = new VtGatewayFactory(new VtGatewayConfigBuilder()\n            .setClientKey(vtPaymentConfig.getClientKey())\n            .setServerKey(vtPaymentConfig.getServerKey())\n            .setEnvironmentType(EnvironmentType.valueOf(vtPaymentConfig.getEnvironment()))\n            .setMaxConnectionPoolSize(vtPaymentConfig.getConnectionPoolSize())\n            .createVtGatewayConfig()\n    );\n}   After that, you can get  VtDirect  object which will be use to trigger the transaction. Before charge a transaction, you need to construct request message that will be used as  VtDirect  charge parameter. For example, sample store application use  CreditCardRequest  as charge parameter.   an  important note for credit card transaction , you need to convert  customer card credentials  into  token  first before you can charge the transaction. This part will be explained more detail on  javascript part  below   AbstractVtDirectController.java  - VtDirect example:  private VtDirect vtDirect;\n\n@PostConstruct\npublic void setup() {\n    vtDirect = vtPaymentManager.getVtGatewayFactory().vtDirect();\n}   CreditCardController.java  - CreditCardRequest and charging example:  public ModelAndView checkoutCreditCardPost(/* Parameter */) {\n\n    /* Construct creit card request */\n    final CreditCardRequest request = createCreditCardRequest(/* Parameter */);\n\n    /* Charge transaction using credit card request */\n    try {\n        final VtResponse vtResponse = vtDirect.charge(creditCardRequest);\n        // ...\n        if (vtResponse.getStatusCode().equals( 200 )) {\n            // ...\n        }\n    } catch (RestClientException e) {\n        // ...\n    }\n}   When you call  vtDirect.charge(creditCardRequest)  method, it will send request to Veritrans Payment API and return the response into  VtResponse  object. You can check whether transaction was success or not from  VtResponse  object.   For transaction with  fraudStatus  is  challenge , you need to  approve  the transaction manually using method call  vtDirect.approve(order_id) . If you not approve challenged transaction until settlement time, transaction will be canceled automatically by system.", 
+            "title": "Veritrans java client usage"
+        }, 
+        {
+            "location": "/sample_app/index.html#veritrans-javascript-credit-card", 
+            "text": "Credit card transaction have special handling compare than another payment type. For security reason, merchant  will not recieve any customer card credentials  and will be replaced with  veritrans card token .  Veritrans card token can be obtained using javascript library that you need to setup on merchant web page. You can see detail overview about this javascript library on  Veritrans credit card documentation . For example on sample store application, there is two javascript file need to setup on merchant web page (see  layout.html  on  footer-vtdirect-creditcard  part) :   https://api.sandbox.veritrans.co.id/v2/assets/js/veritrans.min.js  /assets/vtdirect.js   The first file was used to trigger  get_token  transaction request to veritrans payment api. This request will translate customer card credentials into veritrans token that can be use to charge a credit card transaction.", 
+            "title": "Veritrans javascript (credit card)"
+        }, 
+        {
+            "location": "/release_notes/index.html", 
+            "text": "Release Notes\n\n\nRelease 1.2.1\n\n\n16 November 2016\n\n\n\n\n[Feature]\n Add FAILED TransactionStatus\n\n\n\n\nRelease 1.2.0\n\n\n7 March 2015\n\n\n\n\n[Feature]\n Add http connect and socket timeout config\n\n\n\n\nRelease 1.1.1\n\n\n22 February 2015\n\n\n\n\n[Bug fix]\n Handle un-registered parameter on \nVtResponse\n\n\n\n\nRelease 1.1.0\n\n\n4 December 2015\n\n\n\n\n[Feature]\n Add Full PAN 3D secure charging \n(only applied for certain merchant)\n\n\n\n\nRelease 1.0.10\n\n\n3 December 2015\n\n\n\n\n[Bug fix]\n Bump \ncom.fasterxml.jackson\n dependency to latest version\n\n\n\n\nRelease 1.0.9\n\n\n7 October 2015\n\n\n\n\n[Bug fix]\n Add custom field parameter to handle notification response\n\n\n\n\nRelease 1.0.8\n\n\n22 September 2015\n\n\n\n\n[Bug fix]\n Remove all validation to avoid library conflict\n\n\n\n\nRelease 1.0.7\n\n\n16 September 2015\n\n\n\n\n[Bug fix]\n Downgrade javax.el-api for support jdk 1.6\n\n\n\n\nRelease 1.0.6\n\n\n27 July 2015\n\n\n\n\n[Feature]\n Add full PAN charging feature for PCIDSS compliance merchant\n\n\n\n\nRelease 1.0.5\n\n\n25 June 2015\n\n\n\n\n[Bug fix]\n Fix unclosed http client connection issue\n\n\n\n\nRelease 1.0.4\n\n\n25 June 2015\n\n\n\n\n[Feature]\n Implement http client connect timeout and socket timeout\n\n\n\n\nRelease 1.0.3\n\n\n18 June 2015\n\n\n\n\n[Bug fix]\n Fix missing transaction status (TransactionStatus.EXPIRED)\n\n\n[Bug fix]\n Fix get status issue for credit card get multiple order id status\n\n\n[Feature]\n Add fat jar for single jar download integration\n\n\n[Feature]\n Add fraud sector parameter for credit card transaction\n\n\n[Feature]\n Add fat jar for single jar download integration\n\n\n[Feature]\n Add get transaction status query feature\n\n\n\n\nRelease 1.0.2\n\n\n16 June 2015\n\n\n\n\n[Feature]\n Added get multiple order status feature\n\n\n\n\nRelease 1.0.1\n\n\n15 June 2015\n\n\n\n\n[Bug fix]\n Fix VtWeb parameter issue\n\n\n\n\nRelease 1.0.0\n\n\n21 May 2015\n\n\nInitial veritrans java-client release and sample store.  \n\n\n\n\n[Feature]\n Integrate veritrans java-client through \nmaven\n or \ngradle\n dependency\n\n\n[Feature]\n Veritrans java-client config setup\n\n\n[Feature]\n Support for VtDirect credit card transaction\n\n\n[Feature]\n Support for VtDirect bank transfer transaction\n\n\n[Feature]\n Support for VtDirect bri epay transaction\n\n\n[Feature]\n Support for VtDirect cimb clicks transaction\n\n\n[Feature]\n Support for VtDirect mandiri clickpay transaction\n\n\n[Feature]\n Support for VtDirect bca klikpay transaction\n\n\n[Feature]\n Support for VtDirect klikbca transaction\n\n\n[Feature]\n Support for VtWeb transaction\n\n\n[Feature]\n Get transaction status\n\n\n[Feature]\n Accept challenged transaction\n\n\n[Feature]\n Cancel authorized transaction", 
+            "title": "Release Notes"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-notes", 
+            "text": "", 
+            "title": "Release Notes"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-121", 
+            "text": "", 
+            "title": "Release 1.2.1"
+        }, 
+        {
+            "location": "/release_notes/index.html#16-november-2016", 
+            "text": "[Feature]  Add FAILED TransactionStatus", 
+            "title": "16 November 2016"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-120", 
+            "text": "", 
+            "title": "Release 1.2.0"
+        }, 
+        {
+            "location": "/release_notes/index.html#7-march-2015", 
+            "text": "[Feature]  Add http connect and socket timeout config", 
+            "title": "7 March 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-111", 
+            "text": "", 
+            "title": "Release 1.1.1"
+        }, 
+        {
+            "location": "/release_notes/index.html#22-february-2015", 
+            "text": "[Bug fix]  Handle un-registered parameter on  VtResponse", 
+            "title": "22 February 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-110", 
+            "text": "", 
+            "title": "Release 1.1.0"
+        }, 
+        {
+            "location": "/release_notes/index.html#4-december-2015", 
+            "text": "[Feature]  Add Full PAN 3D secure charging  (only applied for certain merchant)", 
+            "title": "4 December 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-1010", 
+            "text": "", 
+            "title": "Release 1.0.10"
+        }, 
+        {
+            "location": "/release_notes/index.html#3-december-2015", 
+            "text": "[Bug fix]  Bump  com.fasterxml.jackson  dependency to latest version", 
+            "title": "3 December 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-109", 
+            "text": "", 
+            "title": "Release 1.0.9"
+        }, 
+        {
+            "location": "/release_notes/index.html#7-october-2015", 
+            "text": "[Bug fix]  Add custom field parameter to handle notification response", 
+            "title": "7 October 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-108", 
+            "text": "", 
+            "title": "Release 1.0.8"
+        }, 
+        {
+            "location": "/release_notes/index.html#22-september-2015", 
+            "text": "[Bug fix]  Remove all validation to avoid library conflict", 
+            "title": "22 September 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-107", 
+            "text": "", 
+            "title": "Release 1.0.7"
+        }, 
+        {
+            "location": "/release_notes/index.html#16-september-2015", 
+            "text": "[Bug fix]  Downgrade javax.el-api for support jdk 1.6", 
+            "title": "16 September 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-106", 
+            "text": "", 
+            "title": "Release 1.0.6"
+        }, 
+        {
+            "location": "/release_notes/index.html#27-july-2015", 
+            "text": "[Feature]  Add full PAN charging feature for PCIDSS compliance merchant", 
+            "title": "27 July 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-105", 
+            "text": "", 
+            "title": "Release 1.0.5"
+        }, 
+        {
+            "location": "/release_notes/index.html#25-june-2015", 
+            "text": "[Bug fix]  Fix unclosed http client connection issue", 
+            "title": "25 June 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-104", 
+            "text": "", 
+            "title": "Release 1.0.4"
+        }, 
+        {
+            "location": "/release_notes/index.html#25-june-2015_1", 
+            "text": "[Feature]  Implement http client connect timeout and socket timeout", 
+            "title": "25 June 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-103", 
+            "text": "", 
+            "title": "Release 1.0.3"
+        }, 
+        {
+            "location": "/release_notes/index.html#18-june-2015", 
+            "text": "[Bug fix]  Fix missing transaction status (TransactionStatus.EXPIRED)  [Bug fix]  Fix get status issue for credit card get multiple order id status  [Feature]  Add fat jar for single jar download integration  [Feature]  Add fraud sector parameter for credit card transaction  [Feature]  Add fat jar for single jar download integration  [Feature]  Add get transaction status query feature", 
+            "title": "18 June 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-102", 
+            "text": "", 
+            "title": "Release 1.0.2"
+        }, 
+        {
+            "location": "/release_notes/index.html#16-june-2015", 
+            "text": "[Feature]  Added get multiple order status feature", 
+            "title": "16 June 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-101", 
+            "text": "", 
+            "title": "Release 1.0.1"
+        }, 
+        {
+            "location": "/release_notes/index.html#15-june-2015", 
+            "text": "[Bug fix]  Fix VtWeb parameter issue", 
+            "title": "15 June 2015"
+        }, 
+        {
+            "location": "/release_notes/index.html#release-100", 
+            "text": "", 
+            "title": "Release 1.0.0"
+        }, 
+        {
+            "location": "/release_notes/index.html#21-may-2015", 
+            "text": "Initial veritrans java-client release and sample store.     [Feature]  Integrate veritrans java-client through  maven  or  gradle  dependency  [Feature]  Veritrans java-client config setup  [Feature]  Support for VtDirect credit card transaction  [Feature]  Support for VtDirect bank transfer transaction  [Feature]  Support for VtDirect bri epay transaction  [Feature]  Support for VtDirect cimb clicks transaction  [Feature]  Support for VtDirect mandiri clickpay transaction  [Feature]  Support for VtDirect bca klikpay transaction  [Feature]  Support for VtDirect klikbca transaction  [Feature]  Support for VtWeb transaction  [Feature]  Get transaction status  [Feature]  Accept challenged transaction  [Feature]  Cancel authorized transaction", 
+            "title": "21 May 2015"
+        }
+    ]
+}
