@@ -1,5 +1,9 @@
 # Release Notes
 
+## Release 1.2.1
+### 16 November 2016
+- **[Feature]** Add FAILED TransactionStatus
+
 ## Release 1.2.0
 ### 7 March 2015
 - **[Feature]** Add http connect and socket timeout config
@@ -28,7 +32,7 @@
 
 ## Release 1.0.7
 ### 16 September 2015
-- **[Bug fix]** Downgrade javax.el-api for support jdk 1.6 
+- **[Bug fix]** Downgrade javax.el-api for support jdk 1.6
 
 
 ## Release 1.0.6
@@ -38,7 +42,7 @@
 
 ## Release 1.0.5
 ### 25 June 2015
-- **[Bug fix]** Fix unclosed http client connection issue 
+- **[Bug fix]** Fix unclosed http client connection issue
 
 
 ## Release 1.0.4
