@@ -23,9 +23,23 @@ public class CreditCard {
     private String fraudSector;
 
     /**
+     * Credit card possible value for channel
+     */
+    public static enum Channel {
+        MIGS("migs");
+
+        private final String name;
+        Channel(final String name) { this.name = name; }
+
+        @JsonValue
+        public String getName() { return name; }
+    }
+
+    /**
      * Credit card bank enum
      */
     public static enum Bank {
+        BCA("bca"),
         BNI("bni"),
         MANDIRI("mandiri"),
         CIMB("cimb");
