@@ -22,6 +22,9 @@ public class CreditCard {
     private Boolean saveCardToken;
     private String fraudSector;
 
+    /**
+     * Credit card possible value for channel
+     */
     public static enum Channel {
         MIGS("migs");
 
