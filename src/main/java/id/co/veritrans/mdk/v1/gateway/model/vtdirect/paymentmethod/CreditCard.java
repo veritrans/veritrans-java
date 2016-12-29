@@ -36,6 +36,7 @@ public class CreditCard {
      * Credit card bank enum
      */
     public static enum Bank {
+        BCA("bca"),
         BNI("bni"),
         MANDIRI("mandiri"),
         CIMB("cimb");
