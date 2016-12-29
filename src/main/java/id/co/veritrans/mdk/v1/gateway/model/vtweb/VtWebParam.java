@@ -132,6 +132,7 @@ public class VtWebParam {
         result = 31 * result + (finishRedirectUrl != null ? finishRedirectUrl.hashCode() : 0);
         result = 31 * result + (unfinishRedirectUrl != null ? unfinishRedirectUrl.hashCode() : 0);
         result = 31 * result + (errorRedirectUrl != null ? errorRedirectUrl.hashCode() : 0);
+        result = 31 * result + (creditCardOptions != null ? creditCardOptions.hashCode() : 0);
         return result;
     }
 }
