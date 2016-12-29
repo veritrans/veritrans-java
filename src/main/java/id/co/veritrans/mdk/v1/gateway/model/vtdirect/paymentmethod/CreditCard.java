@@ -22,6 +22,16 @@ public class CreditCard {
     private Boolean saveCardToken;
     private String fraudSector;
 
+    public static enum Channel {
+        MIGS("migs");
+
+        private final String name;
+        Channel(final String name) { this.name = name; }
+
+        @JsonValue
+        public String getName() { return name; }
+    }
+
     /**
      * Credit card bank enum
      */
