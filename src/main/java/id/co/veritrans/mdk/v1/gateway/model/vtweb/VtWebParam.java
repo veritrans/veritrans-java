@@ -1,6 +1,7 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtweb;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+
 import id.co.veritrans.mdk.v1.gateway.model.PaymentMethod;
 
 import java.util.Arrays;
@@ -19,6 +20,8 @@ public class VtWebParam {
     private String finishRedirectUrl;
     private String unfinishRedirectUrl;
     private String errorRedirectUrl;
+    @JsonProperty("credit_card")
+    private CreditCardOptions creditCardOptions;
 
     public VtWebParam() {
     }
@@ -87,6 +90,14 @@ public class VtWebParam {
 
     public void setErrorRedirectUrl(final String errorRedirectUrl) {
         this.errorRedirectUrl = errorRedirectUrl;
+    }
+
+    public CreditCardOptions getCreditCardOptions() {
+        return creditCardOptions;
+    }
+
+    public void setCreditCardOptions(CreditCardOptions creditCardOptions) {
+        this.creditCardOptions = creditCardOptions;
     }
 
     @Override
