@@ -10,7 +10,7 @@ import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import static org.testng.Assert.assertTrue;
 
 /**
- * Created by adampahlevi on 12/29/16.
+ * Testing for VtWebParam class
  */
 public class VtWebParamTest {
     @Test

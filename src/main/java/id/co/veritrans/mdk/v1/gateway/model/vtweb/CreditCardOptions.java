@@ -4,7 +4,6 @@ import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
 
 /**
  * Set the credit card option such as the channel (eg. MIGS).
- * Created by adampahlevi on 12/29/16.
  */
 
 public class CreditCardOptions {
