@@ -1,7 +1,8 @@
-package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
+package id.co.veritrans.mdk.v1.integration.vtdirect;
 
 import id.co.veritrans.mdk.v1.gateway.model.CustomExpiry;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
+import id.co.veritrans.mdk.v1.gateway.model.vtdirect.BankTransferRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.BankTransfer;
 import org.testng.annotations.Test;
 
