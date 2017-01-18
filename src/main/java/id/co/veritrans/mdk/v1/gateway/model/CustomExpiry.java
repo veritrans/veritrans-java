@@ -48,6 +48,10 @@ public class CustomExpiry {
         this.unit = unit;
     }
 
+    public CustomExpiry(final Integer expiryDuration) {
+        this.expiryDuration = expiryDuration;
+    }
+
     /**
      * Get order time when order is created in merchant website
      * @return order time
