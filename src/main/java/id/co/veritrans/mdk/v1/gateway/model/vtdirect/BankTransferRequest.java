@@ -1,5 +1,6 @@
 package id.co.veritrans.mdk.v1.gateway.model.vtdirect;
 
+import id.co.veritrans.mdk.v1.gateway.model.CustomExpiry;
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionItem;
@@ -17,7 +18,7 @@ public class BankTransferRequest extends VtDirectChargeRequest {
     @Valid
     @NotNull
     private BankTransfer bankTransfer;
-
+    private CustomExpiry customExpiry;
     /**
      * Bank transfer request constructor
      */
@@ -35,6 +36,21 @@ public class BankTransferRequest extends VtDirectChargeRequest {
     public BankTransferRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final BankTransfer bankTransfer) {
         super(transactionDetails, transactionItems, customerDetails);
         this.bankTransfer = bankTransfer;
+    }
+
+    /**
+     * Bank transfer request constructor
+     *
+     * @param transactionDetails    {@link id.co.veritrans.mdk.v1.gateway.model.TransactionDetails Transaction details}
+     * @param transactionItems      List of {@link id.co.veritrans.mdk.v1.gateway.model.TransactionItem transaction item}
+     * @param customerDetails       {@link id.co.veritrans.mdk.v1.gateway.model.CustomerDetails Customer details}
+     * @param bankTransfer          {@link id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.BankTransfer Bank transfer} detail
+     * @param customExpiry          {@link id.co.veritrans.mdk.v1.gateway.model.CustomExpiry Custom expiry}
+     */
+    public BankTransferRequest(final TransactionDetails transactionDetails, final List<TransactionItem> transactionItems, final CustomerDetails customerDetails, final BankTransfer bankTransfer, final CustomExpiry customExpiry) {
+        super(transactionDetails, transactionItems, customerDetails);
+        this.bankTransfer = bankTransfer;
+        this.customExpiry = customExpiry;
     }
 
     /**
@@ -60,6 +76,14 @@ public class BankTransferRequest extends VtDirectChargeRequest {
      */
     public void setBankTransfer(final BankTransfer bankTransfer) {
         this.bankTransfer = bankTransfer;
+    }
+
+    public CustomExpiry getCustomExpiry() {
+        return customExpiry;
+    }
+
+    public void setCustomExpiry(CustomExpiry customExpiry) {
+        this.customExpiry = customExpiry;
     }
 
     @Override
