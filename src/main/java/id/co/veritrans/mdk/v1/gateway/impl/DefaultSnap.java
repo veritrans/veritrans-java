@@ -2,6 +2,7 @@ package id.co.veritrans.mdk.v1.gateway.impl;
 
 import id.co.veritrans.mdk.v1.VtGatewayConfig;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
+import id.co.veritrans.mdk.v1.gateway.Snap;
 import id.co.veritrans.mdk.v1.gateway.VtGateway;
 import id.co.veritrans.mdk.v1.gateway.VtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.model.GetStatusParameter;
@@ -16,12 +17,13 @@ import java.net.URISyntaxException;
 /**
  * Gateway for Snap
  */
-public class SnapGateway extends DefaultVtGateway {
+public class DefaultSnap implements Snap {
     private VtGatewayConfig vtGatewayConfig;
+    private final VtGatewaySession vtGatewaySession;
 
-    public SnapGateway(VtGatewaySession vtGatewaySession) {
-        super(vtGatewaySession);
-        this.vtGatewayConfig = this.getVtGatewaySession().getVtGatewayConfig();
+    public DefaultSnap(VtGatewaySession vtGatewaySession) {
+        this.vtGatewaySession = vtGatewaySession;
+        this.vtGatewayConfig = vtGatewaySession.getVtGatewayConfig();
     }
 
     /**
@@ -31,32 +33,18 @@ public class SnapGateway extends DefaultVtGateway {
      * @throws RestClientException
      */
     public SnapResponse getToken(SnapChargeRequest snapRequest) throws RestClientException {
-        final String url = "snap/v1/transactions";
-        return getVtGatewaySession().getRestClient().post(SnapResponse.class, url, snapRequest);
-    }
+        SnapResponse response;
 
-    @Override
-    public VtResponse approve(String orderId) throws RestClientException, UnsupportedEncodingException {
-        throw new RestClientException("Not supported request");
-    }
+        // change the default URL for SnapGateway to use Snap
+        this.vtGatewaySession.setBaseUrl(vtGatewayConfig.getEnvironmentType().getSnapUrl());
 
-    @Override
-    public VtResponse status(String orderId) throws RestClientException, UnsupportedEncodingException {
-        throw new RestClientException("Not supported request");
-    }
+        try {
+            final String url = "snap/v1/transactions";
+            response = vtGatewaySession.getRestClient().post(SnapResponse.class, url, snapRequest);
+        } finally {
+            this.vtGatewaySession.setBaseUrl(vtGatewayConfig.getEnvironmentType().getBaseUrl());
+        }
 
-    @Override
-    public VtResponse cancel(String orderId) throws RestClientException, UnsupportedEncodingException {
-        throw new RestClientException("Not supported request");
-    }
-
-    @Override
-    public VtResponse status(StatusRequest statusRequest) throws RestClientException, UnsupportedEncodingException {
-        throw new RestClientException("Not supported request");
-    }
-
-    @Override
-    public VtResponse queryStatus(GetStatusParameter getStatusParameter) throws RestClientException, URISyntaxException {
-        throw new RestClientException("Not supported request");
+        return response;
     }
 }
