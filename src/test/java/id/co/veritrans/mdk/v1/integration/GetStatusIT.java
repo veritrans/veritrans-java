@@ -28,7 +28,7 @@ public class GetStatusIT extends AbstractIntegrationTest {
         ArrayList<String> listOrderIds = new ArrayList<String>();
 
         /**
-         * Klik Bca Request
+         * Klik Bca SnapChargeRequest
          */
         final KlikBcaRequest klikBcaRequest = new KlikBcaRequest();
         klikBcaRequest.setTransactionDetails(new TransactionDetails(orderId, 10000L));

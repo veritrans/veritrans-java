@@ -23,7 +23,7 @@ public class MandiriClickpay {
      * @param cardNumber Mandiri clickpay card number
      * @param input1     Mandiri clickpay input1 (Last 10 digit of mandiri debit card number)
      * @param input2     Mandiri clickpay input2 (Transaction value)
-     * @param input3     Mandiri clickpay input3 (Request number)
+     * @param input3     Mandiri clickpay input3 (SnapChargeRequest number)
      * @param token      Mandiri token response from
      */
     public MandiriClickpay(final String cardNumber, final String input1, final String input2, final String input3, final String token) {
@@ -89,18 +89,18 @@ public class MandiriClickpay {
     }
 
     /**
-     * Get mandiri clickpay input3 (Request number)
+     * Get mandiri clickpay input3 (SnapChargeRequest number)
      *
-     * @return Mandiri clickpay input3 (Request number)
+     * @return Mandiri clickpay input3 (SnapChargeRequest number)
      */
     public String getInput3() {
         return input3;
     }
 
     /**
-     * Set mandiri clickpay input3 (Request number)
+     * Set mandiri clickpay input3 (SnapChargeRequest number)
      *
-     * @param input3 Mandiri clickpay input3 (Request number)
+     * @param input3 Mandiri clickpay input3 (SnapChargeRequest number)
      */
     public void setInput3(final String input3) {
         this.input3 = input3;

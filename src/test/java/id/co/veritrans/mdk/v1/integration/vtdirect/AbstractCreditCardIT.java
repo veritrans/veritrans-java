@@ -64,7 +64,7 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
         }
 
         final VtResponse vtResponse = ((DefaultVtDirect) vtDirect).getVtGatewaySession().getRestClient()
-                .get(tokenUriBuilder.build().toString());
+                .get(VtResponse.class, tokenUriBuilder.build().toString());
 
         assertEquals(vtResponse.getStatusCode(), "200");
         assertNotNull(vtResponse.getCardToken());
@@ -91,7 +91,7 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
         }
 
         final VtResponse vtResponse = ((DefaultVtDirect) vtDirect).getVtGatewaySession().getRestClient()
-                .get(tokenUriBuilder.build().toString());
+                .get(VtResponse.class, tokenUriBuilder.build().toString());
 
         assertEquals(vtResponse.getStatusCode(), "200");
         assertNotNull(vtResponse.getCardToken());

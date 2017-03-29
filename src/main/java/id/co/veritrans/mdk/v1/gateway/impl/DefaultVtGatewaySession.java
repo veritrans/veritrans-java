@@ -5,7 +5,6 @@ import id.co.veritrans.mdk.v1.config.ProxyConfig;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.VtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.model.VtRequest;
-import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import id.co.veritrans.mdk.v1.net.VtRestClient;
 import org.apache.commons.codec.binary.Base64;
@@ -104,7 +103,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse get(URI uri) throws RestClientException {
+    public <T> T get(Class<T> responseClass, URI uri) throws RestClientException {
         try {
             final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + uri.toString();
             final HttpGet httpGet = new HttpGet(url);
@@ -112,7 +111,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
 
             final CloseableHttpResponse httpResponse = getHttpClient().execute(httpGet);
             try {
-                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+                return JsonUtil.fromJson(httpResponse, responseClass);
             } finally {
                 httpResponse.close();
             }
@@ -122,7 +121,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse get(final String path) throws RestClientException {
+    public <T> T get(Class<T> responseClass, final String path) throws RestClientException {
         try {
             final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
             final HttpGet httpGet = new HttpGet(url);
@@ -130,7 +129,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
 
             final CloseableHttpResponse httpResponse = getHttpClient().execute(httpGet);
             try {
-                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+                return JsonUtil.fromJson(httpResponse, responseClass);
             } finally {
                 httpResponse.close();
             }
@@ -140,7 +139,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse post(final String path) throws RestClientException {
+    public <T> T post(Class<T> responseClass, String path) throws RestClientException {
         try {
             final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
             final HttpPost httpPost = new HttpPost(url);
@@ -148,7 +147,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
 
             final CloseableHttpResponse httpResponse = getHttpClient().execute(httpPost);
             try {
-                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+                return JsonUtil.fromJson(httpResponse, responseClass);
             } finally {
                 httpResponse.close();
             }
@@ -158,7 +157,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse post(final String path, final VtRequest vtRequest) throws RestClientException {
+    public <T> T post(Class<T> responseClass, String path, final VtRequest vtRequest) throws RestClientException {
         try {
             final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
             final HttpPost httpPost = new HttpPost(url);
@@ -168,7 +167,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
 
             final CloseableHttpResponse httpResponse = getHttpClient().execute(httpPost);
             try {
-                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+                return JsonUtil.fromJson(httpResponse, responseClass);
             } finally {
                 httpResponse.close();
             }

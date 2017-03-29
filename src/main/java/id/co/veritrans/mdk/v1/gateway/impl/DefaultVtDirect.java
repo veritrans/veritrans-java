@@ -25,17 +25,16 @@ public class DefaultVtDirect extends DefaultVtGateway implements VtDirect {
         final String fullPanUrl = url + "/" + StringConstant.FULL_PAN;
 
         if (vtDirectChargeRequest instanceof CreditCardFullPanRequest) {
-            return getVtGatewaySession().getRestClient().post(fullPanUrl, vtDirectChargeRequest);
+            return getVtGatewaySession().getRestClient().post(VtResponse.class, fullPanUrl, vtDirectChargeRequest);
         } else {
-            return getVtGatewaySession().getRestClient().post(url, vtDirectChargeRequest);
+            return getVtGatewaySession().getRestClient().post(VtResponse.class, url, vtDirectChargeRequest);
         }
     }
 
     @Override
     public VtResponse capture(final String transactionId, final Long amount) throws RestClientException {
         final String url = StringConstant.CAPTURE;
-        return getVtGatewaySession().getRestClient().post(url, new VtRequest() {
-
+        return getVtGatewaySession().getRestClient().post(VtResponse.class, url, new VtRequest() {
             @JsonProperty("transaction_id")
             public final String _1 = transactionId;
             @JsonProperty("gross_amount")
