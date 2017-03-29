@@ -27,7 +27,6 @@ public class VtResponse extends OrderStatus {
     @JsonProperty("saved_token_id_expired_at")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd hh:mm:ss", timezone = "GMT+07")
     private Date savedCardTokenExpiredAt;
-    private Boolean secureToken;
     private CreditCard.Bank bank;
     private String billerCode;
     private String billKey;
@@ -181,24 +180,6 @@ public class VtResponse extends OrderStatus {
      */
     public void setSavedCardTokenExpiredAt(final Date savedCardTokenExpiredAt) {
         this.savedCardTokenExpiredAt = savedCardTokenExpiredAt;
-    }
-
-    /**
-     * Get secure token
-     *
-     * @return Secure token
-     */
-    public Boolean getSecureToken() {
-        return secureToken;
-    }
-
-    /**
-     * Set secure token
-     *
-     * @param secureToken Secure token
-     */
-    public void setSecureToken(final Boolean secureToken) {
-        this.secureToken = secureToken;
     }
 
     /**
@@ -506,7 +487,6 @@ public class VtResponse extends OrderStatus {
             return false;
         if (savedCardTokenExpiredAt != null ? !savedCardTokenExpiredAt.equals(that.savedCardTokenExpiredAt) : that.savedCardTokenExpiredAt != null)
             return false;
-        if (secureToken != null ? !secureToken.equals(that.secureToken) : that.secureToken != null) return false;
         if (bank != that.bank) return false;
         if (billerCode != null ? !billerCode.equals(that.billerCode) : that.billerCode != null) return false;
         if (billKey != null ? !billKey.equals(that.billKey) : that.billKey != null) return false;
@@ -535,7 +515,6 @@ public class VtResponse extends OrderStatus {
         result = 31 * result + (cardToken != null ? cardToken.hashCode() : 0);
         result = 31 * result + (savedCardToken != null ? savedCardToken.hashCode() : 0);
         result = 31 * result + (savedCardTokenExpiredAt != null ? savedCardTokenExpiredAt.hashCode() : 0);
-        result = 31 * result + (secureToken != null ? secureToken.hashCode() : 0);
         result = 31 * result + (bank != null ? bank.hashCode() : 0);
         result = 31 * result + (billerCode != null ? billerCode.hashCode() : 0);
         result = 31 * result + (billKey != null ? billKey.hashCode() : 0);

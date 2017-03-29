@@ -1,11 +1,8 @@
 package id.co.veritrans.mdk.v1.integration.vtdirect;
 
+import id.co.veritrans.mdk.v1.gateway.model.*;
 import id.co.veritrans.mdk.v1.integration.AbstractIntegrationTest;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
-import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
-import id.co.veritrans.mdk.v1.gateway.model.TransactionStatus;
-import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.MandiriClickpayRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.MandiriClickpay;
 import org.testng.annotations.Test;
@@ -33,7 +30,7 @@ public class MandiriClickpayIT extends AbstractIntegrationTest {
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.SETTLED);
         assertEquals(vtResponse.getPaymentMethod(), "mandiri_clickpay");
-        assertNull(vtResponse.getFraudStatus());
+        assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
     }
 
     @Test(groups = "integrationTest", dependsOnMethods = "testChargeMandiriClickpay")

@@ -6,7 +6,6 @@ import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.VtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.model.VtRequest;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardFullPanRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.VtDirectChargeRequest;
 import id.co.veritrans.mdk.v1.helper.StringConstant;
 
@@ -22,13 +21,7 @@ public class DefaultVtDirect extends DefaultVtGateway implements VtDirect {
     @Override
     public VtResponse charge(VtDirectChargeRequest vtDirectChargeRequest) throws RestClientException {
         final String url = StringConstant.CHARGE;
-        final String fullPanUrl = url + "/" + StringConstant.FULL_PAN;
-
-        if (vtDirectChargeRequest instanceof CreditCardFullPanRequest) {
-            return getVtGatewaySession().getRestClient().post(VtResponse.class, fullPanUrl, vtDirectChargeRequest);
-        } else {
-            return getVtGatewaySession().getRestClient().post(VtResponse.class, url, vtDirectChargeRequest);
-        }
+        return getVtGatewaySession().getRestClient().post(VtResponse.class, url, vtDirectChargeRequest);
     }
 
     @Override

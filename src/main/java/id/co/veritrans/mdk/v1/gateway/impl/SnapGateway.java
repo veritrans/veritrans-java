@@ -9,12 +9,6 @@ import id.co.veritrans.mdk.v1.gateway.model.SnapResponse;
 import id.co.veritrans.mdk.v1.gateway.model.StatusRequest;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.snap.SnapChargeRequest;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardFullPanRequest;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.VtDirectChargeRequest;
-import id.co.veritrans.mdk.v1.helper.JsonUtil;
-import id.co.veritrans.mdk.v1.helper.StringConstant;
-import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.client.methods.HttpPost;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URISyntaxException;

@@ -6,6 +6,7 @@ import id.co.veritrans.mdk.v1.gateway.model.TransactionStatus;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.gateway.model.builder.CreditCardBuilder;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
+import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import org.testng.annotations.Test;
 
 import java.io.IOException;
@@ -33,6 +34,7 @@ public class CreditCardFull3DsChargeSavedTokenIT extends AbstractCreditCardIT {
                 .setSaveCardToken(Boolean.TRUE)
                 .createCreditCard());
 
+        System.out.println("JSON: " + JsonUtil.toJson(vtResponse));
         assertEquals(vtResponse.getStatusCode(), "200");
         assertEquals(vtResponse.getTransactionStatus(), TransactionStatus.CAPTURED);
         assertEquals(vtResponse.getFraudStatus(), FraudStatus.ACCEPTED);
@@ -42,7 +44,6 @@ public class CreditCardFull3DsChargeSavedTokenIT extends AbstractCreditCardIT {
 
         assertNotNull(vtResponse.getSavedCardToken());
         assertNotNull(vtResponse.getSavedCardTokenExpiredAt());
-        assertNotNull(vtResponse.getSecureToken());
 
         this.cardToken = vtResponse.getSavedCardToken();
     }
