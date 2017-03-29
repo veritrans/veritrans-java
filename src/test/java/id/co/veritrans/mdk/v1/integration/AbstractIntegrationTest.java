@@ -3,6 +3,7 @@ package id.co.veritrans.mdk.v1.integration;
 import id.co.veritrans.mdk.v1.VtGatewayConfigBuilder;
 import id.co.veritrans.mdk.v1.VtGatewayFactory;
 import id.co.veritrans.mdk.v1.config.EnvironmentType;
+import id.co.veritrans.mdk.v1.gateway.Snap;
 import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.VtWeb;
 
@@ -20,4 +21,5 @@ public class AbstractIntegrationTest {
     );
     protected final VtDirect vtDirect = vtGatewayFactory.vtDirect();
     protected final VtWeb vtWeb = vtGatewayFactory.vtWeb();
+    protected final Snap snap = vtGatewayFactory.snap();
 }
