@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
 /**
  * Gateway for Snap
  */
-public class SnapGateway extends DefaultVtGateway implements VtGateway {
+public class SnapGateway extends DefaultVtGateway {
     private VtGatewayConfig vtGatewayConfig;
 
     public SnapGateway(VtGatewaySession vtGatewaySession) {
