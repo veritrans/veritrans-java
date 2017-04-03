@@ -6,8 +6,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import id.co.veritrans.mdk.v1.exception.JsonDeserializeException;
 import org.apache.http.HttpResponse;
 
@@ -69,9 +67,6 @@ public class JsonUtil {
             configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
 
             setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
-
-            registerModule(new Jdk8Module());
-            registerModule(new JavaTimeModule());
         }
     }
 }
