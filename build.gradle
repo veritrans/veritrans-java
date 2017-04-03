@@ -32,8 +32,8 @@ def gitIssuesUrl = 'https://github.com/veritrans/veritrans-java/issues'
 group = 'id.co.veritrans'
 version = '1.5.0'
 
-sourceCompatibility = '1.8'
-targetCompatibility = '1.8'
+sourceCompatibility = '1.7'
+targetCompatibility = '1.7'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -54,8 +54,6 @@ dependencies {
     compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'org.hibernate:hibernate-validator:5.2.0.Beta1'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.4'
-    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.4'
 
     testCompile 'org.slf4j:log4j-over-slf4j:1.7.12'
     testCompile 'ch.qos.logback:logback-classic:1.1.3'
