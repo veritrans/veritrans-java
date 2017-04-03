@@ -6,7 +6,6 @@ import id.co.veritrans.mdk.v1.gateway.VtDirect;
 import id.co.veritrans.mdk.v1.gateway.VtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.model.VtRequest;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardFullPanRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.VtDirectChargeRequest;
 import id.co.veritrans.mdk.v1.helper.StringConstant;
 
@@ -22,20 +21,13 @@ public class DefaultVtDirect extends DefaultVtGateway implements VtDirect {
     @Override
     public VtResponse charge(VtDirectChargeRequest vtDirectChargeRequest) throws RestClientException {
         final String url = StringConstant.CHARGE;
-        final String fullPanUrl = url + "/" + StringConstant.FULL_PAN;
-
-        if (vtDirectChargeRequest instanceof CreditCardFullPanRequest) {
-            return getVtGatewaySession().getRestClient().post(fullPanUrl, vtDirectChargeRequest);
-        } else {
-            return getVtGatewaySession().getRestClient().post(url, vtDirectChargeRequest);
-        }
+        return getVtGatewaySession().getRestClient().post(VtResponse.class, url, vtDirectChargeRequest);
     }
 
     @Override
     public VtResponse capture(final String transactionId, final Long amount) throws RestClientException {
         final String url = StringConstant.CAPTURE;
-        return getVtGatewaySession().getRestClient().post(url, new VtRequest() {
-
+        return getVtGatewaySession().getRestClient().post(VtResponse.class, url, new VtRequest() {
             @JsonProperty("transaction_id")
             public final String _1 = transactionId;
             @JsonProperty("gross_amount")

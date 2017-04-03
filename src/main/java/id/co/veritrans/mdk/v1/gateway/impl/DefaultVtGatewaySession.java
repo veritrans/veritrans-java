@@ -5,7 +5,6 @@ import id.co.veritrans.mdk.v1.config.ProxyConfig;
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.VtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.model.VtRequest;
-import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import id.co.veritrans.mdk.v1.net.VtRestClient;
 import org.apache.commons.codec.binary.Base64;
@@ -38,10 +37,12 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     private final VtGatewayConfig vtGatewayConfig;
     private final PoolingHttpClientConnectionManager connectionManager;
     private final CloseableHttpClient httpClient;
+    private URI baseUrl;
 
     public DefaultVtGatewaySession(final VtGatewayConfig vtGatewayConfig) {
         this.vtGatewayConfig = vtGatewayConfig;
         this.connectionManager = new PoolingHttpClientConnectionManager();
+        this.baseUrl = vtGatewayConfig.getEnvironmentType().getBaseUrl();
 
         if (connectionManager.getMaxTotal() < vtGatewayConfig.getMaxConnectionPoolSize()) {
             connectionManager.setMaxTotal(vtGatewayConfig.getMaxConnectionPoolSize());
@@ -49,6 +50,15 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
         connectionManager.setDefaultMaxPerRoute(vtGatewayConfig.getMaxConnectionPoolSize());
 
         httpClient = buildHttpClient();
+    }
+
+    /**
+     * Allow for manual change of base url being used
+     * @param baseUrl
+     */
+    @Override
+    public void setBaseUrl(URI baseUrl) {
+        this.baseUrl = baseUrl;
     }
 
     @Override
@@ -104,15 +114,15 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse get(URI uri) throws RestClientException {
+    public <T> T get(Class<T> responseClass, URI uri) throws RestClientException {
         try {
-            final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + uri.toString();
+            final String url = this.baseUrl + "/" + uri.toString();
             final HttpGet httpGet = new HttpGet(url);
             httpGet.setConfig(getRequestConfig());
 
             final CloseableHttpResponse httpResponse = getHttpClient().execute(httpGet);
             try {
-                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+                return JsonUtil.fromJson(httpResponse, responseClass);
             } finally {
                 httpResponse.close();
             }
@@ -122,15 +132,15 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse get(final String path) throws RestClientException {
+    public <T> T get(Class<T> responseClass, final String path) throws RestClientException {
         try {
-            final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
+            final String url = this.baseUrl + "/" + path;
             final HttpGet httpGet = new HttpGet(url);
             httpGet.setConfig(getRequestConfig());
 
             final CloseableHttpResponse httpResponse = getHttpClient().execute(httpGet);
             try {
-                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+                return JsonUtil.fromJson(httpResponse, responseClass);
             } finally {
                 httpResponse.close();
             }
@@ -140,15 +150,15 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse post(final String path) throws RestClientException {
+    public <T> T post(Class<T> responseClass, String path) throws RestClientException {
         try {
-            final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
+            final String url = this.baseUrl + "/" + path;
             final HttpPost httpPost = new HttpPost(url);
             httpPost.setConfig(getRequestConfig());
 
             final CloseableHttpResponse httpResponse = getHttpClient().execute(httpPost);
             try {
-                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+                return JsonUtil.fromJson(httpResponse, responseClass);
             } finally {
                 httpResponse.close();
             }
@@ -158,9 +168,9 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
     }
 
     @Override
-    public VtResponse post(final String path, final VtRequest vtRequest) throws RestClientException {
+    public <T> T post(Class<T> responseClass, String path, final VtRequest vtRequest) throws RestClientException {
         try {
-            final String url = vtGatewayConfig.getEnvironmentType().getBaseUrl() + "/" + path;
+            final String url = this.baseUrl + "/" + path;
             final HttpPost httpPost = new HttpPost(url);
             httpPost.setConfig(getRequestConfig());
             httpPost.setEntity(new StringEntity(JsonUtil.toJson(vtRequest)));
@@ -168,7 +178,7 @@ public class DefaultVtGatewaySession implements VtGatewaySession, VtRestClient {
 
             final CloseableHttpResponse httpResponse = getHttpClient().execute(httpPost);
             try {
-                return JsonUtil.fromJson(httpResponse, VtResponse.class);
+                return JsonUtil.fromJson(httpResponse, responseClass);
             } finally {
                 httpResponse.close();
             }

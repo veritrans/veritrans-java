@@ -2,7 +2,6 @@ package id.co.veritrans.mdk.v1.net;
 
 import id.co.veritrans.mdk.v1.exception.RestClientException;
 import id.co.veritrans.mdk.v1.gateway.model.VtRequest;
-import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
 
 import java.net.URI;
 
@@ -11,11 +10,11 @@ import java.net.URI;
  */
 public interface VtRestClient {
 
-    VtResponse get(URI uri) throws RestClientException;
+    <T> T get(Class<T> response, URI uri) throws RestClientException;
 
-    VtResponse get(String url) throws RestClientException;
+    <T> T get(Class<T> response, String url) throws RestClientException;
 
-    VtResponse post(String url) throws RestClientException;
+    <T> T post(Class<T> response, String url) throws RestClientException;
 
-    VtResponse post(String url, VtRequest vtRequest) throws RestClientException;
+    <T> T post(Class<T> response, String url, VtRequest vtRequest) throws RestClientException;
 }

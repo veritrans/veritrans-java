@@ -25,15 +25,15 @@ apply plugin: 'java'
 apply plugin: 'maven'
 apply plugin: 'com.github.johnrengelman.shadow'
 
-def siteUrl = 'https://github.com/gde-vt/veritrans-java'
-def gitUrl = 'https://github.com/gde-vt/veritrans-java.git'
-def gitIssuesUrl = 'https://github.com/gde-vt/veritrans-java/issues'
+def siteUrl = 'https://github.com/veritrans/veritrans-java'
+def gitUrl = 'https://github.com/veritrans/veritrans-java.git'
+def gitIssuesUrl = 'https://github.com/veritrans/veritrans-java/issues'
 
 group = 'id.co.veritrans'
-version = '1.4.1'
+version = '1.5.0'
 
-sourceCompatibility = '1.7'
-targetCompatibility = '1.7'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
 
 // In this section you declare where to find the dependencies of your project
 repositories {
@@ -54,6 +54,7 @@ dependencies {
     compile 'javax.validation:validation-api:1.1.0.Final'
     compile 'org.hibernate:hibernate-validator:5.2.0.Beta1'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.8.4'
+    compile 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.8.4'
     compile 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.8.4'
 
     testCompile 'org.slf4j:log4j-over-slf4j:1.7.12'
@@ -116,8 +117,8 @@ install {
                 packaging 'jar'
 
                 // Add your description here
-                name 'Veritrans Java Client Library'
-                description = 'Official Payment API Java Client.'
+                name 'Midtrans Java Client Library'
+                description = 'Official Midtrans Payment API Java Client.'
                 url siteUrl
 
                 // Set your license
@@ -127,20 +128,27 @@ install {
                         url 'http://unlicense.org/UNLICENSE'
                     }
                 }
+
                 developers {
                     [
                             developer {
                                 id 'gde.satrigraha'
                                 name 'Gde Mahardhikha Satrigraha'
-                                email 'gde.satrigraha@veritrans.co.id'
+                                email 'gde.satrigraha@midtrans.com'
                             },
                             developer {
                                 id 'andes.yudanto'
                                 name 'Andes Haryo Yudanto'
-                                email 'andes.yudanto@veritrans.co.id'
+                                email 'andes.yudanto@midtrans.com'
                             },
+                            developer {
+                                id 'adam.pahlevi'
+                                name 'Adam Pahlevi'
+                                email 'adam.pahlevi@midtrans.com'
+                            }
                     ]
                 }
+
                 scm {
                     connection gitUrl
                     developerConnection gitUrl

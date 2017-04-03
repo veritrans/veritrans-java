@@ -5,6 +5,7 @@ import id.co.veritrans.mdk.v1.net.VtRestClient;
 import org.apache.http.impl.client.CloseableHttpClient;
 
 import java.io.IOException;
+import java.net.URI;
 
 /**
  * VT-Gateway session
@@ -16,6 +17,8 @@ public interface VtGatewaySession {
     CloseableHttpClient getHttpClient();
 
     VtRestClient getRestClient();
+
+    void setBaseUrl(URI baseUrl);
 
     void destroy() throws IOException;
 }

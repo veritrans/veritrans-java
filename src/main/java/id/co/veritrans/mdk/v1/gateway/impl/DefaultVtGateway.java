@@ -34,7 +34,7 @@ public abstract class DefaultVtGateway implements VtGateway {
         final String safeOrderId = URLEncoder.encode(orderId, "UTF-8");
         final String url = safeOrderId + "/" + StringConstant.APPROVE;
 
-        return getVtGatewaySession().getRestClient().post(url);
+        return getVtGatewaySession().getRestClient().post(VtResponse.class, url);
     }
 
     @Override
@@ -42,7 +42,7 @@ public abstract class DefaultVtGateway implements VtGateway {
         final String safeOrderId = URLEncoder.encode(orderId, "UTF-8");
         final String url = safeOrderId + "/" + StringConstant.GET_STATUS;
 
-        return getVtGatewaySession().getRestClient().get(url);
+        return getVtGatewaySession().getRestClient().get(VtResponse.class, url);
     }
 
     @Override
@@ -50,7 +50,7 @@ public abstract class DefaultVtGateway implements VtGateway {
         final String safeOrderId = URLEncoder.encode(orderId, "UTF-8");
         final String url = safeOrderId + "/" + StringConstant.CANCEL;
 
-        return getVtGatewaySession().getRestClient().post(url);
+        return getVtGatewaySession().getRestClient().post(VtResponse.class, url);
     }
 
     /**
@@ -65,7 +65,7 @@ public abstract class DefaultVtGateway implements VtGateway {
     @Override
     public VtResponse status(StatusRequest statusRequest) throws RestClientException, UnsupportedEncodingException {
         final String url = StringConstant.TRANSACTIONS;
-        return getVtGatewaySession().getRestClient().post(url, statusRequest);
+        return getVtGatewaySession().getRestClient().post(VtResponse.class, url, statusRequest);
     }
 
     /**
@@ -78,6 +78,6 @@ public abstract class DefaultVtGateway implements VtGateway {
     @Override
     public VtResponse queryStatus(GetStatusParameter getStatusParameter) throws RestClientException, URISyntaxException {
         final URI uri = new URIBuilder(StringConstant.TRANSACTIONS).addParameters(getStatusParameter.toUrlParameter()).build();
-        return getVtGatewaySession().getRestClient().get(uri);
+        return getVtGatewaySession().getRestClient().get(VtResponse.class, uri);
     }
 }

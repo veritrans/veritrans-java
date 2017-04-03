@@ -5,10 +5,8 @@ import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtDirect;
 import id.co.veritrans.mdk.v1.gateway.model.CustomerDetails;
 import id.co.veritrans.mdk.v1.gateway.model.TransactionDetails;
 import id.co.veritrans.mdk.v1.gateway.model.VtResponse;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardFullPanRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.CreditCardRequest;
 import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCard;
-import id.co.veritrans.mdk.v1.gateway.model.vtdirect.paymentmethod.CreditCardFullPan;
 import id.co.veritrans.mdk.v1.helper.JsonUtil;
 import id.co.veritrans.mdk.v1.helper.StringConstant;
 import id.co.veritrans.mdk.v1.integration.AbstractIntegrationTest;
@@ -64,7 +62,7 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
         }
 
         final VtResponse vtResponse = ((DefaultVtDirect) vtDirect).getVtGatewaySession().getRestClient()
-                .get(tokenUriBuilder.build().toString());
+                .get(VtResponse.class, tokenUriBuilder.build().toString());
 
         assertEquals(vtResponse.getStatusCode(), "200");
         assertNotNull(vtResponse.getCardToken());
@@ -91,7 +89,7 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
         }
 
         final VtResponse vtResponse = ((DefaultVtDirect) vtDirect).getVtGatewaySession().getRestClient()
-                .get(tokenUriBuilder.build().toString());
+                .get(VtResponse.class, tokenUriBuilder.build().toString());
 
         assertEquals(vtResponse.getStatusCode(), "200");
         assertNotNull(vtResponse.getCardToken());
@@ -173,18 +171,6 @@ public class AbstractCreditCardIT extends AbstractIntegrationTest {
         req.setTransactionDetails(new TransactionDetails(orderId, 10000l));
         req.setCustomerDetails(new CustomerDetails("gde", "satrigraha", "gde.satrigraha@veritrans.co.id", "123456789", null, null));
         req.setCreditCard(creditCard);
-
-        LOGGER.info("charging: " + JsonUtil.toJson(req));
-        final VtResponse vtResponse = vtDirect.charge(req);
-        LOGGER.info("charge response: " + JsonUtil.toJson(vtResponse));
-        return vtResponse;
-    }
-
-    public VtResponse charge(String orderId, CreditCardFullPan creditCardFullPan) throws RestClientException {
-        final CreditCardFullPanRequest req = new CreditCardFullPanRequest();
-        req.setTransactionDetails(new TransactionDetails(orderId, 10000l));
-        req.setCustomerDetails(new CustomerDetails("gde", "satrigraha", "gde.satrigraha@veritrans.co.id", "123456789", null, null));
-        req.setCreditCardFullPan(creditCardFullPan);
 
         LOGGER.info("charging: " + JsonUtil.toJson(req));
         final VtResponse vtResponse = vtDirect.charge(req);

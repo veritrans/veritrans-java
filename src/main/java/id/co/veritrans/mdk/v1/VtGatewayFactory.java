@@ -6,6 +6,7 @@ import id.co.veritrans.mdk.v1.gateway.VtWeb;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtDirect;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtGatewaySession;
 import id.co.veritrans.mdk.v1.gateway.impl.DefaultVtWeb;
+import id.co.veritrans.mdk.v1.gateway.impl.DefaultSnap;
 
 import javax.validation.ConstraintViolationException;
 import java.io.IOException;
@@ -133,6 +134,8 @@ public class VtGatewayFactory {
     public VtWeb vtWeb() {
         return new DefaultVtWeb(vtGatewaySession);
     }
+
+    public DefaultSnap snap() { return new DefaultSnap(vtGatewaySession); }
 
     public void destroy() throws IOException {
         vtGatewaySession.destroy();

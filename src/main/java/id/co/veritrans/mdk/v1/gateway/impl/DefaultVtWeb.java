@@ -19,6 +19,6 @@ public class DefaultVtWeb extends DefaultVtGateway implements VtWeb {
     @Override
     public VtResponse charge(final VtWebChargeRequest vtWebChargeRequest) throws RestClientException {
         final String url = StringConstant.CHARGE;
-        return getVtGatewaySession().getRestClient().post(url, vtWebChargeRequest);
+        return getVtGatewaySession().getRestClient().post(VtResponse.class, url, vtWebChargeRequest);
     }
 }

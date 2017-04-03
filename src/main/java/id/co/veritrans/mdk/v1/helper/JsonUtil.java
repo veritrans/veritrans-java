@@ -6,6 +6,7 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jdk8.Jdk8Module;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import id.co.veritrans.mdk.v1.exception.JsonDeserializeException;
 import org.apache.http.HttpResponse;
@@ -58,7 +59,7 @@ public class JsonUtil {
 
         public VtJsonObjectMapper() {
             setDateFormat(new SimpleDateFormat(DEFAULT_DATE_FORMAT));
-            setPropertyNamingStrategy(PropertyNamingStrategy.SNAKE_CASE);
+            setPropertyNamingStrategy(PropertyNamingStrategy.CAMEL_CASE_TO_LOWER_CASE_WITH_UNDERSCORES);
 
             configure(SerializationFeature.WRITE_NULL_MAP_VALUES, false);
 
@@ -69,6 +70,7 @@ public class JsonUtil {
 
             setSerializationInclusion(JsonInclude.Include.NON_ABSENT);
 
+            registerModule(new Jdk8Module());
             registerModule(new JavaTimeModule());
         }
     }
